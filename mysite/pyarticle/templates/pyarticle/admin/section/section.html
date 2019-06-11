@@ -1,0 +1,105 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+
+</script>
+
+
+    <div class="form-group row">
+        {% for section_image_data in section_image_datas %}
+        <div class="col-md-6 d-flex">
+            <div class="card flex-md-row mb-6 box-shadow h-md-250">
+                <div class="card-body d-flex flex-column">
+
+                    <form action="{% url 'save_section_image' book_id chapter_id section_id section_image_data.image.id %}" method="post" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        <label for="section{{ forloop.counter }}" class="col-md-12 col-form-label">
+                            挿絵{{ forloop.counter }}
+                        </label>
+                        <div class="col-md-12" id="section{{ forloop.counter }}">
+                           {% if section_image_data.image %}
+                            <img src="{{section_image_data.image.image.url}}" width="256"/>
+                            {% endif %}
+                            <p>{{section_image_data.form}}</p>
+                        </div>
+                    <p class="text-center">
+                        <button type="submit" class="btn btn-primary">更新する</button>
+                        <button type="button" class="btn btn-info" onclick="insert_image('{{section_image_data.image.image.url}}')">挿入する</button>
+                        <button type="button" class="btn btn-danger">削除する</button>
+                    </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+        <div class="col-md-4 d-flex">
+            <div class="card flex-md-row mb-4 box-shadow h-md-250">
+                <div class="card-body d-flex flex-column">
+                    <form action="{% url 'save_section_image' book_id chapter_id section_id 0 %}" method="post" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        <label for="section_new" class="col-md-12 col-form-label">
+                            挿絵を追加する
+                        </label>
+                        <div class="col-md-12" id="section_new">
+                         　 {% if section_image_form.image %}
+                            <img src="{{new_section_image_form.url}}" width="256"/>
+                            {% endif %}
+                            <p>{{new_section_image_form.image}}</p>
+                        </div>
+                        <p class="text-right">
+                            <button type="submit" class="btn btn-secondary">保存する</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<form action="{% url 'save_section' book_id chapter_id section_id %}" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <p class="text-right">
+        <button type="submit" class="btn btn-secondary">保存する</button>
+    </p>
+
+    <div class="form-group row">
+        <label for="order" class="col-md-1 col-form-label">
+            順番
+        </label>
+        <div class="col-md-11" id="order">
+            <p>{{section_form.order}}</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="section" class="col-md-1 col-form-label">
+            章
+        </label>
+
+        <div class="col-md-11" id="section_text">
+
+            <p>{{section_form.text}}</p>
+        </div>
+    </div>
+
+    <p class="text-right">
+        <button type="submit" class="btn btn-secondary">保存する</button>
+    </p>
+</form>
+
+<script>
+    var simplemde = new SimpleMDE({
+                element: document.getElementById("id_text")});
+
+    function insert_image(file_name)
+    {
+        var line = simplemde.codemirror.getCursor().line;
+        var ch = simplemde.codemirror.getCursor().ch;
+
+        //var text = "![]("+file_name +")";
+        var text = '<img src="' + file_name +'" width="640">';
+        simplemde.codemirror.replaceRange(text,{line:line,ch:ch},{line:line,ch:ch});
+    }
+</script>
+{% endblock %}

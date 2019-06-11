@@ -1,0 +1,64 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+<form action="{% url 'save_book' book_id %}" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+
+
+    <div class="form-group row">
+        <label for="cover" class="col-md-3 col-form-label">
+            表紙
+        </label>
+        <div class="col-md-9" id="cover">
+           {% if book.image %}
+            <img src="{{book.image.url}}" width="256"/>
+            {% endif %}
+            <p>{{book_form.image}}</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="title" class="col-md-3 col-form-label">
+            タイトル<span class="badge badge-warning">必須</span>
+        </label>
+        <div class="col-md-9" id="title">
+            {{book_form.title}}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="author" class="col-md-3 col-form-label">
+            著者<span class="badge badge-warning">必須</span>
+        </label>
+        <div class="col-md-9" id="author">
+            {{book_form.author}}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="category" class="col-md-3 col-form-label">
+            カテゴリー<span class="badge badge-warning">必須</span>
+        </label>
+        <div class="col-md-9" id="category">
+            {{book_form.category}}<a href="{% url 'category'%}"><i class="fas fa-plus-circle fa-green"></i></a>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="description" class="col-md-3 col-form-label">
+            説明
+        </label>
+        <div class="col-md-9" id="description">
+            {{book_form.description}}
+        </div>
+    </div>
+
+    <p class="text-center">
+        <button type="submit" class="btn btn-secondary">保存する</button>
+    </p>
+
+
+</form>
+
+
+{% endblock %}

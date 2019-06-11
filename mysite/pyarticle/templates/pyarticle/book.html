@@ -1,0 +1,73 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% load mdfilter %}
+{% block content %}
+
+
+
+<div class="row">
+    <div class="col-md-3">
+        {% if user.is_authenticated %}
+        <p class="text-left">
+            <span class="badge badge-info">
+                <a class="p-2 text-white" href="{% url 'add_chapter' book.id %}">タイトル追加</a>
+            </span>
+        </p>
+        {% endif %}
+        {% for chapter in chapters %}
+            <p>
+                <a href="{% url 'disp_book' book.id chapter.id 1 %}">{{chapter.chapter}}</a>
+            </p>
+        {% endfor %}
+    </div>
+    <div class="col-md-9">
+        {% if user.is_authenticated %}
+        <p class="text-right">
+            <span class="badge badge-info">
+                <a class="p-2 text-white" href="{% url 'edit_chapter' book.id chapter.id %}">タイトル編集</a>
+            </span>
+        </p>
+        {% endif %}
+        <h1 class="pb-3 mb-4 font-italic border-bottom">
+            {{chapter.chapter}}
+        </h1>
+        <p>
+            {% if user.is_authenticated %}
+                <p class="text-right">
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">記事追加</a>
+                    </span>
+            {%endif %}
+            {% for section in page_obj %}
+                {% if user.is_authenticated %}
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">記事編集</a>
+                    </span>
+                    <span class="badge badge-danger">
+                        <a class="p-2 text-white" href="{% url 'delete_section' book.id chapter.id section.id%}">記事削除</a>
+                    </span>
+                </p>
+                {% endif %}
+            {{section.text  | markdown2html | safe|linebreaksbr }}
+            {% endfor %}
+        </p>
+        <p>
+             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </p>
+        <p class="text-center">
+            {% if page_obj.has_previous %}
+                 <a href="{% url 'disp_book' book.id chapter.id page_obj.previous_page_number %}">prev</a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a href="{% url 'disp_book' book.id chapter.id page_obj.next_page_number %}">next</a>
+            {% elif next_chapter_id != 0 %}
+                <a href="{% url 'disp_book' book.id next_chapter_id 1 %}">next chapter</a>
+            {% else %}
+                <a href="{% url 'disp_book' book.id 0 1 %}">初めに戻る</a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+
+{% endblock %}

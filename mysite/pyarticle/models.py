@@ -1,0 +1,227 @@
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser, User
+from django.contrib.auth.validators import UnicodeUsernameValidator
+import uuid
+import os
+# Create your models here.
+
+
+def get_book_image_path(self, filename):
+    """カスタマイズした画像パスを取得する.
+
+    :param self: インスタンス (models.Model)
+    :param filename: 元ファイル名
+    :return: カスタマイズしたファイル名を含む画像パス
+    """
+    prefix = 'cover/'
+    name = str(uuid.uuid4()).replace('-', '')
+    extension = os.path.splitext(filename)[-1]
+    return prefix + name + extension
+
+
+def get_section_image_path(self, filename):
+    """カスタマイズした画像パスを取得する.
+
+    :param self: インスタンス (models.Model)
+    :param filename: 元ファイル名
+    :return: カスタマイズしたファイル名を含む画像パス
+    """
+    prefix = 'section/'
+    name = str(uuid.uuid4()).replace('-', '')
+    extension = os.path.splitext(filename)[-1]
+    return prefix + name + extension
+
+
+class SiteParams(models.Model):
+    """
+    サイト情報
+    """
+    param = models.CharField(max_length=256,
+                                 null=False,
+                                 verbose_name="パラメーター名",
+                                 help_text="パラメーター名")
+
+    value = models.CharField(max_length=1024,
+                                   verbose_name="値",
+                                   help_text="パラメーターの値")
+
+    def __str__(self):
+        return self.param
+
+
+class Category(models.Model):
+    """
+    カテゴリ情報
+    """
+    category_name = models.CharField(max_length=256,
+                                     null=False,
+                                     unique=True,
+                                     verbose_name="カテゴリの名前")
+
+    create_date = models.DateTimeField(auto_now_add=True,
+                                       null=True,
+                                       verbose_name="作成日")
+
+    update_date = models.DateTimeField(auto_now=True,
+                                       null=True,
+                                       verbose_name="更新日")
+
+    def __str__(self):
+        return self.category_name
+
+
+class Book(models.Model):
+    """
+    本の情報
+    """
+    title = models.CharField(max_length=256,
+                             null=False,
+                             unique=True,
+                             verbose_name="タイトル")
+
+    author = models.CharField(max_length=256,
+                              verbose_name="作者名")
+
+    description = models.CharField(max_length=512,
+                                   verbose_name="説明")
+
+    category = models.ForeignKey(Category,
+                                 on_delete=models.CASCADE,
+                                 null=True,
+                                 verbose_name="カテゴリー",
+                                 help_text="カテゴリー")
+
+    good_count = models.IntegerField(default=0,
+                                     verbose_name="いいね",
+                                     help_text="いいね")
+
+    access_count = models.IntegerField(default=0,
+                                       verbose_name="表示回数",
+                                       help_text="表示回数")
+
+    image = models.ImageField(upload_to=get_book_image_path,
+                              null=True,
+                             verbose_name="表紙画像")
+
+    create_date = models.DateTimeField(auto_now_add=True,
+                                       null=True,
+                                       verbose_name="作成日")
+
+    update_date = models.DateTimeField(auto_now=True,
+                                       null=True,
+                                       verbose_name="更新日")
+
+    def __str__(self):
+        return self.title
+
+
+class Chapter(models.Model):
+    """
+    章の情報。見出し。
+    """
+    chapter = models.CharField(max_length=256,
+                               null=False,
+                               unique=False,
+                               default="未設定",
+                               verbose_name="章")
+
+    order = models.IntegerField(default=1)
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE,
+                             null=False,
+                             verbose_name="関連する本",
+                             help_text="関連する本")
+
+    access_count = models.IntegerField(default=0,
+                                       verbose_name="表示回数",
+                                       help_text="表示回数")
+
+    create_date = models.DateTimeField(auto_now_add=True,
+                                       null=True,
+                                       verbose_name="作成日")
+
+    update_date = models.DateTimeField(auto_now=True,
+                                       null=True,
+                                       verbose_name="更新日")
+
+    def __str__(self):
+        return self.chapter
+
+
+class Section(models.Model):
+    """
+    見出しごとの節。本文が入る。
+    """
+    chapter = models.ForeignKey(Chapter,
+                                on_delete=models.CASCADE,
+                                null=False,
+                                verbose_name="章",
+                                help_text="章")
+
+    order = models.IntegerField(default=1,
+                                verbose_name="表示する順番")
+
+    text = models.TextField(null=False,
+                            verbose_name="コメント")
+
+    access_count = models.IntegerField(default=0,
+                                       verbose_name="アクセス数")
+
+    create_date = models.DateTimeField(auto_now_add=True,
+                                       null=True,
+                                       verbose_name="作成日")
+
+    update_date = models.DateTimeField(auto_now=True,
+                                       null=True,
+                                       verbose_name="更新日")
+
+    def __str__(self):
+        return self.text
+
+
+class SectionImage(models.Model):
+    image = models.ImageField(upload_to=get_section_image_path,
+                              null=True,
+                             verbose_name="ページの画像")
+
+    section = models.ForeignKey(Section,
+                                on_delete=models.CASCADE,
+                                null=True,
+                                verbose_name="セクション",
+                                help_text="セクション")
+
+    def delete(self, *args, **kwargs):
+        print("call delete")
+
+
+class Comment(models.Model):
+    """
+    コメント。本についてコメントが残せる。
+    """
+    text = models.TextField()
+
+    mail = models.CharField(max_length=256,
+                            null=True,
+                            verbose_name="メールアドレス",
+                            help_text="メールアドレス")
+
+    name = models.CharField(max_length=32,
+                            null=True,
+                            verbose_name="名前",
+                            help_text="名前")
+
+    book = models.ForeignKey(Book,
+                             on_delete=models.CASCADE,
+                             null=False,
+                             verbose_name="コメントする本",
+                             help_text="コメントする本")
+
+    create_date = models.DateTimeField(auto_now_add=True,
+                                       null=True,
+                                       verbose_name="作成日")
+
+    update_date = models.DateTimeField(auto_now=True, null=True,
+                                       verbose_name="更新日")
+
+    def __str__(self):
+        return self.text

@@ -1,0 +1,66 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+
+  <form action="{% url 'add_book' %}" method="GET">
+    {%csrf_token%}
+    <p class="text-right">
+      <input type="submit" class="btn btn-outline-secondary" value="本追加">
+    </p>
+  </form>
+
+  <form action="{% url 'add_category' %}" method="GET">
+    {%csrf_token%}
+    <p class="text-right">
+      <input type="submit" class="btn btn-outline-secondary" value="カテゴリーの追加">
+    </p>
+  </form>
+
+  <table class="table table-hover col-md-12">
+    <tr>
+      <th>ID</th>
+      <th>表紙</th>
+      <th>タイトル</th>
+      <th>著者</th>
+      <th>説明</th>
+      <th>更新日時</th>
+      <th>作成日時</th>
+      <th>操作</th>
+    </tr>
+    {% for record in book_records %}
+    <tr>
+      <td>{{record.id}}</td>
+      <td>
+        {% if record.image %}
+        <img src="{{record.image.url}}" width="128" height="128">
+        {% endif %}
+      </td>
+      <td>{{record.title}}</td>
+      <td>{{record.author}}</td>
+      <td>{{record.description}}</td>
+      <td>{{record.update_date}}</td>
+      <td>{{record.create_date}}</td>
+      <td>
+        <div class="btn-toolbar">
+          <div class="btn-group">
+            <form action="{% url 'edit_book' record.id %}" method="GET">
+              {%csrf_token%}
+              <p class="text-right">
+                <input type="submit" class="btn btn-outline-secondary" value="編集">
+              </p>
+            </form>
+            <form action="{% url 'delete_book' record.id %}" method="GET">
+              {%csrf_token%}
+              <p class="text-right">
+                <input type="submit" class="btn btn-outline-secondary" value="削除">
+              </p>
+            </form>
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </table>
+
+{% endblock %}

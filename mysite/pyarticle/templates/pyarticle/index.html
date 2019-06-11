@@ -1,0 +1,58 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+{{book.image.url}}
+<style>
+  .card-img-top {
+    max-width: 100%;
+    flex-shrink:0;
+ }
+</style>
+<div class="row">
+  <div class="col-md-12">
+    <p class="text-right">
+      {% if user.is_authenticated %}
+      <span class="badge badge-info">
+        <a class="p-2 text-white" href="{% url 'add_book' %}">記事追加</a>
+      </span>
+
+      {% endif %}
+    </p>
+  </div>
+</div>
+<div class="row">
+  {% for record in book_records %}
+      <div class="col-md-4 d-flex">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250">
+          <div class="card-body d-flex flex-column">
+            <!-- ログインしているユーザにだけ見せる -->
+            {% if user.is_authenticated %}
+              <nav class="nav d-flex justify-content-end">
+                <span class="badge badge-info">
+                  <a class="p-2 text-white" href="{% url 'edit_book' record.id %}">編集</a>
+                </span>
+                <span class="badge badge-danger">
+                  <a class="p-2 text-white" href="{% url 'delete_book' record.id %}">削除</a>
+                </span>
+              </nav>
+            {% endif %}
+
+             <strong class="d-inline-block mb-2 text-primary">{{record.category}}</strong>
+          {% if record.image %}
+            <img class="card-img-top" src="{{record.image.url}}" alt="Card image cap">
+          {% endif %}
+            <h4 class="card-title">
+              <a class="text-dark" href="{% url 'disp_book' record.id 0 1 %}">{{record.title}}</a>
+            </h4>
+
+
+            <div class="mb-1 text-muted">{{record.create_date}}</div>
+            <p class="card-text mb-auto">{{record.description | linebreaksbr}}</p>
+            <a href="{% url 'disp_book' record.id 0 1 %}">続きを読む</a>
+
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+</div>
+{% endblock %}
