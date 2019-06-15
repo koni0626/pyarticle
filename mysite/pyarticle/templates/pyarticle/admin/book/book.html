@@ -1,6 +1,7 @@
 {% extends "pyarticle/base.html" %}
 {% load static %}
 {% block content %}
+
 <form action="{% url 'save_book' book_id %}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
 
