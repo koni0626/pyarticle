@@ -38,6 +38,17 @@ class SectionForm(forms.Form):
 class SectionImageForm(forms.Form):
     image = forms.ImageField(required=False)
 
+
 class CategoryForm(forms.Form):
     category = forms.CharField(label='カテゴリー',
                                widget=forms.TextInput(attrs={'size': '100'}))
+
+
+class SiteTitleForm(forms.Form):
+    image = forms.ImageField(required=False)
+
+    site_name = forms.CharField(label='タイトル',
+                                 widget=forms.TextInput(attrs={'size': '100'}))
+
+    site_description = forms.CharField(label='説明',
+                                       widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))

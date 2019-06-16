@@ -5,6 +5,7 @@ from . import views_admin_book
 from . import views_admin_chapter
 from . import views_admin_section
 from . import views_admin_category
+from . import views_admin_title
 from . import views_accounts
 from django.contrib.auth import views as auth_views
 
@@ -36,4 +37,8 @@ urlpatterns = [
     path('admin/category/edit/<int:category_id>', views_admin_category.edit_category, name='edit_category'),
     path('admin/category/save/<int:category_id>', views_admin_category.save_category, name='save_category'),
     path('admin/category/delete/<int:category_id>', views_admin_category.delete_category, name='delete_category'),
+
+    path('admin/title/edit', views_admin_title.edit_title, name='edit_title'),
+    path('admin/title/save', views_admin_title.save_title, name='save_title'),
+
 ]

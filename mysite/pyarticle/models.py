@@ -32,18 +32,35 @@ def get_section_image_path(self, filename):
     return prefix + name + extension
 
 
+def get_header_image_path(self, filename):
+    """カスタマイズした画像パスを取得する.
+
+    :param self: インスタンス (models.Model)
+    :param filename: 元ファイル名
+    :return: カスタマイズしたファイル名を含む画像パス
+    """
+    prefix = 'header/'
+    name = str(uuid.uuid4()).replace('-', '')
+    extension = os.path.splitext(filename)[-1]
+    return prefix + name + extension
+
+
 class SiteParams(models.Model):
     """
     サイト情報
     """
     param = models.CharField(max_length=256,
-                                 null=False,
-                                 verbose_name="パラメーター名",
-                                 help_text="パラメーター名")
+                             null=False,
+                             verbose_name="パラメーター名",
+                             help_text="パラメーター名")
 
     value = models.CharField(max_length=1024,
-                                   verbose_name="値",
-                                   help_text="パラメーターの値")
+                             verbose_name="値",
+                             help_text="パラメーターの値")
+
+    image = models.ImageField(upload_to=get_header_image_path,
+                              null=True,
+                              verbose_name="ヘッダ画像")
 
     def __str__(self):
         return self.param
