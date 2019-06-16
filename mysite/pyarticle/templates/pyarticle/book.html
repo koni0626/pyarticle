@@ -3,14 +3,26 @@
 {% load mdfilter %}
 {% block content %}
 <style>
+
 h2 {
-  padding: .5em .75em;
-  background-color: #f6f6f6;
+  color: #364e96;/*文字色*/
+  padding: 0.5em 0;/*上下の余白*/
+  border-top: solid 3px #364e96;/*上線*/
+  border-bottom: solid 3px #364e96;/*下線*/
 }
+
 h3 {
-  padding: .25em 0 .5em .75em;
-  border-left: 6px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  color: #6594e0;/*文字色*/
+  /*線の種類（点線）2px 線色*/
+  border-bottom: solid 2px #6594e0;
+}
+
+h4 {
+  font-size: 16px;
+  padding: 0.25em 0.5em;/*上下 左右の余白*/
+  color: #494949;/*文字色*/
+  background: transparent;/*背景透明に*/
+  border-left: solid 5px #7db4e6;/*左線*/
 }
 pre {
   background-color: #444444;
@@ -43,9 +55,9 @@ pre {
             </span>
         </p>
         {% endif %}
-        <h1 class="pb-3 mb-4 font-italic border-bottom">
+        <h2 class="pb-3 mb-4 font-italic">
             {{chapter.chapter}}
-        </h1>
+        </h2>
         <p>
             {% if user.is_authenticated %}
                 <p class="text-right">
