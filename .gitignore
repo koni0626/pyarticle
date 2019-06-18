@@ -1,3 +1,5 @@
 .idea 
 mysite/db.sqlite3
 Pipfile.lock
+mysite/media
+mysite/pyarticle/__pycache__

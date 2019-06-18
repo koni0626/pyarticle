@@ -79,7 +79,8 @@ def save_book(request, book_id):
                 if form.cleaned_data['image']:
                     book.image = form.cleaned_data['image']
                 else:
-                    book.image = "cover/noimage.jpg"
+                    if form.cleaned_data['image'] == False:
+                        book.image = "cover/noimage.jpg"
                 book.save()
         else:
             print("error＝＝＝＝＝＝＝")
