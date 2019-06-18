@@ -30,7 +30,11 @@
   <body>
         <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
-
+        <script>
+          function book_home(){
+            location.href = "{% url 'index'%}";
+          }
+        </script>
     <div class="container">
 
       <!--
@@ -70,7 +74,7 @@
 
       <div class="jumbotron p-3 p-md-2 text-white rounded bg-dark" style="background: url({{site_image.url}});">
         <div class="col-md-8 px-0">
-          <h1 class="display-8 font-italic">{% block title %}{{site_name}}{% endblock %}</h1>
+          <h1 class="display-8 font-italic" onclick="book_home()">{% block title %}{{site_name}}{% endblock %}</h1>
           <p class="lead my-3">{% block subtitle %}{{description| linebreaksbr}}{% endblock %}</p>
         </div>
         {% if user.is_authenticated %}
