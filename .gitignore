@@ -1,5 +1,10 @@
-.idea 
+.idea
 mysite/db.sqlite3
 Pipfile.lock
 mysite/media
 mysite/pyarticle/__pycache__
+*.pyc
+mysite/media/cover
+mysite/mysite_uwsgi.ini
+mysite/static/
+mysite/uwsgi_params
