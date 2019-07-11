@@ -9,7 +9,8 @@ verify_ssl = true
 django = "*"
 pillow = "*"
 pipfile = "*"
-mardown = "*"
+markdown = "*"
+ebooklib = "*"
 
 [requires]
 python_version = "3.6"

@@ -3,17 +3,32 @@ from django.http import Http404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Book
+from .models import Category
 from .models import Chapter
 from .models import Section
 from .utils import custom_render
 
 
 def index(request):
-    records = Book.objects.all().order_by('id').reverse()
+    categorys = Category.objects.all().order_by('category_name')
+    print(categorys)
+    records = {}
+    for category in categorys:
+        books = Book.objects.filter(category=category).order_by('id').reverse()
+        if len(books) == 0:
+            continue
+        records[category.category_name] = []
 
-    for record in records:
-        if len(record.description) > 10:
-            record.description = record.description[0:100]
+        for book in books:
+            if len(book.description) > 10:
+                book.description = book.description[0:100]
+            records[category.category_name].append(book)
+
+    #records = Book.objects.all().order_by('id').reverse()
+
+    #for record in records:
+    #    if len(record.description) > 10:
+     #       record.description = record.description[0:100]
     return custom_render(request, 'pyarticle/index.html', {'book_records': records})
 
 

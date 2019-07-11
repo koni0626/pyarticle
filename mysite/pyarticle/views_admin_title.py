@@ -38,9 +38,8 @@ def save_title(request):
 
             if form.cleaned_data['image']:
                 site_image.image = form.cleaned_data['image']
-            else:
-                site_image.image = "header/header.png"
-            site_image.save()
+                site_image.save()
+
         else:
             print("error＝＝＝＝＝＝＝")
         return HttpResponseRedirect(reverse('index'))
