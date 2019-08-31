@@ -9,14 +9,18 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def edit_title(request):
-    site_name = SiteParams.objects.filter(param="site_name").first().value
-    site_description = SiteParams.objects.filter(param="site_description").first().value
-    site_image = SiteParams.objects.filter(param="site_image").first().image
-    form = forms.SiteTitleForm(initial={'site_name': site_name,
-                                        'site_description': site_description,
-                                        'image': site_image})
+    try:
+        site_name = SiteParams.objects.filter(param="site_name").first().value
+        site_description = SiteParams.objects.filter(param="site_description").first().value
+        site_image = SiteParams.objects.filter(param="site_image").first().image
+        form = forms.SiteTitleForm(initial={'site_name': site_name,
+                                            'site_description': site_description,
+                                            'image': site_image})
 
-    data = {'title_form': form, 'site_image': site_image}
+        data = {'title_form': form, 'site_image': site_image.url}
+    except:
+        form = forms.SiteTitleForm()
+        data = {'title_form': form, 'site_image': ""}
 
     return custom_admin_render(request, 'pyarticle/admin/title/title.html', data)
 

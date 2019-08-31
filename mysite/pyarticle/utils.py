@@ -6,15 +6,17 @@ from .models import SiteParams
 
 def custom_render(request, template, data):
     # サイトの名前と説明を毎回呼び出す。もっといい方法はないものか？
-    try:
-        site_name = SiteParams.objects.get(param='site_name').value
-        description = SiteParams.objects.get(param='site_description').value
-        image = SiteParams.objects.get(param='site_image').image
 
-        record = {'site_name': site_name, 'description': description, 'site_image': image}
-        record.update(data)
+    site_name = SiteParams.objects.get(param='site_name').value
+    description = SiteParams.objects.get(param='site_description').value
+    image = SiteParams.objects.get(param='site_image').image
+    try:
+        url = image.url
     except:
-        record = {'site_name': "", 'description': "", 'site_image': ""}
+        url = ""
+
+    record = {'site_name': site_name, 'description': description, 'site_image': url}
+    record.update(data)
     return render(request, template, record)
 
 

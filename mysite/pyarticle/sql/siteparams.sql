@@ -2,5 +2,5 @@ insert into pyarticle_siteparams (param, value) values ("site_name", "サイト�
 insert into pyarticle_siteparams (param, value) values ("site_description", "サイトの説明を書きます");
 insert into pyarticle_siteparams (param, value) values ("admin_site_name", "管理画面");
 insert into pyarticle_siteparams (param, value) values ("admin_site_description", "管理画面の説明を書きます");
-insert into pyarticle_siteparams (param, value) values ("site_image", null);
+insert into pyarticle_siteparams (param, value) values ("site_image", "");
 
