@@ -67,12 +67,14 @@ pre {
             {%endif %}
 
             {% if user.is_authenticated %}
-                <span class="badge badge-info">
-                    <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">記事編集</a>
-                </span>
-                <span class="badge badge-danger">
-                    <a class="p-2 text-white" href="{% url 'delete_section' book.id chapter.id section.id%}">記事削除</a>
-                </span>
+                {% if section %}
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">記事編集</a>
+                    </span>
+                    <span class="badge badge-danger">
+                        <a class="p-2 text-white" href="{% url 'delete_section' book.id chapter.id section.id%}">記事削除</a>
+                    </span>
+                {% endif %}
             </p>
             {% endif %}
             {{section.text  | markdown2html | safe|linebreaksbr }}
