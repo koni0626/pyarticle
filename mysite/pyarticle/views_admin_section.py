@@ -105,17 +105,8 @@ def save_section(request, book_id, chapter_id, section_id):
                 section.order = form.cleaned_data['order']
                 section.chapter = Chapter.objects.get(id=chapter_id)
                 section.save()
-                page_number = request.session['page_number']
 
-            # 編集したページ番号を取得する
-            sections = Section.objects.filter(chapter_id=chapter_id)
-            print(sections)
-            page_number = 1
-            for p, sec in enumerate(sections):
-                if sec.order == form.cleaned_data['order']:
-                    page_number = p + 1
-                    break
-            return HttpResponseRedirect(reverse('disp_book', args=[book_id, chapter_id, page_number]))
+            return HttpResponseRedirect(reverse('disp_book', args=[book_id, chapter_id, section_id]))
 
 
 @login_required
