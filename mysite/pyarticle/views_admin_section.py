@@ -99,6 +99,7 @@ def save_section(request, book_id, chapter_id, section_id):
                                   order=form.cleaned_data['order'],
                                   chapter=Chapter.objects.get(id=chapter_id))
                 section.save()
+                section_id = section.id
             else:
                 section = Section.objects.get(id=section_id)
                 section.text = form.cleaned_data['text']
