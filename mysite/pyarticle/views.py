@@ -22,16 +22,17 @@ def index(request):
         for book in books:
             if len(book.description) > 10:
                 book.description = book.description[0:100]
-            records[category.category_name].append(book)
 
-    #records = Book.objects.all().order_by('id').reverse()
+            first_chapter = Chapter.objects.filter(book=book).order_by('order').first()
+            first_section = Section.objects.filter(chapter=first_chapter).order_by('order').first()
+            records[category.category_name].append([book, first_chapter, first_section])
 
-    #for record in records:
-    #    if len(record.description) > 10:
-     #       record.description = record.description[0:100]
     return custom_render(request, 'pyarticle/index.html', {'book_records': records})
 
 
+"""
+使用していません
+"""
 def paginate_query(request, queryset, page_number, count):
     paginator = Paginator(queryset, count)
    # page = request.GET.get('page')
@@ -44,9 +45,13 @@ def paginate_query(request, queryset, page_number, count):
     return page_obj
 
 
-def book(request, book_id, chapter_id, page_number):
+def book(request, book_id, chapter_id, section_id):
+
+    # 本を検索する
     book = Book.objects.get(id=book_id)
+
     try:
+        # チャプターを検索する
         chapters = Chapter.objects.filter(book=book).order_by('order')
         if len(chapters) == 0:
             raise Http404("not exist chapter")
@@ -60,35 +65,54 @@ def book(request, book_id, chapter_id, page_number):
     except Chapter.DoesNotExist:
         raise Http404("Question does not exist")
 
+
     try:
-        sections = Section.objects.filter(chapter=chapter).order_by('order')
+        # セクションを検索する
+        chapter_list = []
+        sections = None
+        for chapter in chapters:
+            #chapter_list.append(chapter.id) #本にあるチャプターすべてを取得
+            chapter_sections = Section.objects.filter(chapter=chapter).order_by('order')
+            if sections == None:
+                sections = chapter_sections
+            else:
+                sections = sections | chapter_sections
+
+        first_section = sections[0]
     except Section.DoesNotExist:
         raise Http404("Question does not exist")
 
-    # sction_idがページ番号にすり替わっている。
-    page_obj = paginate_query(request, sections, page_number, 1)
-    section_id = 0
-    for page in page_obj:
-        page.access_count += 1
-        section_id = page.id
-        page.save()
+    # 現在表示するチャプターを検索する
+    prev_chapter = None
+    next_chapter = None
+    for i, chapter in enumerate(chapters):
+        if chapter_id == chapter.id:
+            now_section = chapter
+            page = i
+            if i > 0:
+                prev_chapter = chapters[i-1]
+            if i+1 < len(chapters):
+                next_chapter = chapters[i+1]
+            break
 
-    next_chapter_id = 0
-    next_chapters = Chapter.objects.filter(book=book).order_by('order')
-    for i, next_chapter in enumerate(next_chapters):
-        print(chapter_id)
-        if next_chapter.id == chapter_id:
-            print("見つけた")
-            if i < len(next_chapters) - 1:
-                next_chapter_id = next_chapters[i + 1].id
-                break
 
-    data = {'book': book, 'chapters': chapters, 'chapter': chapter,
-            'page_obj': page_obj, 'next_chapter_id': next_chapter_id}
+    # 現在表示するセクションを検索する
+    prev_section = None
+    next_section = None
+    now_page = 1
+    for i, section in enumerate(sections):
+        if section_id == section.id:
+            if i > 0:
+                prev_section = sections[i-1]
+            if i+1 < len(sections):
+                next_section = sections[i+1]
+            now_page = i + 1
+            break
 
-    request.session['book_id'] = book.id
-    request.session['chapter_id'] = chapter.id
-    request.session['section_id'] = section_id
-    request.session['page_number'] = page_number
+    total_page = len(sections)
+    data = {'book': book, 'chapters': chapters, 'chapter': chapter, 'first_section': first_section,
+            'prev_section': prev_section,  'section': section, 'next_section': next_section,
+            'total_page': total_page, 'now_page': now_page}
+
     return custom_render(request, 'pyarticle/book.html', data)
 

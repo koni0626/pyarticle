@@ -21,14 +21,14 @@
   </div>
 </div>
 
-  {% for category, books in book_records.items %}
+  {% for category, books_record in book_records.items %}
   <div class="row">
     <div class="col-md-12">
     <h3 class="pb-3 mb-4 font-italic bg-secondary text-white">{{ category }}</h3>
     </div>
   </div>
     <div class="row">
-      {% for book in books %}
+      {% for book, chapter, section in books_record %}
 
       <div class="col-md-3 d-flex">
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
@@ -50,13 +50,13 @@
             <img class="card-img-top" src="{{book.image.url}}" alt="Card image cap">
           {% endif %}
             <h4 class="card-title">
-              <a class="text-dark" href="{% url 'disp_book' book.id 0 1 %}">{{book.title}}</a>
+              <a class="text-dark" href="{% url 'disp_book' book.id chapter.id section.id %}">{{book.title}}</a>
             </h4>
 
 
             <div class="mb-1 text-muted">{{book.create_date}}</div>
             <p class="card-text mb-auto">{{book.description | linebreaksbr}}</p>
-            <a href="{% url 'disp_book' book.id 0 1 %}">続きを読む</a>
+            <a href="{% url 'disp_book' book.id chapter.id section.id %}">続きを読む</a>
 
           </div>
         </div>
