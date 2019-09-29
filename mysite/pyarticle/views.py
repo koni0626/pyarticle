@@ -69,6 +69,7 @@ def book(request, book_id, chapter_id, section_id):
     try:
         # セクションを検索する
         chapter_list = []
+       # first_sections = {}
         sections = None
         for chapter in chapters:
             #chapter_list.append(chapter.id) #本にあるチャプターすべてを取得
@@ -77,8 +78,8 @@ def book(request, book_id, chapter_id, section_id):
                 sections = chapter_sections
             else:
                 sections = sections | chapter_sections
+            chapter_list.append([chapter, chapter_sections[0]])
 
-        first_section = sections[0]
     except Section.DoesNotExist:
         raise Http404("Question does not exist")
 
@@ -110,7 +111,7 @@ def book(request, book_id, chapter_id, section_id):
             break
 
     total_page = len(sections)
-    data = {'book': book, 'chapters': chapters, 'chapter': chapter, 'first_section': first_section,
+    data = {'book': book, 'chapter': chapter, 'chapter_list': chapter_list,
             'prev_section': prev_section,  'section': section, 'next_section': next_section,
             'total_page': total_page, 'now_page': now_page}
 

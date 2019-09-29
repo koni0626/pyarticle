@@ -41,7 +41,7 @@ pre {
             </span>
         </p>
         {% endif %}
-        {% for chapter in chapters %}
+        {% for chapter, first_section in chapter_list %}
             <p>
                 <a href="{% url 'disp_book' book.id chapter.id first_section.id %}">{{chapter.chapter}}</a>
             </p>
