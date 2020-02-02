@@ -33,17 +33,22 @@ def index(request):
 
 def book(request, book_id, page):
 
-    bc = BookComponent(request, book_id)
-    total_page = bc.total_page
+    bc = BookComponent(book_id)
+    total_page = bc.get_page_count()
     chapter_list = bc.get_chapter_list()
-    chapter, section = bc.get_page(page)
-
-    _, prev_section = bc.get_page(page - 1)
-    _, next_section = bc.get_page(page + 1)
+    chapter, section = bc.get_chapter_and_section(page)
+    _, prev_section = bc.get_chapter_and_section(page - 1)
+    _, next_section = bc.get_chapter_and_section(page + 1)
 
     data = {'book': bc.book, 'chapter': chapter, 'chapter_list': chapter_list,
             'prev_page': page-1,  'section': section, 'next_page': page+1,
             'total_page': total_page, 'now_page': page}
-    print(data)
+
     return custom_render(request, 'pyarticle/book.html', data)
 
+
+def chapter(request, book_id, chapter_id):
+    bc = BookComponent(book_id)
+    page = bc.get_chapter_top_page(chapter_id)
+
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))

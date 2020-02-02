@@ -6,6 +6,7 @@ from .models import Section
 from .utils import custom_admin_render
 from . import forms
 from django.contrib.auth.decorators import login_required
+from pyarticle.component.book_component import BookComponent
 # Create your views here.
 
 
@@ -39,6 +40,7 @@ def edit_chapter(request, book_id, chapter_id):
 @login_required
 def save_chapter(request, book_id, chapter_id):
     if request.method == 'POST':
+        bc = BookComponent(book_id)
         form = forms.ChapterForm(request.POST)
         if form.is_valid():
             if chapter_id == 0:
@@ -50,13 +52,15 @@ def save_chapter(request, book_id, chapter_id):
                                   order=1,
                                   chapter=Chapter.objects.get(id=chapter.id))
                 section.save()
-                return HttpResponseRedirect(reverse('disp_book', args=[book_id, chapter.id, section.id]))
+                page = bc.get_page(section.id)
+                return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
             else:
                 chapter = Chapter.objects.get(id=chapter_id)
                 chapter.chapter = form.cleaned_data['chapter']
                 chapter.order = form.cleaned_data['order']
                 chapter.book = Book.objects.get(id=book_id)
                 chapter.save()
-                section_id = request.session['section_id']
-            return HttpResponseRedirect(reverse('disp_book', args=[book_id, chapter.id, section_id]))
+                #section_id = request.session['section_id']
+                page = bc.get_chapter_top_page(chapter_id)
+            return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 

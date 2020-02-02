@@ -8,6 +8,7 @@ from .utils import custom_admin_render
 from . import forms
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
+from pyarticle.component.book_component import BookComponent
 # Create your views here.
 
 
@@ -92,39 +93,33 @@ def save_section_image(request, book_id, chapter_id, section_id, image_id):
 @login_required
 def save_section(request, book_id, chapter_id, section_id):
     if request.method == 'POST':
+        bc = BookComponent(book_id)
         form = forms.SectionForm(request.POST)
         if form.is_valid():
             if section_id == 0:
-                section = Section(text=form.cleaned_data['text'],
-                                  order=form.cleaned_data['order'],
-                                  chapter=Chapter.objects.get(id=chapter_id))
-                section.save()
-                section_id = section.id
+                section_id = bc.create_section(chapter_id, form.cleaned_data['text'], form.cleaned_data['order'])
             else:
-                section = Section.objects.get(id=section_id)
-                section.text = form.cleaned_data['text']
-                section.order = form.cleaned_data['order']
-                section.chapter = Chapter.objects.get(id=chapter_id)
-                section.save()
+                bc.update_section(section_id, chapter_id, form.cleaned_data['text'], form.cleaned_data['order'])
 
-            return HttpResponseRedirect(reverse('disp_book', args=[book_id, chapter_id, section_id]))
+            page = bc.get_page(section_id)
+            return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
 @login_required
 def delete_section(request, book_id, chapter_id, section_id):
-    sections = Section.objects.filter(chapter_id=chapter_id)
-    page_number = 0
-    before_section_id = 0
+    bc = BookComponent(book_id)
+    # セクションを削除する
+    bc.delete_section(section_id)
 
-    for p, sec in enumerate(sections):
-        if sec.order == section_id:
-            page_number = p + 1
-            break
-        before_section_id = sec.id
+    if not bc.is_exists_chapter(chapter_id):
+        # チャプターのセクションがすべて削除されたときは空のセクションを自動的に作成する
+        new_section_id = bc.create_section(chapter_id, "記事を書きます", 1)
+        page = bc.get_page(new_section_id)
+    else:
+        page = bc.get_page(section_id)
+        page += 1
 
-    Section.objects.filter(id=section_id).delete()
-
-    return HttpResponseRedirect(reverse('disp_book', args=[book_id, chapter_id, before_section_id]))
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
 

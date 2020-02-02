@@ -5,10 +5,9 @@ from pyarticle.models import Section
 
 
 class BookComponent:
-    def __init__(self, request, book_id):
+    def __init__(self, book_id):
         self.book = Book.objects.get(id=book_id)
         # ページ数取得
-        self.total_page = self.__get_pages()
 
     """
     チャプターリストを取得する
@@ -17,20 +16,11 @@ class BookComponent:
         chapters = Chapter.objects.filter(book=self.book).order_by('order')
         return chapters
 
-    """
-    チャプターを取得する
-    """
-    def get_chapter(self, chapter_id):
-        return Chapter.objects.get(id=chapter_id)
-
-    def get_section(self, section_id):
-        return Section.objects.get(id=section_id)
-
 
     """
     本のページ数を取得する
     """
-    def __get_pages(self):
+    def get_page_count(self):
         page_num = 0
         chapters = self.get_chapter_list()
         if len(chapters) != 0:
@@ -42,7 +32,7 @@ class BookComponent:
     """
     ページ番号のセクションとチャプターを取得する
     """
-    def get_page(self, page):
+    def get_chapter_and_section(self, page):
         rtn_chapter = None
         rtn_section = None
         count = 1
@@ -63,8 +53,81 @@ class BookComponent:
 
         return rtn_chapter, rtn_section
 
+    """
+    セクションIDに該当するページ番号を返却する
+    """
+    def get_page(self, section_id):
+        page = 1
+        find = False
+        chapters = Chapter.objects.filter(book=self.book).order_by('order')
+        if len(chapters) != 0:
+            for chapter in chapters:
+                sections = Section.objects.filter(chapter=chapter).order_by('order')
+                for section in sections:
+                    if section_id == section.id:
+                        find = True
+                        break
+                    else:
+                        page += 1
 
+                if find == True:
+                    break
+        return page
 
+    """
+    チャプターのトップページとなるセクションを取得する
+    """
+    def get_chapter_top_page(self, chapter_id):
+        page = 1
+        find = False
+        chapters = Chapter.objects.filter(book=self.book).order_by('order')
+        if len(chapters) != 0:
+            for chapter in chapters:
+                if chapter_id == chapter.id:
+                    break
+                else:
+                    sections = Section.objects.filter(chapter=chapter).order_by('order')
+                    page += len(sections)
+        return page
 
+    """
+    セクションを削除する
+    """
+    def delete_section(self, section_id):
+        Section.objects.filter(id=section_id).delete()
 
+    """
+    チャプターが存在する場合True，存在しない場合Falseを返す
+    """
+    def is_exists_chapter(self, chapter_id):
+        ret = True
+        try:
+            # もし該当するチャプターのセクションが全部なくなっていたら、
+            # 一つだけ空のセクションを作成する
+            Section.objects.get(id=chapter_id)
+        except Section.DoesNotExist:
+            ret = False
+
+        return ret
+
+    """
+    セクションを作成し、作成したセクションIDを返す
+    """
+    def create_section(self, chapter_id, text, order):
+        section = Section(text=text,
+                          order=1,
+                          chapter=Chapter.objects.get(id=chapter_id))
+        section.save()
+
+        return section.id
+
+    """
+    セクションを更新する
+    """
+    def update_section(self, section_id, chapter_id, text, order):
+        section = Section.objects.get(id=section_id)
+        section.text = text
+        section.order = order
+        section.chapter = Chapter.objects.get(id=chapter_id)
+        section.save()
 
