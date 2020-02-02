@@ -41,9 +41,9 @@ pre {
             </span>
         </p>
         {% endif %}
-        {% for chapter, first_section in chapter_list %}
+        {% for chapter in chapter_list %}
             <p>
-                <a href="{% url 'disp_book' book.id chapter.id first_section.id %}">{{chapter.chapter}}</a>
+                <a href="{% url 'disp_book' book.id now_page %}">{{chapter.chapter}}</a>
             </p>
         {% endfor %}
     </div>
@@ -84,11 +84,12 @@ pre {
              Page {{ now_page }} of {{ total_page }}.
         </p>
         <p class="text-center">
-            {% if prev_section != None %}
-                 <a href="{% url 'disp_book' book.id prev_section.chapter_id prev_section.id %}">前のページ</a>
+
+            {% if prev_page > 0 %}
+                 <a href="{% url 'disp_book' book.id prev_page %}">前のページ</a>
             {% endif %}
-            {% if next_section != None %}
-                <a href="{% url 'disp_book' book.id next_section.chapter_id next_section.id %}">次のページ</a>
+            {% if next_page <= total_page %}
+                <a href="{% url 'disp_book' book.id next_page %}">次のページ</a>
             {% endif %}
         </p>
     </div>
