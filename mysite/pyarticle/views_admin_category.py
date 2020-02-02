@@ -48,6 +48,7 @@ def save_category(request, category_id):
                 print("bbb")
             else:
                 category = Category.objects.get(id=category_id)
+                category.category_name = form.cleaned_data['category']
 
             category.save()
         else:
