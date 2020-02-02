@@ -36,6 +36,17 @@ def edit_chapter(request, book_id, chapter_id):
     data = {'chapter_form': form, 'section_records': section_records, 'book_id': book_id, 'chapter_id': chapter_id}
     return custom_admin_render(request, 'pyarticle/admin/chapter/chapter.html', data)
 
+@login_required
+def delete_chapter(request, book_id, chapter_id):
+    bc = BookComponent(book_id)
+    bc.delete_chapter(chapter_id)
+    page = 1
+    if not bc.is_exists_chapter():
+        # チャプターをすべて削除すると、ページがなくなってしまうので
+        # 空のページを生成する
+        bc.create_empty_book()
+
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 @login_required
 def save_chapter(request, book_id, chapter_id):

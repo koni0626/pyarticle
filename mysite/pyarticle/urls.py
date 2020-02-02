@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/chapter/<int:book_id>', views_admin_chapter.index, name='chapter'),
     path('admin/chapter/add/<int:book_id>', views_admin_chapter.add_chapter, name='add_chapter'),
     path('admin/chapter/edit/<int:book_id>/<int:chapter_id>', views_admin_chapter.edit_chapter, name='edit_chapter'),
+    path('admin/chapter/delete/<int:book_id>/<int:chapter_id>', views_admin_chapter.delete_chapter, name='delete_chapter'),
     path('admin/chapter/save/<int:book_id>/<int:chapter_id>', views_admin_chapter.save_chapter, name='save_chapter'),
   #  path('section/<int:book_id>/<int:chapter_id>', views_section.index, name='section'),
     path('admin/section/add/<int:book_id>/<int:chapter_id>', views_admin_section.add_section, name='add_section'),

@@ -54,6 +54,35 @@ class BookComponent:
         return rtn_chapter, rtn_section
 
     """
+    チャプターとセクションの空を作成する
+    """
+    def create_empty_book(self):
+        # 空のチャプター生成
+        chapter = Chapter(order=1,
+                          book=Book.objects.get(id=self.book.id))
+        chapter.save()
+
+        # 空のセクション生成
+        section = Section(text="",
+                          order=1,
+                          chapter=Chapter.objects.get(id=chapter.id))
+        section.save()
+
+    """
+    本にチャプターがあるか
+    """
+    def is_exists_chapter(self):
+        ret = True
+        try:
+            # もし該当するチャプターのセクションが全部なくなっていたら、
+            # 一つだけ空のセクションを作成する
+            Chapter.objects.get(book_id=self.book.id)
+        except Section.DoesNotExist:
+            ret = False
+
+        return ret
+
+    """
     セクションIDに該当するページ番号を返却する
     """
     def get_page(self, section_id):
@@ -89,6 +118,12 @@ class BookComponent:
                     sections = Section.objects.filter(chapter=chapter).order_by('order')
                     page += len(sections)
         return page
+
+    """
+    チャプターを削除する
+    """
+    def delete_chapter(self, chapter_id):
+        Chapter.objects.filter(id=chapter_id).delete()
 
     """
     セクションを削除する

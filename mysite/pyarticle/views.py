@@ -9,7 +9,9 @@ from pyarticle.models import Section
 from pyarticle.utils import custom_render
 from pyarticle.component.book_component import BookComponent
 
-
+"""
+登録されている本一覧をカテゴリごとに表示する
+"""
 def index(request):
     categories = Category.objects.all().order_by('category_name')
 
@@ -30,9 +32,10 @@ def index(request):
 
     return custom_render(request, 'pyarticle/index.html', {'book_records': records})
 
-
+"""
+本を表示する
+"""
 def book(request, book_id, page):
-
     bc = BookComponent(book_id)
     total_page = bc.get_page_count()
     chapter_list = bc.get_chapter_list()

@@ -78,7 +78,6 @@
         </label>
 
         <div class="col-md-11" id="section_text">
-
             <p>{{section_form.text}}</p>
         </div>
     </div>
@@ -89,8 +88,18 @@
 </form>
 
 <script>
+    function myalert() {
+        alert("hello");
+    }
+
     var simplemde = new SimpleMDE({
-                element: document.getElementById("id_text")});
+                element: document.getElementById("id_text"),
+                autosave: {
+                    enabled: true,
+                    uniqueId: "pyarticleeditor{{book_id}}-{{chapter_id}}-{{section_id}}",
+                    delay: 1000,
+                }
+                });
 
     function insert_image(file_name)
     {
@@ -101,5 +110,6 @@
         var text = '<div align="center"><img src="' + file_name +'" class="img-fluid"></div>';
         simplemde.codemirror.replaceRange(text,{line:line,ch:ch},{line:line,ch:ch});
     }
+
 </script>
 {% endblock %}
