@@ -11,7 +11,7 @@
             </table>
         </div>
     </div>
-{{SITE_URL}}
+
 <form action="{% url 'save_section' book_id chapter_id section_id %}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
 
@@ -64,7 +64,7 @@
         //ここで画像をdjangoにPOSTする。
         //画像はチャプターとか分けなくてもよい気がする。
         $.ajax({
-            url: "{{SITE_URL}}"+"/admin/section/image",
+            url: "https://www.osumoi-stdio.com/pyarticle/admin/section/image",
             type: 'POST',
             dataType: 'json',
             data: {'image': dataUri},
