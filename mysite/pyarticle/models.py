@@ -196,21 +196,6 @@ class Section(models.Model):
         return self.text
 
 
-class SectionImage(models.Model):
-    image = models.ImageField(upload_to=get_section_image_path,
-                              null=True,
-                             verbose_name="ページの画像")
-
-    section = models.ForeignKey(Section,
-                                on_delete=models.CASCADE,
-                                null=True,
-                                verbose_name="セクション",
-                                help_text="セクション")
-
-    def delete(self, *args, **kwargs):
-        print("call delete")
-
-
 class Comment(models.Model):
     """
     コメント。本についてコメントが残せる。

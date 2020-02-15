@@ -5,66 +5,17 @@
 
 </script>
 
-
     <div class="form-group row">
         <div class="col-md-12" id="image_table">
             <table class="table table-hover border col-md-12">
-                <tr>
-                    <th>画像</th>
-                    <th>選択</th>
-                    <th>操作</th>
-                </tr>
-                {% for section_image_data in section_image_datas %}
-                <form action="{% url 'save_section_image' book_id chapter_id section_id section_image_data.image.id %}" method="post" enctype="multipart/form-data">
-                {%csrf_token%}
-                 <tr>
-                    <td>
-                        <img src="{{section_image_data.image.image.url}}" width="128"/>
-                    </td>
-                    <td>
-                        {{section_image_data.form.image}}
-                    </td>
-                    <td>
-                        <p class="text-center">
-                            <button type="submit" class="btn btn-primary">更新する</button>
-                            <button type="button" class="btn btn-info" onclick="insert_image('{{section_image_data.image.image.url}}')">挿入する</button>
-                            <button type="button" class="btn btn-danger">削除する</button>
-                        </p>
-                    </td>
-                </tr>
-                </form>
-                {% endfor %}
-                <form action="{% url 'save_section_image' book_id chapter_id section_id 0 %}" method="post" enctype="multipart/form-data">
-                <tr>
-                    <td>
-                        <img src="{% static 'noimage.jpg' %}" width="128"/>
-                    </td>
-                    <td>
-                        {%csrf_token%}
-                        <label for="section_new" class="col-md-12 col-form-label">
 
-                        </label>
-                        <div class="col-md-12" id="section_new">
-                             　 {% if section_image_form.image %}
-                                <img src="{{new_section_image_form.url}}" width="256"/>
-                                {% endif %}
-                                <p>{{new_section_image_form.image}}</p>
-                        </div>
-                    </td>
-                    <td>
-                        <button type="submit" class="btn btn-secondary">追加する</button>
-                    </td>
-                </tr>
-                </form>
             </table>
         </div>
     </div>
 
 <form action="{% url 'save_section' book_id chapter_id section_id %}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
-    <p class="text-right">
-        <button type="submit" class="btn btn-secondary">保存する</button>
-    </p>
+
 
     <div class="form-group row">
         <label for="order" class="col-md-1 col-form-label">
@@ -84,16 +35,12 @@
             <p>{{section_form.text}}</p>
         </div>
     </div>
-
     <p class="text-right">
         <button type="submit" class="btn btn-secondary">保存する</button>
     </p>
 </form>
 
 <script>
-    function myalert() {
-        alert("hello");
-    }
 
     var simplemde = new SimpleMDE({
                 element: document.getElementById("id_text"),
@@ -110,9 +57,45 @@
         var ch = simplemde.codemirror.getCursor().ch;
 
         //var text = "![]("+file_name +")";
-        var text = '<div align="center"><img src="' + file_name +'" class="img-fluid"></div>';
+        var text = '<div align="center"><img src="/' + file_name +'" class="img-fluid"></div>';
         simplemde.codemirror.replaceRange(text,{line:line,ch:ch},{line:line,ch:ch});
     }
+
+    function upload_img(dataUri) {
+        //ここで画像をdjangoにPOSTする。
+        //画像はチャプターとか分けなくてもよい気がする。
+        $.ajax({
+            url: "http://127.0.0.1:8000/admin/section/image",
+            type: 'POST',
+            dataType: 'json',
+            data: {'image': dataUri},
+            timeout:3000,
+            }).done(function(data) {
+                insert_image(data['filename']);
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                if(XMLHttpRequest.status == 400) {
+                    alert("画像サイズが大きすぎます");
+                } else {
+                    alert("エラーが起きました");
+                }
+
+            });
+    }
+
+    document.getElementsByClassName("CodeMirror-scroll")[0].addEventListener('drop', function(e) {
+        e.preventDefault();
+        file = e.dataTransfer.files[0];
+        file_reader = new FileReader();
+       file_reader.onload = function(e) {
+            //base64のはず
+            var dataUri = this.result;
+            //これをPOSTして戻ってきたURLを表示できたらOK。
+            upload_img(dataUri);
+        }
+
+        //Base64で読む
+        file_reader.readAsDataURL(file);
+    });
 
 </script>
 {% endblock %}

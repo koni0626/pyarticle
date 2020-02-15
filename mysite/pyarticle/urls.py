@@ -15,6 +15,8 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name="pyarticle/account/login.html"), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
+    path('test/', views.test, name='test'),
+
     path('book/<int:book_id>/<int:page>', views.book, name='disp_book'),
     path('chapter/<int:book_id>/<int:chapter_id>', views.chapter, name='disp_chapter'),
     path('admin/', views_admin.index, name='admin'),
@@ -33,7 +35,7 @@ urlpatterns = [
     path('admin/section/edit/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.edit_section, name='edit_section'),
     path('admin/section/save/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.save_section, name='save_section'),
     path('admin/section/delete/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.delete_section, name='delete_section'),
-    path('admin/section_image/save/<int:book_id>/<int:chapter_id>/<int:section_id>/<int:image_id>', views_admin_section.save_section_image, name='save_section_image'),
+ #   path('admin/section_image/save/<int:book_id>/<int:chapter_id>/<int:section_id>/<int:image_id>', views_admin_section.save_section_image, name='save_section_image'),
     path('admin/category/', views_admin_category.index, name='category'),
     path('admin/category/add/', views_admin_category.add_category, name='add_category'),
     path('admin/category/edit/<int:category_id>', views_admin_category.edit_category, name='edit_category'),
@@ -42,5 +44,7 @@ urlpatterns = [
 
     path('admin/title/edit', views_admin_title.edit_title, name='edit_title'),
     path('admin/title/save', views_admin_title.save_title, name='save_title'),
+
+    path('admin/section/image', views_admin_section.upload_image, name='upload_image'),
 
 ]

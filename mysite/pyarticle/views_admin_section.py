@@ -3,12 +3,15 @@ from django.urls import reverse
 from .models import Chapter
 from .models import Book
 from .models import Section
-from .models import SectionImage
 from .utils import custom_admin_render
 from . import forms
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
 from pyarticle.component.book_component import BookComponent
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import uuid
+import base64
 # Create your views here.
 
 
@@ -40,54 +43,11 @@ def edit_section(request, book_id, chapter_id, section_id):
         record.text = "ここに記事を書きます"
     section_form = forms.SectionForm(initial={'text': record.text,
                                               'order': record.order})
-    new_section_image_form = forms.SectionImageForm()
-    section_image_datas = []
-    try:
-        section_images = SectionImage.objects.filter(section_id=section_id)
 
-        for section_image in section_images:
-            print(section_image.image.url)
-            print(section_image.id)
-            form = forms.SectionImageForm(initial={'image': section_image.image})
-            section_image_datas.append({"form": form, "image": section_image})
-    except SectionImage.DoesNotExist:
-        print("レコードない")
-
-    data = {'section_form': section_form, 'section_image_datas': section_image_datas,
-            'new_section_image_form': new_section_image_form,
+    data = {'section_form': section_form,
             'book_id': book_id, 'chapter_id': chapter_id, 'section_id': section_id}
 
     return custom_admin_render(request, 'pyarticle/admin/section/section.html', data)
-
-
-@login_required
-def save_section_image(request, book_id, chapter_id, section_id, image_id):
-    if request.method == 'POST':
-        # 画像を保存
-        form = forms.SectionImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            if form.cleaned_data['image']:
-                try:
-                    section = Section.objects.get(id=section_id)
-                except Section.DoesNotExist:
-                    items = Section.objects.filter(chapter_id=chapter_id).aggregate(order_max=Max('order'))
-                    order_max = items['order_max'] + 1
-                    section = Section(text="記事を書きます",
-                                      order=order_max,
-                                      chapter=Chapter.objects.get(id=chapter_id))
-                    section.save()
-                    section_id = section.id
-
-                if image_id == 0:
-                    section_image = SectionImage(image=form.cleaned_data['image'],
-                                                 section=section)
-                else:
-                    section_image = SectionImage(id=image_id,
-                                                 image=form.cleaned_data['image'],
-                                                 section=section)
-                section_image.save()
-
-        return HttpResponseRedirect(reverse('edit_section', args=[book_id, chapter_id, section_id]))
 
 
 @login_required
@@ -122,4 +82,24 @@ def delete_section(request, book_id, chapter_id, section_id):
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
+@csrf_exempt
+def upload_image(request):
+    """
+    この関数はセクションにあるべきではない
+    """
+    if request.method == 'POST':
+        b = request.POST['image']
+        tokens = b.split(",")
+        header = tokens[0]
+        ext = header.split(";")[0].split("/")[-1]
+        print(ext)
+        img_data = base64.b64decode(tokens[1])
+        # 画像ファイルに変換する
+        prefix = 'media/section/'
+        name = str(uuid.uuid4()).replace('-', '')
+        filename = prefix + name + "." + ext
 
+        with open(filename, "wb") as f:
+            f.write(img_data)
+
+    return JsonResponse({"filename": filename})

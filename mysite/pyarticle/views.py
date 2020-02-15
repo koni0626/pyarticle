@@ -55,3 +55,6 @@ def chapter(request, book_id, chapter_id):
     page = bc.get_chapter_top_page(chapter_id)
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+
+def test(request):
+    return custom_render(request, 'pyarticle/test.html',{"data":"だだだ"})
