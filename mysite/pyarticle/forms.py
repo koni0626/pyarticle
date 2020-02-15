@@ -52,3 +52,6 @@ class SiteTitleForm(forms.Form):
 
     site_description = forms.CharField(label='説明',
                                        widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))
+
+   # upload_url = forms.CharField(label='アップロードパス',
+   #                            widget=forms.TextInput(attrs={'size': '255'}))

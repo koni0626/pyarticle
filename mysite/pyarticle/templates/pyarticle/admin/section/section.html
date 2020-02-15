@@ -64,7 +64,7 @@
         //ここで画像をdjangoにPOSTする。
         //画像はチャプターとか分けなくてもよい気がする。
         $.ajax({
-            url: "https://www.osumoi-stdio.com/pyarticle/admin/section/image",
+            url: "{{upload_url}}",
             type: 'POST',
             dataType: 'json',
             data: {'image': dataUri},
@@ -75,7 +75,7 @@
                 if(XMLHttpRequest.status == 400) {
                     alert("画像サイズが大きすぎます");
                 } else {
-                    alert("エラーが起きました");
+                    alert(XMLHttpRequest.status);
                 }
 
             });

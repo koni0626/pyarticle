@@ -3,7 +3,7 @@ from django.urls import reverse
 from .models import Book
 from .models import Chapter
 from .models import Section
-from .utils import custom_admin_render
+from .utils import custom_render
 from . import forms
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -15,13 +15,13 @@ def index(request):
     data = {
             'description': '書籍一覧',
             'book_records': records}
-    return custom_admin_render(request, 'pyarticle/admin/book/index.html', data)
+    return custom_render(request, 'pyarticle/admin/book/index.html', data)
 
 
 @login_required
 def add_book(request):
     form = forms.BookForm(request.POST)
-    return custom_admin_render(request, 'pyarticle/admin/book/book.html', {'book_form': form, 'book_id': 0})
+    return custom_render(request, 'pyarticle/admin/book/book.html', {'book_form': form, 'book_id': 0})
 
 
 @login_required
@@ -41,7 +41,7 @@ def edit_book(request, book_id):
             'chapter_records': records,
             'book_id': book_id}
 
-    return custom_admin_render(request, 'pyarticle/admin/book/book.html', data)
+    return custom_render(request, 'pyarticle/admin/book/book.html', data)
 
 
 @login_required

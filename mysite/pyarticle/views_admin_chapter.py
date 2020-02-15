@@ -3,7 +3,7 @@ from django.urls import reverse
 from .models import Chapter
 from .models import Book
 from .models import Section
-from .utils import custom_admin_render
+from .utils import custom_render
 from . import forms
 from django.contrib.auth.decorators import login_required
 from pyarticle.component.book_component import BookComponent
@@ -17,14 +17,14 @@ def index(request, book_id):
     print(book)
     chapter_records = Chapter.objects.filter(book=book)
     data = {'chapter_records': chapter_records, 'book_id': book_id}
-    return custom_admin_render(request, 'pyarticle/admin/chapter/index.html', data)
+    return custom_render(request, 'pyarticle/admin/chapter/index.html', data)
 
 
 @login_required
 def add_chapter(request, book_id):
     form = forms.ChapterForm()
     data = {'chapter_form': form, 'book_id': book_id, 'chapter_id': 0}
-    return custom_admin_render(request, 'pyarticle/admin/chapter/chapter.html', data)
+    return custom_render(request, 'pyarticle/admin/chapter/chapter.html', data)
 
 
 @login_required
@@ -34,7 +34,7 @@ def edit_chapter(request, book_id, chapter_id):
                                       'order': record.order})
     section_records = Section.objects.filter(chapter=Chapter.objects.get(id=chapter_id))
     data = {'chapter_form': form, 'section_records': section_records, 'book_id': book_id, 'chapter_id': chapter_id}
-    return custom_admin_render(request, 'pyarticle/admin/chapter/chapter.html', data)
+    return custom_render(request, 'pyarticle/admin/chapter/chapter.html', data)
 
 @login_required
 def delete_chapter(request, book_id, chapter_id):

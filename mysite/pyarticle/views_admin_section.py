@@ -3,7 +3,7 @@ from django.urls import reverse
 from .models import Chapter
 from .models import Book
 from .models import Section
-from .utils import custom_admin_render
+from .utils import custom_render
 from . import forms
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
@@ -33,7 +33,7 @@ def add_section(request, book_id, chapter_id):
             'new_section_image_form': new_section_image_form,
             'book_id': book_id, 'chapter_id': chapter_id, 'section_id': 0}
 
-    return custom_admin_render(request, 'pyarticle/admin/section/section.html', data)
+    return custom_render(request, 'pyarticle/admin/section/section.html', data)
 
 
 @login_required
@@ -47,7 +47,7 @@ def edit_section(request, book_id, chapter_id, section_id):
     data = {'section_form': section_form,
             'book_id': book_id, 'chapter_id': chapter_id, 'section_id': section_id}
 
-    return custom_admin_render(request, 'pyarticle/admin/section/section.html', data)
+    return custom_render(request, 'pyarticle/admin/section/section.html', data)
 
 
 @login_required
@@ -93,6 +93,7 @@ def upload_image(request):
         header = tokens[0]
         ext = header.split(";")[0].split("/")[-1]
         print(ext)
+
         img_data = base64.b64decode(tokens[1])
         # 画像ファイルに変換する
         prefix = 'media/section/'

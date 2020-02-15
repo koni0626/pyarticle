@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Category
 from .models import Chapter
-from .utils import custom_admin_render
+from .utils import custom_render
 from . import forms
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -14,13 +14,13 @@ def index(request):
     data = {
             'description': 'カテゴリー一覧',
             'category_records': records}
-    return custom_admin_render(request, 'pyarticle/admin/category/index.html', data)
+    return custom_render(request, 'pyarticle/admin/category/index.html', data)
 
 
 @login_required
 def add_category(request):
     form = forms.CategoryForm(request.POST)
-    return custom_admin_render(request, 'pyarticle/admin/category/category.html', {'category_form': form, 'category_id': 0})
+    return custom_render(request, 'pyarticle/admin/category/category.html', {'category_form': form, 'category_id': 0})
 
 
 @login_required
@@ -32,7 +32,7 @@ def edit_category(request, category_id):
     data = {'category_form': form,
             'category_id': category_id}
 
-    return custom_admin_render(request, 'pyarticle/admin/category/category.html', data)
+    return custom_render(request, 'pyarticle/admin/category/category.html', data)
 
 
 @login_required
