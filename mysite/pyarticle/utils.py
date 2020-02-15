@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.conf import settings
 from .models import SiteParams
 # Create your views here.
 
@@ -15,7 +15,8 @@ def custom_render(request, template, data):
     except:
         url = ""
 
-    record = {'site_name': site_name, 'description': description, 'site_image': url}
+    SITE_URL = "{0}://{1}".format(request.scheme, request.get_host())
+    record = {'site_name': site_name, 'description': description, 'site_image': url, 'SITE_URL': SITE_URL}
     record.update(data)
     return render(request, template, record)
 
@@ -25,9 +26,9 @@ def custom_admin_render(request, template, data):
     try:
         site_name = SiteParams.objects.get(param='admin_site_name').value
         description = SiteParams.objects.get(param='admin_site_description').value
-
-        record = {'site_name': site_name, 'description': description}
+        SITE_URL = "{0}://{1}".format(request.scheme, request.get_host())
+        record = {'site_name': site_name, 'description': description, 'SITE_URL': SITE_URL}
         record.update(data)
     except:
-        record = {'site_name': "", 'description': ""}
+        record = {'site_name': "", 'description': "", 'SITE_URL': ""}
     return render(request, template, record)

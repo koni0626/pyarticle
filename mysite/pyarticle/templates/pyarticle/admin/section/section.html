@@ -4,7 +4,6 @@
 <script>
 
 </script>
-
     <div class="form-group row">
         <div class="col-md-12" id="image_table">
             <table class="table table-hover border col-md-12">
@@ -65,7 +64,7 @@
         //ここで画像をdjangoにPOSTする。
         //画像はチャプターとか分けなくてもよい気がする。
         $.ajax({
-            url: "http://127.0.0.1:8000/admin/section/image",
+            url: "{{SITE_URL}}"+"/admin/section/image",
             type: 'POST',
             dataType: 'json',
             data: {'image': dataUri},
