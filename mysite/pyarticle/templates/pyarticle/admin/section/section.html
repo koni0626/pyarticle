@@ -11,7 +11,7 @@
             </table>
         </div>
     </div>
-
+{{SITE_URL}}
 <form action="{% url 'save_section' book_id chapter_id section_id %}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
 
