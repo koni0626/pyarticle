@@ -1,14 +1,12 @@
 # coding:UTF-8
 from django import forms
 from . import models
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 
 class BookForm(forms.Form):
     title = forms.CharField(label='タイトル',
                             widget=forms.TextInput(attrs={'size': '100'}))
-
-    author = forms.CharField(label='著者',
-                             widget=forms.TextInput(attrs={'size': '100'}))
 
     description = forms.CharField(label='本の説明',
                                   widget=forms.Textarea(attrs={'cols': 100, 'rows': 10}))
@@ -55,3 +53,10 @@ class SiteTitleForm(forms.Form):
 
    # upload_url = forms.CharField(label='アップロードパス',
    #                            widget=forms.TextInput(attrs={'size': '255'}))
+
+
+
+class SignUpForm(UserCreationForm):
+    class Meta:
+        model = get_user_model()
+        fields = ('username',)

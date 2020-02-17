@@ -52,7 +52,7 @@
               <a class="text-dark" href="{% url 'disp_book' book.id 1 %}">{{book.title}}</a>
             </h4>
 
-
+            <div class="mb-1 text-muted">{{book.user}}</div>
             <div class="mb-1 text-muted">{{book.create_date}}</div>
             <p class="card-text mb-auto">{{book.description | linebreaksbr}}</p>
             <a href="{% url 'disp_book' book.id 1 %}">続きを読む</a>

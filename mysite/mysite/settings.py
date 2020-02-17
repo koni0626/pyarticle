@@ -124,3 +124,5 @@ MEDIA_URL = '/media/'
 
 LOGOUT_REDIRECT_URL="index"
 LOGIN_REDIRECT_URL="index"
+
+AUTH_USER_MODEL = 'pyarticle.User'

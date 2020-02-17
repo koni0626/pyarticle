@@ -1,9 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
 from .models import Book
-from .models import Chapter
 from .utils import custom_render
-from . import forms
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 

@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser, User
-from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 import uuid
 import os
 # Create your models here.
@@ -43,6 +43,10 @@ def get_header_image_path(self, filename):
     name = str(uuid.uuid4()).replace('-', '')
     extension = os.path.splitext(filename)[-1]
     return prefix + name + extension
+
+
+class User(AbstractUser):
+    pass
 
 
 class SiteParams(models.Model):
@@ -91,13 +95,18 @@ class Book(models.Model):
     """
     本の情報
     """
+    user = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+    )
+
     title = models.CharField(max_length=256,
                              null=False,
                              unique=True,
                              verbose_name="タイトル")
 
-    author = models.CharField(max_length=256,
-                              verbose_name="作者名")
+  #  author = models.CharField(max_length=256,
+   #                           verbose_name="作者名")
 
     description = models.CharField(max_length=512,
                                    verbose_name="説明")

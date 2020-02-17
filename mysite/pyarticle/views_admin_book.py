@@ -6,6 +6,7 @@ from .models import Section
 from .utils import custom_render
 from . import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 # Create your views here.
 
 
@@ -28,7 +29,6 @@ def add_book(request):
 def edit_book(request, book_id):
     book_record = Book.objects.get(id=book_id)
     form = forms.BookForm(initial={'title': book_record.title,
-                                   'author': book_record.author,
                                    'description': book_record.description,
                                    'category': book_record.category,
                                    'image': book_record.image})
@@ -52,7 +52,7 @@ def save_book(request, book_id):
             if book_id == 0:
                 # 新規投稿
                 book = Book(title=form.cleaned_data['title'],
-                            author=form.cleaned_data['author'],
+                            user=request.user,
                             description=form.cleaned_data['description'],
                             category=form.cleaned_data['category'])
                 if form.cleaned_data['image']:
@@ -72,7 +72,6 @@ def save_book(request, book_id):
             else:
                 book = Book.objects.get(id=book_id)
                 book.title = form.cleaned_data['title']
-                book.author = form.cleaned_data['author']
                 book.description = form.cleaned_data['description']
                 book.category = form.cleaned_data['category']
                 #book.image = form.cleaned_data['image']

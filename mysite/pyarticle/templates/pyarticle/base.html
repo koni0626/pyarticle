@@ -37,17 +37,6 @@
         </script>
     <div class="container">
 
-      <!--
-      <div class="nav-scroller py-1 mb-2">
-        <nav class="nav d-flex justify-content-between">
-          <a class="p-2 text-muted" href="{% url 'index'%}">本一覧</a>
-          <a class="p-2 text-muted" href="{% url 'signup'%}">サインアップ{{ user.username }}</a>
-          <a class="p-2 text-muted" href="{% url 'login'%}">ログイン</a>
-          <a class="p-2 text-muted" href="{% url 'logout'%}">ログアウト{{ user.username }}</a>
-          <a class="p-2 text-muted" href="{% url 'admin'%}">管理画面</a>
-        </nav>
-      </div>
-      -->
 
         <ul class="nav justify-content-end">
           <li class="nav-item">
@@ -63,6 +52,7 @@
                 <a class="dropdown-item" href="#">Change password</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'logout'%}">Log out</a>
+                <a class="dropdown-item" href="{% url 'signup'%}">ユーザ登録</a>
               </div>
             </li>
           {% else %}
@@ -94,6 +84,7 @@
 
     <div class="container">
       <footer class="blog-footer">
+        <p></p>
         <p class="text-right">Copyright 2019 konishi All Rights Reserved.</p>
       </footer>
     </div>

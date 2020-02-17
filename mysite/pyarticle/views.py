@@ -1,6 +1,4 @@
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import Http404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from pyarticle.models import Book
 from pyarticle.models import Category
@@ -13,6 +11,7 @@ from pyarticle.component.book_component import BookComponent
 登録されている本一覧をカテゴリごとに表示する
 """
 def index(request):
+    print("indexは呼ばれている")
     categories = Category.objects.all().order_by('category_name')
 
     records = {}
