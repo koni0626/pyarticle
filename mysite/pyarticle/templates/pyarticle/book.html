@@ -81,7 +81,7 @@ div#mde pre {
         {% if user.is_authenticated %}
         <p class="text-right">
             <span class="badge badge-info">
-                <a class="p-2 text-white" href="{% url 'edit_chapter' book.id chapter.id %}">タイトル編集</a>
+                <a class="p-2 text-white" href="{% url 'edit_chapter' book.id chapter.id %}">章編集</a>
             </span>
         </p>
         {% endif %}
@@ -94,17 +94,17 @@ div#mde pre {
             {% if user.is_authenticated %}
                 <p class="text-right">
                     <span class="badge badge-info">
-                        <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">記事追加</a>
+                        <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">ページの追加</a>
                     </span>
             {%endif %}
 
             {% if user.is_authenticated %}
                 {% if section %}
-                    <span class="badge badge-info">
-                        <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">記事編集</a>
+                    <span class="badge badge-success">
+                        <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">ページ編集</a>
                     </span>
                     <span class="badge badge-danger">
-                        <a class="p-2 text-white" href="{% url 'delete_section' book.id chapter.id section.id%}">記事削除</a>
+                        <a class="p-2 text-white" href="{% url 'delete_section' book.id chapter.id section.id%}">ページ削除</a>
                     </span>
                 {% endif %}
             </p>

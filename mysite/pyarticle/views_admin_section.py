@@ -61,8 +61,8 @@ def save_section(request, book_id, chapter_id, section_id):
             else:
                 bc.update_section(section_id, chapter_id, form.cleaned_data['text'], form.cleaned_data['order'])
 
-            page = bc.get_page(section_id)
-            return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+        page = bc.get_page(section_id)
+        return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
 @login_required

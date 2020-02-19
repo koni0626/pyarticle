@@ -6,10 +6,13 @@ from pyarticle.models import Chapter
 from pyarticle.models import Section
 from pyarticle.utils import custom_render
 from pyarticle.component.book_component import BookComponent
+from django.contrib.auth.decorators import login_required
+
 
 """
 登録されている本一覧をカテゴリごとに表示する
 """
+@login_required(login_url='login/')
 def index(request):
     print("indexは呼ばれている")
     categories = Category.objects.all().order_by('category_name')
@@ -34,9 +37,14 @@ def index(request):
 """
 本を表示する
 """
+@login_required(login_url='login/')
 def book(request, book_id, page):
     bc = BookComponent(book_id)
     total_page = bc.get_page_count()
+    if total_page == 0:
+        # ページが一個もなかったら空のページを作成する
+        bc.create_empty_book()
+
     chapter_list = bc.get_chapter_list()
     chapter, section = bc.get_chapter_and_section(page)
     _, prev_section = bc.get_chapter_and_section(page - 1)
@@ -48,7 +56,7 @@ def book(request, book_id, page):
 
     return custom_render(request, 'pyarticle/book.html', data)
 
-
+@login_required(login_url='login/')
 def chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
     page = bc.get_chapter_top_page(chapter_id)

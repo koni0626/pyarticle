@@ -25,7 +25,7 @@ class ChapterForm(forms.Form):
 
 
 class SectionForm(forms.Form):
-    text = forms.CharField(label='本文',
+    text = forms.CharField(label='本文', required=False,
                            widget=forms.Textarea(attrs={'cols': 100, 'rows': 50, "contenteditable":"true"}))
 
     order = forms.IntegerField(label="順番")

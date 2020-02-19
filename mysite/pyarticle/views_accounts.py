@@ -4,7 +4,10 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from pyarticle.utils import custom_render
 from django.contrib.auth import get_user_model
 from .forms import SignUpForm
+from django.contrib.auth.decorators import login_required
 
+
+@login_required(login_url='login/')
 def signup(request):
     """
     サインアップでユーザ新規追加という意味らしい
@@ -37,7 +40,7 @@ def login(request):
 
     return custom_render(request, 'pyarticle/account/login.html', {'form': form})
 
-
+@login_required(login_url='login/')
 def logout(request):
     auth.logout(request)
     return redirect('index')
