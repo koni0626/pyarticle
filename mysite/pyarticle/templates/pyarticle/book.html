@@ -20,8 +20,27 @@ div#header h1:after {
 }
 
 
+div#mde table, th, td {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  line-height: 1.5;
+}
 
-div#mde h1 {
+div#mde th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  background: #3f3f3f;
+  color: #ffffff;
+}
+div#mde td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+}
+
+ h1 {
   font-size:30px;
   padding: .5em .75em;
   background-color: #f6f6f6;
@@ -110,7 +129,7 @@ div#mde pre {
             </p>
             {% endif %}
             <div id="mde">
-            {{section.text  | markdown2html | safe|linebreaksbr }}
+            {{section.text  | markdown2html | safe }}
             </div>
 
         </p>
