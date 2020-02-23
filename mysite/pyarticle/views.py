@@ -13,7 +13,7 @@ from django.db.models import Q
 """
 登録されている本一覧をカテゴリごとに表示する
 """
-@login_required(login_url='login/')
+#@login_required(login_url='login/')
 def index(request):
     search_form = SearchForm()
 
@@ -70,7 +70,7 @@ def search_books(key_word):
     return results
 
 
-@login_required(login_url='login/')
+#@login_required(login_url='login/')
 def search(request):
     '''
     検索機能
@@ -96,7 +96,7 @@ def search(request):
 """
 本を表示する
 """
-@login_required(login_url='login/')
+#@login_required(login_url='login/')
 def book(request, book_id, page):
     bc = BookComponent(book_id)
     total_page = bc.get_page_count()
