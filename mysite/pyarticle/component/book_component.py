@@ -6,8 +6,9 @@ from pyarticle.models import Section
 
 class BookComponent:
     def __init__(self, book_id):
+        self.book_id = book_id
         self.book = Book.objects.get(id=book_id)
-        # ページ数取得
+        self.title = self.book.title
 
     """
     チャプターリストを取得する
@@ -166,3 +167,63 @@ class BookComponent:
         section.chapter = Chapter.objects.get(id=chapter_id)
         section.save()
 
+
+    def search(self, key_word):
+        results = []
+        book_id = self.book.id
+        title = self.book.title
+        page = 1
+        description = self.book.description
+        title_records = self.title_search(key_word)
+
+        if len(title_records) > 0:
+            results.append([title, description, book_id, page])
+
+        description_records = self.description_search(key_word)
+        if len(description_records) > 0:
+            results.append([title, description, book_id, page])
+
+        chapter_records = self.chapter_search(key_word)
+        if len(chapter_records) > 0:
+            for chapter_record in chapter_records:
+                chapter = chapter_record.chapter
+                page = self.get_chapter_top_page(chapter_record.id)
+                results.append([chapter, chapter, book_id, page])
+
+        section_records = self.section_search(key_word)
+        if len(section_records) > 0:
+            for section_record in section_records:
+                text = section_record.text
+                page = self.get_page(section_record.id)
+                results.append([text, text, book_id, page])
+
+        return results
+
+
+    """
+    titleを検索する
+    """
+    def title_search(self, key_words):
+        return Book.objects.filter(title__contains=key_words)
+
+    """
+    説明を検索する
+    """
+
+    def description_search(self, key_words):
+        return Book.objects.filter(description__icontains=key_words)
+
+
+    """
+    チャプターを検索する
+    """
+    def chapter_search(self, key_words):
+        # チャプターにキーワードが含まれているものを探す
+        return Chapter.objects.filter(chapter__icontains=key_words)
+
+    """
+    セクションを検索する
+    """
+    def section_search(self, key_words):
+        # セクションにキーワードが含まれているものを探す
+        return Section.objects.filter(text__icontains=key_words)

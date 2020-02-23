@@ -51,12 +51,13 @@ class SiteTitleForm(forms.Form):
     site_description = forms.CharField(label='説明',
                                        widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))
 
-   # upload_url = forms.CharField(label='アップロードパス',
-   #                            widget=forms.TextInput(attrs={'size': '255'}))
-
-
 
 class SignUpForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('username',)
+
+
+class SearchForm(forms.Form):
+    key_word = forms.CharField(label='検索', required=False,
+                              widget=forms.TextInput(attrs={'size': '100'}))

@@ -16,7 +16,7 @@ urlpatterns = [
     #   path('login/', auth_views.LoginView.as_view(template_name="pyarticle/account/login.html"), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
-    path('test/', views.test, name='test'),
+    path('book_search/', views.search, name='book_search'),
 
     path('book/<int:book_id>/<int:page>', views.book, name='disp_book'),
     path('chapter/<int:book_id>/<int:chapter_id>', views.chapter, name='disp_chapter'),
