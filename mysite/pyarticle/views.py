@@ -6,6 +6,7 @@ from pyarticle.models import Chapter
 from pyarticle.models import Section
 from pyarticle.utils import custom_render
 from pyarticle.component.book_component import BookComponent
+from pyarticle.utils import search_books
 from django.contrib.auth.decorators import login_required
 from .forms import SearchForm
 from django.db.models import Q
@@ -35,40 +36,6 @@ def index(request):
             records[category.category_name].append([book, first_chapter, first_section])
 
     return custom_render(request, 'pyarticle/index.html', {'book_records': records, 'search_form':search_form})
-
-
-def search_books(key_word):
-    results = [] # score, 見つかった文字列, 本のID, ページ番号
-
-    book_records = Book.objects.filter(title__contains=key_word)
-    if len(book_records) > 0:
-        for record in book_records:
-            results.append({'score': 10, 'title': record.title, 'text': record.description, 'book_id': record.id, 'page':1})
-
-    book_records = Book.objects.filter(description__contains=key_word)
-    if len(book_records) > 0:
-        for record in book_records:
-            results.append({'score': 8, 'title': record.title, 'text': record.description, 'book_id': record.id, 'page': 1})
-
-
-    chapter_records = Chapter.objects.filter(chapter__contains=key_word)
-    if len(chapter_records) > 0:
-        for record in chapter_records:
-            book_id = record.book.id
-            bc = BookComponent(book_id)
-            page = bc.get_chapter_top_page(record.id)
-            results.append({'score': 5, 'title': bc.title, 'text': record.chapter, 'book_id': book_id, 'page': page})
-
-    section_records = Section.objects.filter(text__contains=key_word)
-    if len(section_records) > 0:
-        for record in section_records:
-            book_id = record.chapter.book.id
-            bc = BookComponent(book_id)
-            page = bc.get_page(record.id)
-            results.append({'score': 3, 'title': bc.title, 'text': record.text, 'book_id': book_id, 'page': page})
-
-    return results
-
 
 #@login_required(login_url='login/')
 def search(request):
