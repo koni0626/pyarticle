@@ -82,7 +82,7 @@ def book(request, book_id, page):
 
     return custom_render(request, 'pyarticle/book.html', data)
 
-@login_required(login_url='login/')
+#@login_required(login_url='login/')
 def chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
     page = bc.get_chapter_top_page(chapter_id)
