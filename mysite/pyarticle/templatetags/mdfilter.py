@@ -8,6 +8,6 @@ register = template.Library()
 @register.filter
 @stringfilter
 def markdown2html(value):
-    md = markdown.Markdown(extensions=['tables', 'nl2br'])
+    md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code'])
     return md.convert(value)
   #  return  markdown.markdown(value, ['fenced_code'])

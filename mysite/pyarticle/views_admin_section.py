@@ -56,6 +56,7 @@ def save_section(request, book_id, chapter_id, section_id):
         bc = BookComponent(book_id)
         form = forms.SectionForm(request.POST)
         if form.is_valid():
+            print(form.cleaned_data['text'])
             if section_id == 0:
                 section_id = bc.create_section(chapter_id, form.cleaned_data['text'], form.cleaned_data['order'])
             else:

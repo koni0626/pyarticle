@@ -70,15 +70,14 @@ div#mde h4 {
   border: 1px solid #ccc;
 }
 
-div#mde pre {
-  background-color: #444444;
-  color: #ffffff;
-  padding: 10px
-}
+
 
 </style>
 
-
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <div class="row">
     <div class="col-md-3">
         {% if user.is_authenticated %}
