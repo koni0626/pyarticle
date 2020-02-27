@@ -74,6 +74,8 @@ div#mde h4 {
 
 </style>
 
+
+
 <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
@@ -147,7 +149,19 @@ div#mde h4 {
                 <a href="{% url 'disp_book' book.id next_page %}">次のページ</a>
             {% endif %}
         </p>
+
+        <hr>
+        [添付ファイル]
+        {% for attach_file in attach_file_list %}
+        <p><a href="{{attach_file.0}}">{{attach_file.1}}</a></p>
+        {% endfor %}
+        <form action="{% url 'save_attach_file' book.id now_page %}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{attach_file_form.attach_file}}
+            <button type="submit" class="btn btn-secondary">添付する</button>
+        </form>
     </div>
+
 </div>
 
 

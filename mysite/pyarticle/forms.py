@@ -4,6 +4,7 @@ from . import models
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 
+
 class BookForm(forms.Form):
     title = forms.CharField(label='タイトル',
                             widget=forms.TextInput(attrs={'size': '100'}))
@@ -31,6 +32,10 @@ class SectionForm(forms.Form):
     order = forms.IntegerField(label="順番")
 
     image = forms.ImageField(required=False)
+
+
+class AttachFileForm(forms.Form):
+    attach_file = forms.FileField(required=False)
 
 
 class SectionImageForm(forms.Form):

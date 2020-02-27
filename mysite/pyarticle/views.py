@@ -9,7 +9,9 @@ from pyarticle.component.book_component import BookComponent
 from pyarticle.utils import search_books
 from django.contrib.auth.decorators import login_required
 from .forms import SearchForm
-from django.db.models import Q
+from .forms import AttachFileForm
+import glob
+import os
 
 """
 登録されている本一覧をカテゴリごとに表示する
@@ -76,9 +78,19 @@ def book(request, book_id, page):
     _, prev_section = bc.get_chapter_and_section(page - 1)
     _, next_section = bc.get_chapter_and_section(page + 1)
 
+    # 添付ファイルのフォーム
+    attach_file_form = AttachFileForm()
+    path = 'media/attach/{}/*'.format(book_id)
+    attach_file_list = []
+    file_list = glob.glob(path)
+    for file in file_list:
+        filename = file.split(os.sep)[-1]
+        attach_file_list.append(['/media/attach/{}/{}'.format(book_id, filename), filename])
+
     data = {'book': bc.book, 'chapter': chapter, 'chapter_list': chapter_list,
+            'attach_file_form': attach_file_form,
             'prev_page': page-1,  'section': section, 'next_page': page+1,
-            'total_page': total_page, 'now_page': page}
+            'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list}
 
     return custom_render(request, 'pyarticle/book.html', data)
 

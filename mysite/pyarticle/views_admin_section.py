@@ -28,7 +28,6 @@ def add_section(request, book_id, chapter_id):
                                               'order': order_max})
     new_section_image_form = forms.SectionImageForm()
 
-   # data = {'section_form': form, 'book_id': book_id, 'chapter_id': chapter_id, 'section_id': 0}
     data = {'section_form': section_form, 'section_image_datas': [],
             'new_section_image_form': new_section_image_form,
             'book_id': book_id, 'chapter_id': chapter_id, 'section_id': 0}

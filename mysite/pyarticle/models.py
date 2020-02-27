@@ -140,7 +140,6 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-
 class Chapter(models.Model):
     """
     章の情報。見出し。

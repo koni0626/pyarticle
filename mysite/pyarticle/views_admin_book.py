@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Book
@@ -6,7 +7,12 @@ from .models import Section
 from .utils import custom_render
 from . import forms
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import FileSystemStorage
+import base64
+import uuid
+import os
+
 # Create your views here.
 
 
@@ -45,7 +51,7 @@ def edit_book(request, book_id):
 
 
 @login_required
-def save_book(request, book_id):
+def save_book(request, book_id, page):
     if request.method == 'POST':
         form = forms.BookForm(request.POST, request.FILES)
         if form.is_valid():
@@ -91,3 +97,24 @@ def save_book(request, book_id):
 def delete_book(request, book_id):
     record = Book.objects.filter(id=book_id).delete()
     return HttpResponseRedirect(reverse('index'))
+
+@login_required
+def upload_attach_file(request, book_id, page):
+    """
+    この関数はセクションにあるべきではない
+    """
+    save_path = 'attach/{}'.format(book_id)
+
+
+    if request.method == 'POST' and request.FILES['attach_file']:
+        attach_file = request.FILES['attach_file']
+        fileobject = FileSystemStorage()
+        file_path = os.path.join(save_path, attach_file.name)
+        file_data = fileobject.save(file_path, attach_file)
+        print("ファイルが添付されています")
+        upload_url = fileobject.url(file_data)
+        print(upload_url)
+    else:
+        print("添付エラー")
+
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))

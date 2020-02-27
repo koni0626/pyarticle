@@ -18,6 +18,8 @@ urlpatterns = [
 
     path('book_search/', views.search, name='book_search'),
 
+    path('save_attach_file/<int:book_id>/<int:page>', views_admin_book.upload_attach_file, name='save_attach_file'),
+
     path('book/<int:book_id>/<int:page>', views.book, name='disp_book'),
     path('chapter/<int:book_id>/<int:chapter_id>', views.chapter, name='disp_chapter'),
     path('admin/', views_admin.index, name='admin'),
