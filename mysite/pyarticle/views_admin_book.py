@@ -51,7 +51,7 @@ def edit_book(request, book_id):
 
 
 @login_required
-def save_book(request, book_id, page):
+def save_book(request, book_id):
     if request.method == 'POST':
         form = forms.BookForm(request.POST, request.FILES)
         if form.is_valid():
