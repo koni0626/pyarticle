@@ -30,12 +30,14 @@ def index(request):
         records[category.category_name] = []
 
         for book in books:
+            bc = BookComponent(book.id)
+            acc = bc.get_book_access_count()
             if len(book.description) > 10:
                 book.description = book.description[0:100]
 
             first_chapter = Chapter.objects.filter(book=book).order_by('order').first()
             first_section = Section.objects.filter(chapter=first_chapter).order_by('order').first()
-            records[category.category_name].append([book, first_chapter, first_section])
+            records[category.category_name].append([book, acc, first_chapter, first_section])
 
     return custom_render(request, 'pyarticle/index.html', {'book_records': records, 'search_form':search_form})
 
@@ -74,6 +76,11 @@ def book(request, book_id, page):
         bc.create_empty_book()
         total_page = bc.get_page_count()
 
+    # セクションのアクセス数をカウントする
+    bc.update_access_count(request, page)
+
+    acc = bc.get_book_access_count()
+
     chapter_list = bc.get_chapter_list()
     chapter, section = bc.get_chapter_and_section(page)
     _, prev_section = bc.get_chapter_and_section(page - 1)
@@ -89,7 +96,7 @@ def book(request, book_id, page):
         attach_file_list.append(['/media/attach/{}/{}'.format(book_id, filename), filename])
 
     data = {'book': bc.book, 'chapter': chapter, 'chapter_list': chapter_list,
-            'attach_file_form': attach_file_form,
+            'attach_file_form': attach_file_form, 'acc': acc,
             'prev_page': page-1,  'section': section, 'next_page': page+1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list}
 

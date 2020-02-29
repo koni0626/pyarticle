@@ -109,13 +109,16 @@ div#mde h4 {
         {% endfor %}
     </div>
     <div class="col-md-9">
-        {% if user.is_authenticated %}
         <p class="text-right">
-            <span class="badge badge-info">
-                <a class="p-2 text-white" href="{% url 'edit_chapter' book.id chapter.id %}">章編集</a>
-            </span>
+            {% if user.is_authenticated %}
+                <span class="badge badge-info">
+                    <a class="p-2 text-white" href="{% url 'edit_chapter' book.id chapter.id %}">章編集</a>
+                </span>
+            {% endif %}
+            <span class="text-muted">{{section.access_count}} views</span>
+
         </p>
-        {% endif %}
+
         <div id="header">
             <h1 class="pb-3 mb-4 font-italic">
                 {{section.chapter}}

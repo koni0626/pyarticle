@@ -2,7 +2,7 @@
 from pyarticle.models import Book
 from pyarticle.models import Chapter
 from pyarticle.models import Section
-
+from django.db.models import Sum
 
 class BookComponent:
     """
@@ -260,3 +260,24 @@ class BookComponent:
             prev_chapter.order = tmp_order
             Chapter.save(now_chapter)
             Chapter.save(prev_chapter)
+
+    def update_access_count(self, request, page):
+        session_name = "{}_{}_access".format(self.book_id, page)
+        if not request.session.get(session_name, False):
+            _, section = self.get_chapter_and_section(page)
+            section.access_count += 1
+            Section.save(section)
+            request.session[session_name] = True
+
+    def get_book_access_count(self):
+        chapter_list = self.get_chapter_list()
+        acc = 0
+        for chapter in chapter_list:
+            record = Section.objects.filter(chapter=chapter).aggregate(Sum('access_count'))
+            acc += record['access_count__sum']
+
+        return acc
+
+
+
+
