@@ -9,5 +9,17 @@ register = template.Library()
 @stringfilter
 def markdown2html(value):
     md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code'])
-    return md.convert(value)
-  #  return  markdown.markdown(value, ['fenced_code'])
+    html = md.convert(value)
+    lines = html.split("\n")
+    result = ""
+    id = 0
+    for line in lines:
+        if len(line) > 4:
+            if line[0:4] == "<h1>":
+                new_tag = '<h1 id="tag_{}">'.format(id)
+                id += 1
+                line = new_tag + line[4:]
+        result += line
+
+    return result
+

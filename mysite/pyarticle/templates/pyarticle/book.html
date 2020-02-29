@@ -91,21 +91,24 @@ div#mde h4 {
         {% endif %}
         {% for c in chapter_list %}
             <p>
+                <a href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
                 {% if user.is_authenticated %}
-                    <span class="badge badge-success">
-                        <a class="p-2 text-white" href="{% url 'upper_chapter' book.id c.id now_page %}">↑</a>
-                    </span>
-                    <span class="badge badge-success">
-                        <a class="p-2 text-white" href="{% url 'under_chapter' book.id c.id now_page %}">↓</a>
-                    </span>
-                {% endif %}
-                <a href="{% url 'disp_chapter' book.id c.id %}">{{c.chapter}}</a>
-                                {% if user.is_authenticated %}
                 <span class="badge badge-danger">
-                    <a class="p-2 text-white" href="{% url 'delete_chapter' book.id c.id%}">削除</a>
+                    <a class="p-2 text-white" href="{% url 'delete_chapter' book.id c.0.id%}">削除</a>
                 </span>
                 {% endif %}
+                {% if user.is_authenticated %}
+                    <span class="badge badge-success">
+                        <a class="p-2 text-white" href="{% url 'upper_chapter' book.id c.0.id now_page %}">↑</a>
+                    </span>
+                    <span class="badge badge-success">
+                        <a class="p-2 text-white" href="{% url 'under_chapter' book.id c.0.id now_page %}">↓</a>
+                    </span>
+                {% endif %}
             </p>
+            {% for sub_c in c.1 %}
+                <p><a href="{% url 'disp_chapter' book.id c.0.id %}#tag_{{forloop.counter0}}">&emsp;{{sub_c}}</a></p>
+            {% endfor %}
         {% endfor %}
     </div>
     <div class="col-md-9">

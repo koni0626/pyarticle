@@ -64,11 +64,16 @@ def search(request):
 
     return custom_render(request, 'pyarticle/book_search.html', data)
 
-"""
-本を表示する
-"""
+
 #@login_required(login_url='login/')
 def book(request, book_id, page):
+    """
+    本を表示する
+    :param request:
+    :param book_id:
+    :param page:
+    :return:
+    """
     bc = BookComponent(book_id)
     total_page = bc.get_page_count()
     if total_page == 0:
@@ -76,12 +81,17 @@ def book(request, book_id, page):
         bc.create_empty_book()
         total_page = bc.get_page_count()
 
-    # セクションのアクセス数をカウントする
+    # セクションのアクセス数を更新して保存する
     bc.update_access_count(request, page)
-
+    # アクセス数を取得する
     acc = bc.get_book_access_count()
 
-    chapter_list = bc.get_chapter_list()
+    top_chapter_list = bc.get_chapter_list()
+    chapter_list = []
+    for chapter in top_chapter_list:
+        sub_chapter_list = bc.get_chapter_in_section(chapter)
+        chapter_list.append([chapter, sub_chapter_list])
+
     chapter, section = bc.get_chapter_and_section(page)
     _, prev_section = bc.get_chapter_and_section(page - 1)
     _, next_section = bc.get_chapter_and_section(page + 1)

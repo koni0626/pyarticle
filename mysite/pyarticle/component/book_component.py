@@ -21,6 +21,21 @@ class BookComponent:
         chapters = Chapter.objects.filter(book=self.book).order_by('order')
         return chapters
 
+    @staticmethod
+    def get_chapter_in_section(chapter):
+        sub_chapter_list = []
+        records = Section.objects.filter(chapter=chapter).order_by('order')
+        for record in records:
+            text = record.text
+            lines = text.split('\n')
+            for line in lines:
+                if len(line) > 2:
+                    top = line[0:2]
+                    if top == "# ":
+                        sub_chapter = line[2:]
+                        sub_chapter_list.append(sub_chapter)
+        return sub_chapter_list
+
     def get_page_count(self):
         """
         本のページ数を取得する
