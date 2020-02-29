@@ -107,7 +107,7 @@ div#mde h4 {
                 {% endif %}
             </p>
             {% for sub_c in c.1 %}
-                <p><a href="{% url 'disp_chapter' book.id c.0.id %}#tag_{{forloop.counter0}}">&emsp;{{sub_c}}</a></p>
+                <p><a href="{% url 'disp_chapter' book.id c.0.id %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
             {% endfor %}
         {% endfor %}
     </div>

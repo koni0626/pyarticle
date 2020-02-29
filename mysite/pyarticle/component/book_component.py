@@ -28,12 +28,14 @@ class BookComponent:
         for record in records:
             text = record.text
             lines = text.split('\n')
+            id = 0
             for line in lines:
                 if len(line) > 2:
                     top = line[0:2]
                     if top == "# ":
                         sub_chapter = line[2:]
-                        sub_chapter_list.append(sub_chapter)
+                        sub_chapter_list.append([sub_chapter, id])
+                        id += 1
         return sub_chapter_list
 
     def get_page_count(self):
