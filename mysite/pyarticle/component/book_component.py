@@ -32,6 +32,7 @@ class BookComponent:
             for chapter in chapters:
                 sections = Section.objects.filter(chapter=chapter).order_by('order')
                 page_num += len(sections)
+        print(page_num)
         return page_num
 
     def get_chapter_and_section(self, page):
@@ -76,14 +77,14 @@ class BookComponent:
                           chapter=Chapter.objects.get(id=chapter.id))
         section.save()
 
-    def is_exists_chapter(self):
+    def is_exists_chapters(self):
         """
         本にチャプターがあるか調べる
         :return: 存在する場合True，存在しない場合False
         """
         ret = True
         try:
-            Chapter.objects.get(book_id=self.book.id)
+            Chapter.objects.filter(book_id=self.book.id)
         except Section.DoesNotExist:
             ret = False
 
@@ -149,7 +150,7 @@ class BookComponent:
         Section.objects.filter(id=section_id).delete()
 
     @staticmethod
-    def is_exists_chapter(chapter_id):
+    def is_exists_chapter_section(chapter_id):
         """
         チャプターが存在する場合はTrue、存在しない場合はFalseを返す
         :param chapter_id:チェックするチャプターID
@@ -159,7 +160,7 @@ class BookComponent:
         try:
             # もし該当するチャプターのセクションが全部なくなっていたら、
             # 一つだけ空のセクションを作成する
-            Section.objects.get(id=chapter_id)
+            Section.objects.get(chapter=chapter_id)
         except Section.DoesNotExist:
             ret = False
 
@@ -175,7 +176,7 @@ class BookComponent:
         :return:セクションID
         """
         section = Section(text=text,
-                          order=1,
+                          order=order,
                           chapter=Chapter.objects.get(id=chapter_id))
         section.save()
 
@@ -194,6 +195,7 @@ class BookComponent:
         section = Section.objects.get(id=section_id)
         section.text = text
         section.order = order
+        print("section order {}".format(section.order))
         section.chapter = Chapter.objects.get(id=chapter_id)
         section.save()
 
@@ -237,3 +239,24 @@ class BookComponent:
 
         return results
 
+    def swap_chapter(self, chapter_id, vector=True):
+        # チャプター一覧を取得して、orderで降順にソートする
+        if vector:
+            chapter_records = Chapter.objects.filter(book=self.book).order_by('order')
+        else:
+            chapter_records = Chapter.objects.filter(book=self.book).order_by('-order')
+        prev_chapter = None
+        now_chapter = None
+        for chapter in chapter_records:
+            if chapter.id == chapter_id:
+                now_chapter = chapter
+                break
+            # ひとつ前を検索する
+            prev_chapter = chapter
+
+        if now_chapter != None and prev_chapter != None:
+            tmp_order = now_chapter.order
+            now_chapter.order = prev_chapter.order
+            prev_chapter.order = tmp_order
+            Chapter.save(now_chapter)
+            Chapter.save(prev_chapter)

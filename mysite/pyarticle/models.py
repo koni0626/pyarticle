@@ -144,13 +144,16 @@ class Chapter(models.Model):
     """
     章の情報。見出し。
     """
+    #class Meta:
+    #    unique_together = ('book', 'order')
+
     chapter = models.CharField(max_length=256,
                                null=False,
                                unique=False,
                                default="未設定",
                                verbose_name="章")
 
-    order = models.IntegerField(default=1)
+    order = models.IntegerField(default=1, null=False)
 
     book = models.ForeignKey(Book, on_delete=models.CASCADE,
                              null=False,

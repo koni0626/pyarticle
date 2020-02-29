@@ -6,6 +6,7 @@ from .models import Section
 from .utils import custom_render
 from . import forms
 from django.contrib.auth.decorators import login_required
+from django.db.models import Max
 from pyarticle.component.book_component import BookComponent
 # Create your views here.
 
@@ -22,7 +23,15 @@ def index(request, book_id):
 
 @login_required
 def add_chapter(request, book_id):
-    form = forms.ChapterForm()
+    # チャプターのorderの最大値を求める
+    order_max = Chapter.objects.filter(book=book_id).aggregate(Max('order'))
+    print(order_max)
+    if 'order__max' in order_max:
+        order_max = order_max['order__max'] + 1
+    else:
+        order_max = 1
+
+    form = forms.ChapterForm(initial={'order': order_max})
     data = {'chapter_form': form, 'book_id': book_id, 'chapter_id': 0}
     return custom_render(request, 'pyarticle/admin/chapter/chapter.html', data)
 
@@ -42,7 +51,7 @@ def delete_chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
     bc.delete_chapter(chapter_id)
     page = 1
-    if not bc.is_exists_chapter(chapter_id):
+    if not bc.is_exists_chapters():
         # チャプターをすべて削除すると、ページがなくなってしまうので
         # 空のページを生成する
         bc.create_empty_book()
@@ -76,3 +85,18 @@ def save_chapter(request, book_id, chapter_id):
                 page = bc.get_chapter_top_page(chapter_id)
             return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
+@login_required
+def upper_chapter(request, book_id, chapter_id, page):
+    # チャプターを上下を入れ替える
+    bc = BookComponent(book_id)
+    bc.swap_chapter(chapter_id, True)
+
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+
+@login_required
+def under_chapter(request, book_id, chapter_id, page):
+    # チャプターを上下を入れ替える
+    bc = BookComponent(book_id)
+    bc.swap_chapter(chapter_id, False)
+
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))

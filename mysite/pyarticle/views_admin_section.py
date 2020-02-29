@@ -17,12 +17,12 @@ import base64
 
 @login_required
 def add_section(request, book_id, chapter_id):
-    items = Section.objects.filter(chapter_id=chapter_id).aggregate(order_max=Max('order'))
+    items = Section.objects.filter(chapter=chapter_id).aggregate(Max('order'))
     print(items)
-    if items['order_max'] == None:
-        order_max = 1
+    if 'order__max' in items:
+        order_max = items['order__max'] + 1
     else:
-        order_max = items['order_max'] + 1
+        order_max = 1
 
     section_form = forms.SectionForm(initial={'text': "記事を書きます",
                                               'order': order_max})
@@ -55,7 +55,6 @@ def save_section(request, book_id, chapter_id, section_id):
         bc = BookComponent(book_id)
         form = forms.SectionForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data['text'])
             if section_id == 0:
                 section_id = bc.create_section(chapter_id, form.cleaned_data['text'], form.cleaned_data['order'])
             else:
@@ -68,16 +67,21 @@ def save_section(request, book_id, chapter_id, section_id):
 @login_required
 def delete_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
+    # 現在のページ取得
+    page = bc.get_page(section_id)
     # セクションを削除する
     bc.delete_section(section_id)
 
-    if not bc.is_exists_chapter(chapter_id):
+    if not bc.is_exists_chapter_section(chapter_id):
         # チャプターのセクションがすべて削除されたときは空のセクションを自動的に作成する
+        print("チャプターの記事がすべて削除されています")
         new_section_id = bc.create_section(chapter_id, "記事を書きます", 1)
         page = bc.get_page(new_section_id)
     else:
-        page = bc.get_page(section_id)
-        page += 1
+        total_page = bc.get_page_count()
+        if total_page < page:
+            page = total_page
+        print("ページを削除しました {} {}".format(page, section_id))
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 

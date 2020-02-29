@@ -97,6 +97,14 @@ div#mde h4 {
                 </span>
                 {% endif %}
                 <a href="{% url 'disp_chapter' book.id c.id %}">{{c.chapter}}</a>
+                {% if user.is_authenticated %}
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'upper_chapter' book.id c.id now_page %}">↑</a>
+                    </span>
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'under_chapter' book.id c.id now_page %}">↓</a>
+                    </span>
+                {% endif %}
             </p>
         {% endfor %}
     </div>
@@ -151,15 +159,24 @@ div#mde h4 {
         </p>
 
         <hr>
-        [添付ファイル]
-        {% for attach_file in attach_file_list %}
-        <p><a href="{{attach_file.0}}">{{attach_file.1}}</a></p>
-        {% endfor %}
-        <form action="{% url 'save_attach_file' book.id now_page %}" method="post" enctype="multipart/form-data">
-            {%csrf_token%}
-            {{attach_file_form.attach_file}}
-            <button type="submit" class="btn btn-secondary">添付する</button>
-        </form>
+        <b>[添付ファイル]</b>
+        <p>
+            {% for attach_file in attach_file_list %}
+                <a href="{{attach_file.0}}">{{forloop.counter}}.{{attach_file.1}} &nbsp;</a>
+                {% if user.is_authenticated %}
+                    <span class="badge badge-danger">
+                        <a class="p-2 text-white" href="{% url 'delete_attach_file' book.id now_page attach_file.1 %}">ファイル削除</a>
+                    </span>
+                {% endif %}
+            {% endfor %}
+        </p>
+        {% if user.is_authenticated %}
+            <form action="{% url 'save_attach_file' book.id now_page %}" method="post" enctype="multipart/form-data">
+                {%csrf_token%}
+                {{attach_file_form.attach_file}}
+                <button type="submit" class="btn btn-secondary">添付する</button>
+            </form>
+        {% endif %}
     </div>
 
 </div>

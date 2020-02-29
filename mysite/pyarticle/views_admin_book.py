@@ -1,4 +1,4 @@
-from django.http.response import JsonResponse
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Book
@@ -105,7 +105,6 @@ def upload_attach_file(request, book_id, page):
     """
     save_path = 'attach/{}'.format(book_id)
 
-
     if request.method == 'POST' and request.FILES['attach_file']:
         attach_file = request.FILES['attach_file']
         fileobject = FileSystemStorage()
@@ -118,3 +117,16 @@ def upload_attach_file(request, book_id, page):
         print("添付エラー")
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+
+
+@login_required
+def delete_attach_file(request, book_id, page, filename):
+    attach_file_name = settings.MEDIA_ROOT + '/attach/{}/{}'.format(book_id, filename)
+    print(attach_file_name)
+    if os.path.exists(attach_file_name):
+        os.remove(attach_file_name)
+    else:
+        print("ファイルがありません")
+
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+

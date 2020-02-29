@@ -19,6 +19,7 @@ urlpatterns = [
     path('book_search/', views.search, name='book_search'),
 
     path('save_attach_file/<int:book_id>/<int:page>', views_admin_book.upload_attach_file, name='save_attach_file'),
+    path('save_attach_file/<int:book_id>/<int:page>/<str:filename>', views_admin_book.delete_attach_file, name='delete_attach_file'),
 
     path('book/<int:book_id>/<int:page>', views.book, name='disp_book'),
     path('chapter/<int:book_id>/<int:chapter_id>', views.chapter, name='disp_chapter'),
@@ -33,7 +34,10 @@ urlpatterns = [
     path('admin/chapter/edit/<int:book_id>/<int:chapter_id>', views_admin_chapter.edit_chapter, name='edit_chapter'),
     path('admin/chapter/delete/<int:book_id>/<int:chapter_id>', views_admin_chapter.delete_chapter, name='delete_chapter'),
     path('admin/chapter/save/<int:book_id>/<int:chapter_id>', views_admin_chapter.save_chapter, name='save_chapter'),
-  #  path('section/<int:book_id>/<int:chapter_id>', views_section.index, name='section'),
+    path('admin/chapter/upper/<int:book_id>/<int:chapter_id>/<int:page>', views_admin_chapter.upper_chapter, name='upper_chapter'),
+    path('admin/chapter/under/<int:book_id>/<int:chapter_id>/<int:page>', views_admin_chapter.under_chapter, name='under_chapter'),
+
+    #  path('section/<int:book_id>/<int:chapter_id>', views_section.index, name='section'),
     path('admin/section/add/<int:book_id>/<int:chapter_id>', views_admin_section.add_section, name='add_section'),
     path('admin/section/edit/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.edit_section, name='edit_section'),
     path('admin/section/save/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.save_section, name='save_section'),

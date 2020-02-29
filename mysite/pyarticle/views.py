@@ -72,6 +72,7 @@ def book(request, book_id, page):
     if total_page == 0:
         # ページが一個もなかったら空のページを作成する
         bc.create_empty_book()
+        total_page = bc.get_page_count()
 
     chapter_list = bc.get_chapter_list()
     chapter, section = bc.get_chapter_and_section(page)
