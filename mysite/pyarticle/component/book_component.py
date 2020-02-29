@@ -21,8 +21,7 @@ class BookComponent:
         chapters = Chapter.objects.filter(book=self.book).order_by('order')
         return chapters
 
-    @staticmethod
-    def get_chapter_in_section(chapter):
+    def get_chapter_in_section(self, chapter):
         sub_chapter_list = []
         records = Section.objects.filter(chapter=chapter).order_by('order')
         for record in records:
@@ -34,7 +33,8 @@ class BookComponent:
                     top = line[0:2]
                     if top == "# ":
                         sub_chapter = line[2:]
-                        sub_chapter_list.append([sub_chapter, id])
+                        page = self.get_page(record.id)
+                        sub_chapter_list.append([sub_chapter, id, page])
                         id += 1
         return sub_chapter_list
 
