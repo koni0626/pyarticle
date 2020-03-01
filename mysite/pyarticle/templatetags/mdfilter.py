@@ -10,6 +10,7 @@ register = template.Library()
 def markdown2html(value):
     md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code'])
     html = md.convert(value)
+
     lines = html.split("\n")
     result = ""
     id = 0
@@ -19,7 +20,7 @@ def markdown2html(value):
                 new_tag = '<h1 id="tag_{}">'.format(id)
                 id += 1
                 line = new_tag + line[4:]
-        result += line
+        result = result + "\n" + line
 
     return result
 
