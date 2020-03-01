@@ -8,7 +8,7 @@ register = template.Library()
 @register.filter
 @stringfilter
 def markdown2html(value):
-    md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code'])
+    md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code', 'pymdownx.tilde'])
     html = md.convert(value)
 
     lines = html.split("\n")
