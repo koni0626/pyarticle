@@ -166,7 +166,7 @@
         var ch = simplemde.codemirror.getCursor().ch;
 
         //var text = "![]("+file_name +")";
-        var text = '<div align="center"><img src="/' + file_name +'" class="img-fluid"></div>';
+        var text = '<div align="center"><a href="/' + file_name +'"><img src="/' + file_name +'" class="img-fluid"></a></div>';
         simplemde.codemirror.replaceRange(text,{line:line,ch:ch},{line:line,ch:ch});
     }
 
