@@ -5,6 +5,8 @@ from .models import Chapter
 from .utils import custom_render
 from . import forms
 from django.contrib.auth.decorators import login_required
+from django.http.response import JsonResponse
+from django.db.utils import IntegrityError
 # Create your views here.
 
 
@@ -45,7 +47,6 @@ def save_category(request, category_id):
             if category_id == 0:
                 print(form.cleaned_data['category'])
                 category = Category(category_name=form.cleaned_data['category'])
-                print("bbb")
             else:
                 category = Category.objects.get(id=category_id)
                 category.category_name = form.cleaned_data['category']
@@ -61,3 +62,28 @@ def save_category(request, category_id):
 def delete_category(request, category_id):
     record = Category.objects.filter(id=category_id).delete()
     return HttpResponseRedirect(reverse('category'))
+
+@login_required
+def ajax_save_category(request):
+    if request.method == 'POST':
+        print(request.POST)
+        category_name = request.POST.get('category', None)
+
+        if len(category_name) > 0 and len(category_name) < 255:
+            category = Category(category_name=category_name)
+            try:
+                category.save()
+                ret = {"result": 0, "category_name": category_name, "id": category.id}
+            except IntegrityError:
+                ret = {"result": -1, "message": "{}はすでに登録されています".format(category_name)}
+            except:
+                ret = {"result": -1, "message": "カテゴリの登録に失敗しました"}
+
+        elif len(category_name) == 0:
+            ret = {"result": -1, "message": "カテゴリ名を入力してください"}
+        elif len(category_name) > 255:
+            ret = {"result": -1, "message": "カテゴリを255文字以内で指定してください"}
+        else:
+            ret = {"result": -1, "message": "不正な値です"}
+
+    return JsonResponse(ret)

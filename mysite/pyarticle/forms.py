@@ -44,7 +44,7 @@ class SectionImageForm(forms.Form):
 
 class CategoryForm(forms.Form):
     category = forms.CharField(label='カテゴリー',
-                               widget=forms.TextInput(attrs={'size': '100'}))
+                               widget=forms.TextInput())
 
 
 class SiteTitleForm(forms.Form):

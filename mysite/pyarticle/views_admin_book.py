@@ -27,8 +27,11 @@ def index(request):
 
 @login_required
 def add_book(request):
-    form = forms.BookForm(request.POST)
-    return custom_render(request, 'pyarticle/admin/book/book.html', {'book_form': form, 'book_id': 0})
+    book_form = forms.BookForm(request.POST)
+    category_form = forms.CategoryForm(request.POST)
+
+    data = {'book_form': book_form, 'book_id': 0,'category_form': category_form}
+    return custom_render(request, 'pyarticle/admin/book/book.html', data)
 
 
 @login_required

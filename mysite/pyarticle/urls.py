@@ -47,6 +47,7 @@ urlpatterns = [
     path('admin/category/add/', views_admin_category.add_category, name='add_category'),
     path('admin/category/edit/<int:category_id>', views_admin_category.edit_category, name='edit_category'),
     path('admin/category/save/<int:category_id>', views_admin_category.save_category, name='save_category'),
+    path('admin/category/save_auto', views_admin_category.ajax_save_category, name='ajax_save_category'),
     path('admin/category/delete/<int:category_id>', views_admin_category.delete_category, name='delete_category'),
 
     path('admin/title/edit', views_admin_title.edit_title, name='edit_title'),
