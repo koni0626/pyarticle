@@ -109,12 +109,12 @@ $(function() {
                 headers:{ "X-CSRFToken": token },
                 method: 'POST',
                 dataType: 'text',
-                data : {"category": escapeHtml($("#category_text").val())},
+                data : {"category": $("#category_text").val()},
                 timeout: 3000,
             }).done(function(json){
                 const obj = JSON.parse(json);
                 if(obj.result == 0) {
-                    $select = $("#id_category").append($('<option>').html(obj.category_name).val(obj.id));
+                    $select = $("#id_category").append($('<option>').html(escapeHtml(obj.category_name)).val(obj.id));
                     $("#id_category").val(obj.id);
                     jQuery("#category-dialog").dialog('close');
                 }
