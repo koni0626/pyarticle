@@ -91,7 +91,7 @@ def save_book(request, book_id):
                         book.image = "cover/noimage.jpg"
                 book.save()
         else:
-            print("error＝＝＝＝＝＝＝")
+            pass
             #return HttpResponseRedirect("/pyarticle/admin/book")
         return HttpResponseRedirect(reverse('index'))
 
@@ -113,11 +113,9 @@ def upload_attach_file(request, book_id, page):
         fileobject = FileSystemStorage()
         file_path = os.path.join(save_path, attach_file.name)
         file_data = fileobject.save(file_path, attach_file)
-        print("ファイルが添付されています")
         upload_url = fileobject.url(file_data)
-        print(upload_url)
     else:
-        print("添付エラー")
+        pass
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
@@ -125,11 +123,10 @@ def upload_attach_file(request, book_id, page):
 @login_required
 def delete_attach_file(request, book_id, page, filename):
     attach_file_name = settings.MEDIA_ROOT + '/attach/{}/{}'.format(book_id, filename)
-    print(attach_file_name)
     if os.path.exists(attach_file_name):
         os.remove(attach_file_name)
     else:
-        print("ファイルがありません")
+        pass
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 

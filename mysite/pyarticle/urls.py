@@ -36,6 +36,7 @@ urlpatterns = [
     path('admin/chapter/save/<int:book_id>/<int:chapter_id>', views_admin_chapter.save_chapter, name='save_chapter'),
     path('admin/chapter/upper/<int:book_id>/<int:chapter_id>/<int:page>', views_admin_chapter.upper_chapter, name='upper_chapter'),
     path('admin/chapter/under/<int:book_id>/<int:chapter_id>/<int:page>', views_admin_chapter.under_chapter, name='under_chapter'),
+    path('admin/chapter/save_line', views_admin_chapter.ajax_save_chapter, name='ajax_save_chapter'),
 
     #  path('section/<int:book_id>/<int:chapter_id>', views_section.index, name='section'),
     path('admin/section/add/<int:book_id>/<int:chapter_id>', views_admin_section.add_section, name='add_section'),

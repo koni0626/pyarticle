@@ -34,7 +34,6 @@ def login(request):
             user = form.get_user()
             auth.login(request, user)
             return redirect('index')
-        print(form.errors)
     else:
         form = AuthenticationForm()
 

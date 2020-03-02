@@ -61,7 +61,6 @@ def search(request):
         if search_form.is_valid():
             key_word = search_form.cleaned_data['key_word']
             results = search_books(key_word)
-            print(results)
     else:
         search_form = SearchForm()
 

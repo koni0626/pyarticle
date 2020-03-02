@@ -49,7 +49,6 @@ class BookComponent:
             for chapter in chapters:
                 sections = Section.objects.filter(chapter=chapter).order_by('order')
                 page_num += len(sections)
-        print(page_num)
         return page_num
 
     def get_chapter_and_section(self, page):
@@ -212,7 +211,6 @@ class BookComponent:
         section = Section.objects.get(id=section_id)
         section.text = text
         section.order = order
-        print("section order {}".format(section.order))
         section.chapter = Chapter.objects.get(id=chapter_id)
         section.save()
 
@@ -294,6 +292,11 @@ class BookComponent:
             acc += record['access_count__sum']
 
         return acc
+
+    def update_chapter_order(self, chapter_id, order):
+        chapter = Chapter.objects.get(id=chapter_id)
+        chapter.order = order
+        Chapter.save(chapter)
 
 
 

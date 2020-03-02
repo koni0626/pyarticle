@@ -39,13 +39,10 @@ def edit_category(request, category_id):
 
 @login_required
 def save_category(request, category_id):
-    print("save_vategory")
     if request.method == 'POST':
-        print("POST")
         form = forms.CategoryForm(request.POST)
         if form.is_valid():
             if category_id == 0:
-                print(form.cleaned_data['category'])
                 category = Category(category_name=form.cleaned_data['category'])
             else:
                 category = Category.objects.get(id=category_id)
@@ -53,7 +50,7 @@ def save_category(request, category_id):
 
             category.save()
         else:
-            print("valid")
+            pass
             #return HttpResponseRedirect("/pyarticle/admin/book")
         return HttpResponseRedirect(reverse('category'))
 
@@ -66,7 +63,6 @@ def delete_category(request, category_id):
 @login_required
 def ajax_save_category(request):
     if request.method == 'POST':
-        print(request.POST)
         category_name = request.POST.get('category', None)
 
         if len(category_name) > 0 and len(category_name) < 255:

@@ -70,8 +70,9 @@ div#mde h4 {
   border: 1px solid #ccc;
 }
 
-
-
+.subchapter {
+    margin: 0.1em 0px;
+}
 </style>
 
 
@@ -89,27 +90,21 @@ div#mde h4 {
             </span>
         </p>
         {% endif %}
-        {% for c in chapter_list %}
-            <p>
-                <a href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
-                {% if user.is_authenticated %}
-                <span class="badge badge-danger">
-                    <a class="p-2 text-white" href="{% url 'delete_chapter' book.id c.0.id%}">削除</a>
-                </span>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <span class="badge badge-success">
-                        <a class="p-2 text-white" href="{% url 'upper_chapter' book.id c.0.id now_page %}">↑</a>
+        <ul id="chapterList">
+            {% for c in chapter_list %}
+                <li id="{{c.0.id}}_chapter"><a href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
+                {%if user.is_authenticated%}
+                    <span class="badge badge-danger">
+                    <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
                     </span>
-                    <span class="badge badge-success">
-                        <a class="p-2 text-white" href="{% url 'under_chapter' book.id c.0.id now_page %}">↓</a>
-                    </span>
-                {% endif %}
-            </p>
-            {% for sub_c in c.1 %}
-                <p><a href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
+                {%endif%}
+
+                {% for sub_c in c.1 %}
+                    <p class="subchapter"><a href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
+                {% endfor %}
+                </li>
             {% endfor %}
-        {% endfor %}
+        </ul>
     </div>
     <div class="col-md-9">
         <p class="text-right">
@@ -187,5 +182,40 @@ div#mde h4 {
 
 </div>
 
+<script>
+{% if user.is_authenticated %}
+$(function(){
+    $("#chapterList").sortable({
+        update:function(){
+            var result = $(this).sortable("toArray");
 
+            var hostUrl = "{% url 'ajax_save_chapter' %}";
+            var token = "{{csrf_token}}";
+            $.ajax({
+                url: hostUrl,
+                headers:{ "X-CSRFToken": token },
+                method: 'POST',
+                dataType: 'text',
+                data : {"book_id":{{book.id}}, "chapter_list": JSON.stringify(result)},
+                timeout: 3000,
+                traditional: true,
+            }).done(function(json){
+                const obj = JSON.parse(json);
+                if(obj.result == 0) {
+                }
+                else {
+                    alert(obj.message);
+                }
+
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("カテゴリの登録に失敗しました");
+            })
+        }
+
+
+
+    });
+});
+{% endif %}
+</script>
 {% endblock %}

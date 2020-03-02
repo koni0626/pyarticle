@@ -18,7 +18,6 @@ import base64
 @login_required
 def add_section(request, book_id, chapter_id):
     items = Section.objects.filter(chapter=chapter_id).aggregate(Max('order'))
-    print(items)
     if 'order__max' in items:
         order_max = items['order__max'] + 1
     else:
@@ -74,14 +73,12 @@ def delete_section(request, book_id, chapter_id, section_id):
 
     if not bc.is_exists_chapter_section(chapter_id):
         # チャプターのセクションがすべて削除されたときは空のセクションを自動的に作成する
-        print("チャプターの記事がすべて削除されています")
         new_section_id = bc.create_section(chapter_id, "記事を書きます", 1)
         page = bc.get_page(new_section_id)
     else:
         total_page = bc.get_page_count()
         if total_page < page:
             page = total_page
-        print("ページを削除しました {} {}".format(page, section_id))
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
@@ -96,7 +93,6 @@ def upload_image(request):
         tokens = b.split(",")
         header = tokens[0]
         ext = header.split(";")[0].split("/")[-1]
-        print(ext)
 
         img_data = base64.b64decode(tokens[1])
         # 画像ファイルに変換する

@@ -48,5 +48,5 @@ def save_title(request):
                 site_image.save()
 
         else:
-            print("error＝＝＝＝＝＝＝")
+            pass
         return HttpResponseRedirect(reverse('index'))

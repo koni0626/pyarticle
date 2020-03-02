@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Chapter
@@ -8,6 +9,8 @@ from . import forms
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max
 from pyarticle.component.book_component import BookComponent
+from django.http.response import JsonResponse
+from django.db import DatabaseError, transaction
 # Create your views here.
 
 
@@ -15,7 +18,6 @@ from pyarticle.component.book_component import BookComponent
 def index(request, book_id):
     # チャプターの一覧を表示する
     book = Book.objects.get(id=book_id)
-    print(book)
     chapter_records = Chapter.objects.filter(book=book)
     data = {'chapter_records': chapter_records, 'book_id': book_id}
     return custom_render(request, 'pyarticle/admin/chapter/index.html', data)
@@ -25,7 +27,6 @@ def index(request, book_id):
 def add_chapter(request, book_id):
     # チャプターのorderの最大値を求める
     order_max = Chapter.objects.filter(book=book_id).aggregate(Max('order'))
-    print(order_max)
     if 'order__max' in order_max:
         order_max = order_max['order__max'] + 1
     else:
@@ -100,3 +101,23 @@ def under_chapter(request, book_id, chapter_id, page):
     bc.swap_chapter(chapter_id, False)
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+
+@login_required
+def ajax_save_chapter(request):
+    if request.method == 'POST':
+        chapter_list = request.POST.get('chapter_list', None)
+        book_id = request.POST.get('book_id', None)
+        bc = BookComponent(book_id)
+        chapter_list = json.loads(chapter_list)
+        try:
+            with transaction.atomic():
+                for i, html_chapter_id in enumerate(chapter_list):
+                    chapter_id = html_chapter_id.split("_")[0]
+                    bc.update_chapter_order(chapter_id, i+1)
+            ret = {"result": 0, "message": "正常"}
+        except DatabaseError:
+            ret = {"result": -1, "message": "DBの更新に失敗しました"}
+    else:
+        ret = {"result": -1, "message": "不正な値です"}
+
+    return JsonResponse(ret)
