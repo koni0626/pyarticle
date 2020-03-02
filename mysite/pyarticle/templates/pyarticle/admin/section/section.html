@@ -171,10 +171,10 @@
     }
 
     function upload_img(dataUri) {
-        //ここで画像をdjangoにPOSTする。
-        //画像はチャプターとか分けなくてもよい気がする。
+        var token = "{{csrf_token}}";
         $.ajax({
             url: "{{upload_url}}",
+            headers:{ "X-CSRFToken": token },
             type: 'POST',
             dataType: 'json',
             data: {'image': dataUri},

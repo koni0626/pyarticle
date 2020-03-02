@@ -83,7 +83,7 @@ def delete_section(request, book_id, chapter_id, section_id):
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
-@csrf_exempt
+@login_required
 def upload_image(request):
     """
     この関数はセクションにあるべきではない
