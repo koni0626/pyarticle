@@ -211,7 +211,7 @@
             type: 'POST',
             dataType: 'json',
             data: {'image': dataUri},
-            timeout:3000,
+            timeout:30000,
             }).done(function(data) {
                 insert_image(data['filename']);
             }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
