@@ -1,4 +1,5 @@
 # coding:UTF-8
+import time
 from pyarticle.models import Book
 from pyarticle.models import Chapter
 from pyarticle.models import Section
@@ -278,7 +279,24 @@ class BookComponent:
 
     def update_access_count(self, request, page):
         session_name = "{}_{}_access".format(self.book_id, page)
-        if not request.session.get(session_name, False):
+        access_session_name = "{}_{}_access_date".format(self.book_id, page)
+        is_timeout = False
+        now_time = time.time()
+        if access_session_name in request.session:
+
+            old_time = request.session[access_session_name]
+            if now_time - old_time < 86400.:
+                # 24時間経過していないからカウントしない
+                is_timeout = False
+            else:
+                request.session[access_session_name] = now_time
+                is_timeout = True
+        else:
+            request.session[access_session_name] = now_time
+            # 初めてのアクセスはタイムアウト扱い
+            is_timeout = True
+
+        if not request.session.get(session_name, False) or is_timeout:
             _, section = self.get_chapter_and_section(page)
             section.access_count += 1
             Section.save(section)
