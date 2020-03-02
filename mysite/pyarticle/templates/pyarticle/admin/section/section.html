@@ -115,6 +115,12 @@
                             title: "Insert Image"
                         },
                         {
+                            name: "movie",
+                            action: moviePicker,
+                            className: "fa fa-file-video-o",
+                            title: "Insert movie"
+                        },
+                        {
                             name: "table",
                             action: SimpleMDE.drawTable,
                             className: "fa fa-table",
@@ -161,13 +167,39 @@
         })[0].click();
     }
 
+    function moviePicker() {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            //base64のはず
+            var dataUri = this.result;
+            //これをPOSTして戻ってきたURLを表示できたらOK。
+            upload_img(dataUri);
+        };
+
+        $('<input type="file" accept="video/*">').on('change', function(event) {
+            reader.readAsDataURL(event.target.files[0]);
+        })[0].click();
+    }
+
+    function getExt(filename)
+    {
+        var pos = filename.lastIndexOf('.');
+        if (pos === -1) return '';
+        return filename.slice(pos + 1);
+    }
+
     function insert_image(file_name)
     {
+        var ext = getExt(file_name);
         var line = simplemde.codemirror.getCursor().line;
         var ch = simplemde.codemirror.getCursor().ch;
-
-        //var text = "![]("+file_name +")";
-        var text = '<div align="center"><a href="/' + file_name +'"><img src="/' + file_name +'" class="img-fluid"></a></div>';
+        var text = "";
+        if(ext == "mp4") {
+            text = '<div align="center"><video src="/' + file_name +'" controls class="img-fluid" /></div>';
+        }
+        else {
+            text = '<div align="center"><a href="/' + file_name +'"><img src="/' + file_name +'" class="img-fluid"></a></div>';
+        }
         simplemde.codemirror.replaceRange(text,{line:line,ch:ch},{line:line,ch:ch});
     }
 
