@@ -113,6 +113,7 @@ def upload_attach_file(request, book_id, page):
         fileobject = FileSystemStorage()
         file_path = os.path.join(save_path, attach_file.name)
         file_data = fileobject.save(file_path, attach_file)
+        os.chmod(file_path, "0666")
         upload_url = fileobject.url(file_data)
     else:
         pass
