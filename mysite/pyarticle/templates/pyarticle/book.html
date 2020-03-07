@@ -214,5 +214,27 @@ $(function(){
     });
 });
 {% endif %}
+
+document.addEventListener('DOMContentLoaded', function(){
+  let codes = document.getElementsByTagName('code');
+  [].forEach.call(codes, function(elem, key, val){
+      // クラスに lang- が含まれていない場合は何もしない
+
+      let line_num = 1;
+      // 行で分割
+      let lines = elem.innerHTML.split("\n");
+      let texts = elem.textContent.split("\n");
+      // 最終行が空の時は削除
+      if (lines[lines.length-1].length === 0) {
+          lines.pop();
+      }
+      let modi = "<ol start='"+line_num+"'>";
+      lines.forEach(function(elem) {
+          modi += "<li class='code-list'>"+elem+"</li>";
+      });
+      modi += "</ol>";
+      elem.innerHTML = modi;
+  });
+}, false);
 </script>
 {% endblock %}
