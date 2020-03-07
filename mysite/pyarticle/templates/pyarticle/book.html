@@ -215,7 +215,7 @@ $(function(){
 });
 {% endif %}
 
-document.addEventListener('DOMContentLoaded', function(){
+window.addEventListener('load', function(){
   let codes = document.getElementsByTagName('code');
   [].forEach.call(codes, function(elem, key, val){
       // クラスに lang- が含まれていない場合は何もしない
