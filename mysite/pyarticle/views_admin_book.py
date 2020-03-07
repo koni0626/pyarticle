@@ -114,7 +114,7 @@ def upload_attach_file(request, book_id, page):
         file_path = os.path.join(save_path, attach_file.name)
         file_data = fileobject.save(file_path, attach_file)
         attach_file_name = settings.MEDIA_ROOT + '/attach/{}/{}'.format(book_id, attach_file.name)
-        os.chmod(attach_file_name, 666)
+        os.chmod(attach_file_name, 0o666)
         upload_url = fileobject.url(file_data)
     else:
         pass
