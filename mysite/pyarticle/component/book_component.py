@@ -25,12 +25,22 @@ class BookComponent:
     def get_chapter_in_section(self, chapter):
         sub_chapter_list = []
         records = Section.objects.filter(chapter=chapter).order_by('order')
+
         for record in records:
             text = record.text
             lines = text.split('\n')
             id = 0
+            skip = False
             for line in lines:
-                if len(line) > 2:
+                print(line)
+                if len(line) >= 3 and line[0:3] == "```":
+                    if skip:
+                        skip = False
+                    else:
+                        skip = True
+                    continue
+
+                if skip == False and len(line) > 2:
                     top = line[0:2]
                     if top == "# ":
                         sub_chapter = line[2:]

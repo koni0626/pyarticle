@@ -19,13 +19,15 @@ def markdown2html(value):
     skip = False
     while row < len(lines):
         line = lines[row]
-        if len(line) >= 6 and line[0:6] == '<code>':
+        if len(line) >= 11 and line[0:11] == "<pre><code>":
             skip = True
+            result = result + "\n" + line
             row += 1
             continue
 
-        if len(line) >= 7 and line[0:6] == '</code>':
+        if len(line) >= 13 and line[0:13] == '</code></pre>':
             skip = False
+            result = result + "\n" + line
             row += 1
             continue
 
