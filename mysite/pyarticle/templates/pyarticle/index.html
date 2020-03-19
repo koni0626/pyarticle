@@ -34,9 +34,8 @@
   </div>
 </div>
 
+<div class="row">
   {% for category, books_record in book_records.items %}
-
-    <div class="row">
       {% for book, acc, chapter, section in books_record %}
       <div class="col-md-2 d-flex">
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
@@ -70,7 +69,8 @@
           </div>
         </div>
       </div>
+    {% endfor %}
   {% endfor %}
-    </div>
-  {% endfor %}
+</div>
+
 {% endblock %}
