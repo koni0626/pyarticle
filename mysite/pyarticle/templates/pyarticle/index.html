@@ -35,11 +35,7 @@
 </div>
 
   {% for category, books_record in book_records.items %}
-  <div class="row">
-    <div class="col-md-12">
-    <h3 class="pb-3 mb-4 font-italic bg-secondary text-white">{{ category }}</h3>
-    </div>
-  </div>
+
     <div class="row">
       {% for book, acc, chapter, section in books_record %}
       <div class="col-md-2 d-flex">
