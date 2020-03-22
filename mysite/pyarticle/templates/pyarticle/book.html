@@ -81,8 +81,8 @@ div#mde h4 {
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<div class="row">
-    <div class="col-md-3">
+<div class="row"  style="margin-left: 0; margin-right: 10;">
+    <div class="col-md-3 bg-light">
         {% if user.is_authenticated %}
         <p class="text-left">
             <span class="badge badge-info">
@@ -90,9 +90,9 @@ div#mde h4 {
             </span>
         </p>
         {% endif %}
-        <ul id="chapterList">
+        <ul class="text-white" id="chapterList">
             {% for c in chapter_list %}
-                <li id="{{c.0.id}}_chapter"><a href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
+                <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
                 {%if user.is_authenticated%}
                     <span class="badge badge-danger">
                     <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
@@ -100,7 +100,7 @@ div#mde h4 {
                 {%endif%}
 
                 {% for sub_c in c.1 %}
-                    <p class="subchapter"><a href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
+                    <p class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
                 {% endfor %}
                 </li>
             {% endfor %}
