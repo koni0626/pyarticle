@@ -45,7 +45,17 @@
           </li>
           {% if user.is_superuser %}
           <li class="nav-item">
+            <a class="nav-link active" href="{% url 'disp_comment'%}">コメント</a>
+          </li>
+          {% endif %}
+          {% if user.is_superuser %}
+          <li class="nav-item">
             <a class="nav-link active" href="{% url 'signup'%}">ユーザ登録</a>
+          </li>
+          {% endif %}
+          {% if user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'edit_setting'%}">設定</a>
           </li>
           {% endif %}
           {% if user.username %}

@@ -80,7 +80,6 @@ def book(request, book_id, page):
     :return:
     """
     bc = BookComponent(book_id)
-    title = bc.get_title()
     total_page = bc.get_page_count()
     if total_page == 0:
         # ページが一個もなかったら空のページを作成する
@@ -104,17 +103,12 @@ def book(request, book_id, page):
     _, prev_section = bc.get_chapter_and_section(page - 1)
     _, next_section = bc.get_chapter_and_section(page + 1)
 
-    # 添付ファイルのフォーム
-    attach_file_form = AttachFileForm()
-    path = 'media/attach/{}/*'.format(book_id)
-    attach_file_list = []
-    file_list = glob.glob(path)
-    for file in file_list:
-        filename = file.split(os.sep)[-1]
-        attach_file_list.append(['/media/attach/{}/{}'.format(book_id, filename), filename])
+    # 添付ファイル一覧
+    attach_file_list = bc.get_attach_list()
+
 
     data = {'book': bc.book, 'chapter': chapter_record, 'chapter_list': chapter_list,
-            'attach_file_form': attach_file_form, 'acc': acc, 'title': title,
+            'attach_file_form': bc.attach_file_form, 'comment_form': bc.comment_form, 'acc': acc,
             'prev_page': page-1,  'section': section_record, 'next_page': page+1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list}
 
@@ -127,3 +121,4 @@ def chapter(request, book_id, chapter_id):
     page = bc.get_chapter_top_page(chapter_id)
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+

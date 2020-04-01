@@ -1,9 +1,16 @@
 # coding:UTF-8
 import time
+import glob
+import os
 from pyarticle.models import Book
 from pyarticle.models import Chapter
 from pyarticle.models import Section
 from django.db.models import Sum
+
+from pyarticle.forms import AttachFileForm
+from pyarticle.forms import CommentForm
+
+
 
 class BookComponent:
     """
@@ -13,6 +20,8 @@ class BookComponent:
         self.book_id = book_id
         self.book = Book.objects.get(id=book_id)
         self.title = self.book.title
+        self.attach_file_form = AttachFileForm()
+        self.comment_form = CommentForm()
 
     def get_title(self):
         return self.title
@@ -324,11 +333,20 @@ class BookComponent:
 
         return acc
 
+    @staticmethod
     def update_chapter_order(self, chapter_id, order):
         chapter = Chapter.objects.get(id=chapter_id)
         chapter.order = order
         Chapter.save(chapter)
 
+    def get_attach_list(self):
+        path = 'media/attach/{}/*'.format(self.book_id)
+        attach_file_list = []
+        file_list = glob.glob(path)
+        for file in file_list:
+            filename = file.split(os.sep)[-1]
+            attach_file_list.append(['/media/attach/{}/{}'.format(self.book_id, filename), filename])
 
+        return attach_file_list
 
 

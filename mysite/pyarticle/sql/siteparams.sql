@@ -4,5 +4,8 @@ insert into pyarticle_siteparams (param, value) values ("admin_site_name", "管�
 insert into pyarticle_siteparams (param, value) values ("admin_site_description", "管理画面の説明を書きます");
 insert into pyarticle_siteparams (param, value) values ("site_image", "");
 insert into pyarticle_siteparams (param, value) values ("upload_url", "http://localhost:8000/admin/section/image");
+insert into pyarticle_siteparams (param, value) values ("data_sitekey", "");
+insert into pyarticle_siteparams (param, value) values ("site_secret", "");
+
 
 

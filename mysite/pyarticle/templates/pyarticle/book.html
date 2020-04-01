@@ -84,13 +84,14 @@ div#mde h4 {
 
 <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <div class="row">
     <div class="col-md-12">
         <div id="title">
             <h1 class="pb-3 mb-4 font-italic">
-                {{title}}
+                {{book.title}}
             </h1>
         </div>
     </div>
@@ -194,6 +195,54 @@ div#mde h4 {
                 <button type="submit" class="btn btn-secondary">添付する</button>
             </form>
         {% endif %}
+
+     <p>
+        <br>
+         <h1 class="pb-3 mb-4 font-italic">お問い合わせ</h1>
+        <form action="{% url 'save_comment' book.id now_page %}" method="post" >
+            {%csrf_token%}
+
+            <div class="form-group row">
+                <label for="mailaddress" class="col-md-2 col-form-label">
+                    メールアドレス(*)
+                </label>
+                <div class="col-md-10" id="mailaddress">
+                    <p>{{comment_form.email}}</p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="name" class="col-md-2 col-form-label">
+                    お名前(*)
+                </label>
+                <div class="col-md-10" id="name">
+                    <p>{{comment_form.name}}</p>
+                </div>
+            </div>
+
+              <div class="form-group row">
+                <label for="text" class="col-md-2 col-form-label">
+                    お問い合わせ(*)
+                </label>
+                <div class="col-md-10" id="text">
+                    <p>{{comment_form.text}}</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="robot" class="col-md-2 col-form-label">
+                    私はロボットではありません(*)
+                </label>
+                <div id="robot" class="col-md-10 g-recaptcha" data-callback="" data-sitekey={{data_sitekey}}></div>
+            </div>
+
+
+            <p class="text-center">
+                <button type="submit" class="btn btn-primary">送信する</button>
+            </p>
+
+
+        </form>
+    </p>
     </div>
 
 </div>

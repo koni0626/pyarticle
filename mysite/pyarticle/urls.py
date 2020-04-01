@@ -6,7 +6,10 @@ from . import views_admin_chapter
 from . import views_admin_section
 from . import views_admin_category
 from . import views_admin_title
+from . import views_admin_comment
 from . import views_accounts
+from . import views_admin_setting
+
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -54,6 +57,12 @@ urlpatterns = [
     path('admin/title/edit', views_admin_title.edit_title, name='edit_title'),
     path('admin/title/save', views_admin_title.save_title, name='save_title'),
 
+    path('admin/setting/edit', views_admin_setting.edit_setting, name='edit_setting'),
+    path('admin/setting/save', views_admin_setting.save_setting, name='save_setting'),
+
     path('admin/section/image', views_admin_section.upload_image, name='upload_image'),
+
+    path('admin/comment/add/<int:book_id>/<int:page>', views_admin_comment.save_comment, name='save_comment'),
+    path('admin/comment/', views_admin_comment.disp_comment, name='disp_comment'),
 
 ]
