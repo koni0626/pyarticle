@@ -80,6 +80,7 @@ def book(request, book_id, page):
     :return:
     """
     bc = BookComponent(book_id)
+    title = bc.get_title()
     total_page = bc.get_page_count()
     if total_page == 0:
         # ページが一個もなかったら空のページを作成する
@@ -113,7 +114,7 @@ def book(request, book_id, page):
         attach_file_list.append(['/media/attach/{}/{}'.format(book_id, filename), filename])
 
     data = {'book': bc.book, 'chapter': chapter_record, 'chapter_list': chapter_list,
-            'attach_file_form': attach_file_form, 'acc': acc,
+            'attach_file_form': attach_file_form, 'acc': acc, 'title': title,
             'prev_page': page-1,  'section': section_record, 'next_page': page+1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list}
 

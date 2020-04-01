@@ -4,7 +4,12 @@
 {% block content %}
 <style>
 
-
+div#title h1 {
+  padding: 0.5em;/*文字周りの余白*/
+  color: #010101;/*文字色*/
+  background: #eaf3ff;/*背景色*/
+  border-bottom: solid 3px #516ab6;/*下線*/
+}
 div#header h1 {
   border-bottom: solid 3px #ccc;
   position: relative;
@@ -81,6 +86,15 @@ div#mde h4 {
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+<div class="row">
+    <div class="col-md-12">
+        <div id="title">
+            <h1 class="pb-3 mb-4 font-italic">
+                {{title}}
+            </h1>
+        </div>
+    </div>
+</div>
 <div class="row"  style="margin-left: 0; margin-right: 10;">
     <div class="col-md-3 bg-light">
         {% if user.is_authenticated %}
@@ -108,6 +122,7 @@ div#mde h4 {
 
     </div>
     <div class="col-md-9">
+
         <p class="text-right">
             {% if user.is_authenticated %}
                 <span class="badge badge-info">

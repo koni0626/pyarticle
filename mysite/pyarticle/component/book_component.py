@@ -14,6 +14,9 @@ class BookComponent:
         self.book = Book.objects.get(id=book_id)
         self.title = self.book.title
 
+    def get_title(self):
+        return self.title
+
     def get_chapter_list(self):
         """
         チャプターリストを取得する
