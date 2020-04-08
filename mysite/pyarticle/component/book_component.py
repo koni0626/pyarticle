@@ -20,11 +20,19 @@ class BookComponent:
         self.book_id = book_id
         self.book = Book.objects.get(id=book_id)
         self.title = self.book.title
+        self.description = self.book.description
+        self.image = self.book.image
         self.attach_file_form = AttachFileForm()
         self.comment_form = CommentForm()
 
     def get_title(self):
         return self.title
+
+    def get_description(self):
+        return self.description
+
+    def get_image(self):
+        return self.image
 
     def get_chapter_list(self):
         """

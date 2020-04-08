@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import SiteParams
 from .models import Book, Chapter, Section
+
 from pyarticle.component.book_component import BookComponent
 # Create your views here.
 
@@ -21,6 +22,24 @@ def custom_render(request, template, data):
     record = {'site_name': site_name, 'description': description, 'site_image': url, 'upload_url': upload_url, 'data_sitekey': data_sitekey}
     record.update(data)
     return render(request, template, record)
+
+def book_header(request, template, book, data):
+    # サイトの名前と説明を毎回呼び出す。もっといい方法はないものか？
+
+    site_name = book.get_title()
+    description = book.get_description()
+    image = book.get_image()
+    upload_url = SiteParams.objects.get(param='upload_url').value
+    data_sitekey = SiteParams.objects.get(param='data_sitekey').value
+    try:
+        url = image.url
+    except:
+        url = ""
+
+    record = {'site_name': site_name, 'description': description, 'site_image': image.url, 'upload_url': upload_url, 'data_sitekey': data_sitekey}
+    record.update(data)
+    return render(request, template, record)
+
 
 def search_books(key_word):
     results = [] # score, 見つかった文字列, 本のID, ページ番号

@@ -4,7 +4,7 @@ from pyarticle.models import Book
 from pyarticle.models import Category
 from pyarticle.models import Chapter
 from pyarticle.models import Section
-from pyarticle.utils import custom_render
+from pyarticle.utils import custom_render, book_header
 from pyarticle.component.book_component import BookComponent
 from pyarticle.utils import search_books
 from django.contrib.auth.decorators import login_required
@@ -112,7 +112,7 @@ def book(request, book_id, page):
             'prev_page': page-1,  'section': section_record, 'next_page': page+1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list}
 
-    return custom_render(request, 'pyarticle/book.html', data)
+    return book_header(request, 'pyarticle/book.html', bc, data)
 
 
 # @login_required(login_url='login/')
