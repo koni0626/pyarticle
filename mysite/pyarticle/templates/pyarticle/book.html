@@ -78,6 +78,11 @@ div#mde h4 {
 .subchapter {
     margin: 0.1em 0px;
 }
+.sidebar_fixed {
+  position: sticky;
+  top: 10px;
+}
+
 </style>
 
 
@@ -90,31 +95,33 @@ div#mde h4 {
 
 <div class="row"  style="margin-left: 0; margin-right: 10;">
     <div class="col-md-3 bg-light">
-        {% if user.is_authenticated %}
-        <p class="text-left">
-            <span class="badge badge-info">
-                <a class="p-2 text-white" href="{% url 'add_chapter' book.id %}">章追加</a>
-            </span>
-        </p>
-        {% endif %}
-        <ul class="text-white" id="chapterList">
-            {% for c in chapter_list %}
-                <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
-                {%if user.is_authenticated%}
-                    <span class="badge badge-danger">
-                    <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
-                    </span>
-                {%endif%}
+        <div class=" sidebar_fixed">
+            {% if user.is_authenticated %}
+            <p class="text-left">
+                <span class="badge badge-info">
+                    <a class="p-2 text-white" href="{% url 'add_chapter' book.id %}">章追加</a>
+                </span>
+            </p>
+            {% endif %}
+            <ul class="text-white" data-spy="affix" data-offset-top="300" id="chapterList">
+                {% for c in chapter_list %}
+                    <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
+                    {%if user.is_authenticated%}
+                        <span class="badge badge-danger">
+                        <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
+                        </span>
+                    {%endif%}
 
-                {% for sub_c in c.1 %}
-                    <p class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
+                    {% for sub_c in c.1 %}
+                        <p class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
+                    {% endfor %}
+                    </li>
                 {% endfor %}
-                </li>
-            {% endfor %}
-        </ul>
+            </ul>
+        </div>
 
     </div>
-    <div class="col-md-9">
+    <div class="col-md-6 bg-white">
 
         <p class="text-right">
             {% if user.is_authenticated %}
