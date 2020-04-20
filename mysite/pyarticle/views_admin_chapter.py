@@ -114,6 +114,7 @@ def ajax_save_chapter(request):
                 for i, html_chapter_id in enumerate(chapter_list):
                     chapter_id = html_chapter_id.split("_")[0]
                     bc.update_chapter_order(chapter_id, i+1)
+
             ret = {"result": 0, "message": "正常"}
         except DatabaseError:
             ret = {"result": -1, "message": "DBの更新に失敗しました"}

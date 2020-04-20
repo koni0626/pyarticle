@@ -342,8 +342,9 @@ class BookComponent:
         return acc
 
     @staticmethod
-    def update_chapter_order(self, chapter_id, order):
+    def update_chapter_order(chapter_id, order):
         chapter = Chapter.objects.get(id=chapter_id)
+
         chapter.order = order
         Chapter.save(chapter)
 
