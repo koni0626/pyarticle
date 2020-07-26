@@ -97,6 +97,10 @@ table, th, td {
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
+
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 <div class="row"  style="margin-left: 0; margin-right: 10;">
     <div class="col-md-3 bg-light">
         <div class=" sidebar_fixed">
@@ -134,13 +138,15 @@ table, th, td {
                 </span>
             {% endif %}
             <span class="text-muted">{{section.access_count}} views</span>
-
         </p>
 
         <div id="header">
             <h1 class="pb-3 mb-4 font-italic">
                 {{section.chapter}}
             </h1>
+            <p class="text-right">
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+            </p>
         </div>
         <p>
             {% if user.is_authenticated %}
@@ -178,6 +184,7 @@ table, th, td {
                 <a href="{% url 'disp_book' book.id next_page %}">次のページ</a>
             {% endif %}
         </p>
+
 
         <hr>
         <b>[添付ファイル]</b>
