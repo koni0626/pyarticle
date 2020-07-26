@@ -1,6 +1,15 @@
 {% extends "pyarticle/base.html" %}
 {% load static %}
 {% load mdfilter %}
+{% block meta %}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@darkimpact0626" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:title" content="{{section.chapter}}" />
+    <meta property="og:description" content="{{book.description}}" />
+    <meta property="og:image" content="{{request.scheme}}://{{ request.get_host }}{{book.image.url}}" />
+{% endblock %}
+
 {% block content %}
 <style>
 
@@ -98,9 +107,6 @@ table, th, td {
 <script>hljs.initHighlightingOnLoad();</script>
 
 
-
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 <div class="row"  style="margin-left: 0; margin-right: 10;">
     <div class="col-md-3 bg-light">
         <div class=" sidebar_fixed">
@@ -145,7 +151,7 @@ table, th, td {
                 {{section.chapter}}
             </h1>
             <p class="text-right">
-            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
             </p>
         </div>
         <p>
@@ -319,4 +325,5 @@ window.addEventListener('load', function(){
   });
 }, false);
 </script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 {% endblock %}
