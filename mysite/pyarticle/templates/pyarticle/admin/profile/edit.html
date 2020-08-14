@@ -1,0 +1,79 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+
+
+<form action="{% url 'profile_edit' %}" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+
+    <div id="profile_form" class="form-group row">
+        <label for="profile" class="col-md-3 col-form-label">
+            {{profile_form.image.label}}
+        </label>
+        <div class="col-md-6" id="profile">
+           {% if profile.image %}
+               <img id="profile-img" src="{{profile.image.url}}"  width="256"/>
+            {% endif %}
+            <p>{{profile_form.image}}</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="site" class="col-md-3 col-form-label">
+            {{profile_form.site.label}}
+        </label>
+        <div class="col-md-6" id="site">
+            {{profile_form.site}}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="belong" class="col-md-3 col-form-label">
+            {{profile_form.belong.label}}
+        </label>
+        <div class="col-md-6" id="belong">
+            {{profile_form.belong}}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="intro" class="col-md-3 col-form-label">
+            {{profile_form.intro.label}}
+        </label>
+        <div class="col-md-6" id="intro">
+            {{profile_form.intro}}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="twitter" class="col-md-3 col-form-label">
+            {{profile_form.twitter.label}}
+        </label>
+        <div class="col-md-6" id="twitter">
+            {{profile_form.twitter}}
+        </div>
+    </div>
+    <p class="text-center">
+        <button type="submit" class="btn btn-secondary">保存する</button>
+    </p>
+</form>
+<script>
+
+    $('#id_image').on('change', function(e) {
+        // 1枚だけ表示する
+        alert("call");
+        var file = e.target.files[0];
+
+        // ファイルリーダー作成
+        var fileReader = new FileReader();
+        fileReader.onload = function() {
+            // Data URIを取得
+            var dataUri = this.result;
+            $('#profile-img').attr('src', dataUri);
+        }
+
+        // ファイルをData URIとして読み込む
+        fileReader.readAsDataURL(file);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<form action="{% url 'save_book' book_id %}" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+
+
+    <div id="category_form" class="form-group row">
+        <label for="cover" class="col-md-3 col-form-label">
+            表紙
+        </label>
+        <div class="col-md-9" id="cover">
+           {% if book.image %}
+            <img id="book-img" src="{{book.image.url}}"  width="256"/>
+            {% endif %}
+            <p>{{book_form.image}}</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="title" class="col-md-3 col-form-label">
+            タイトル<span class="badge badge-warning">必須</span>
+        </label>
+        <div class="col-md-9" id="title">
+            {{book_form.title}}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="category" class="col-md-3 col-form-label">
+            カテゴリー<span class="badge badge-warning">必須</span>
+        </label>
+        <div class="col-md-9" id="category">
+            {{book_form.category}}<i id="open-category-dialog" class="fas fa-plus-circle fa-green"></i></a>
+
+
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="description" class="col-md-3 col-form-label">
+            説明
+        </label>
+        <div class="col-md-9" id="description">
+            {{book_form.description}}
+        </div>
+    </div>
+
+    <p class="text-center">
+        <button type="submit" class="btn btn-secondary">保存する</button>
+    </p>
+</form>
+
+<div id="category-dialog" title="カテゴリの追加" style="display:none;">
+
+        <p>
+            カテゴリー名を入力してください
+        </p>
+        <p><input id="category_text" type="text"></p>
+
+        <p class="text-right">
+            <button id="category_button" type="submit" class="btn btn-secondary">保存する</button>
+        </p>
+</div>
+
+
+<script>
+    function escapeHtml(str) {
+      str = str.replace(/&/g, '&amp;');
+      str = str.replace(/</g, '&lt;');
+      str = str.replace(/>/g, '&gt;');
+      str = str.replace(/"/g, '&quot;');
+      str = str.replace(/'/g, '&#39;');
+      return str;
+    }
+    $("#open-category-dialog").on("click", function() {
+        $("#category-dialog").dialog({
+            });
+        });
+
+    $("#category_button").click(
+        function() {
+            var hostUrl = "{% url 'ajax_save_category' %}";
+            var token = "{{csrf_token}}";
+            $.ajax({
+                url: hostUrl,
+                headers:{ "X-CSRFToken": token },
+                method: 'POST',
+                dataType: 'text',
+                data : {"category": $("#category_text").val()},
+                timeout: 3000,
+            }).done(function(json){
+                const obj = JSON.parse(json);
+                if(obj.result == 0) {
+                    $select = $("#id_category").append($('<option>').html(escapeHtml(obj.category_name)).val(obj.id));
+                    $("#id_category").val(obj.id);
+                    jQuery("#category-dialog").dialog('close');
+                }
+                else {
+                    alert(obj.message);
+                }
+
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("カテゴリの登録に失敗しました");
+            })
+
+            });
+</script>
+
+<script>
+$(function() {
+    $('#id_image').on('change', function(e) {
+        // 1枚だけ表示する
+
+        var file = e.target.files[0];
+
+        // ファイルリーダー作成
+        var fileReader = new FileReader();
+        fileReader.onload = function() {
+            // Data URIを取得
+            var dataUri = this.result;
+            $('#book-img').attr('src', dataUri);
+        }
+
+        // ファイルをData URIとして読み込む
+        fileReader.readAsDataURL(file);
+    });
+});
+</script>
+
+{% endblock %}

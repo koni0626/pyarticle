@@ -11,6 +11,8 @@ pillow = "*"
 pipfile = "*"
 markdown = "*"
 ebooklib = "*"
+django-social-share = "*"
+traceback = "*"
 
 [requires]
 python_version = "3.6"

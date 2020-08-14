@@ -1,0 +1,29 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+<form action="{% url 'save_title' %}" method="post">
+    {%csrf_token%}
+
+    <div class="form-group row">
+        <label for="cover" class="col-md-3 col-form-label">
+            タイトル<span class="badge badge-warning">必須</span>
+        </label>
+        <div class="col-md-9" id="cover">
+            <p>{{title_form.site_name}}</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="cover" class="col-md-3 col-form-label">
+            説明
+        </label>
+        <div class="col-md-9" id="order">
+            <p>{{title_form.site_description}}</p>
+        </div>
+    </div>
+
+    <p class="text-right">
+        <button type="submit" class="btn btn-secondary">保存する</button>
+    </p>
+</form>
+{% endblock %}

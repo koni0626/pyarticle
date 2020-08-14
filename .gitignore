@@ -6,6 +6,8 @@ mysite/pyarticle/__pycache__
 *.pyc
 mysite/media/cover/*
 !mysite/media/cover/noimage.jpg
+mysite/media/profile/*
+!mysite/media/profile/noimage.png
 mysite/mysite_uwsgi.ini
 mysite/static/
 mysite/uwsgi_params
