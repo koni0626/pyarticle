@@ -13,6 +13,8 @@
         <div class="col-md-6" id="profile">
            {% if profile.image %}
                <img id="profile-img" src="{{profile.image.url}}"  width="256"/>
+            {% else %}
+            <img id="profile-img" src="/media/profile/noprofimg.png"  width="256"/>
             {% endif %}
             <p>{{profile_form.image}}</p>
         </div>
@@ -61,7 +63,6 @@
 
     $('#id_image').on('change', function(e) {
         // 1枚だけ表示する
-        alert("call");
         var file = e.target.files[0];
 
         // ファイルリーダー作成

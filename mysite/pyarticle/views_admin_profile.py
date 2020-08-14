@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import redirect
 from django.urls import reverse
 from .models import Category, User
 from .models import Profile
@@ -15,6 +16,9 @@ def edit(request):
 
     try:
         profile_record = Profile.objects.filter(user=user).first()
+        if profile_record is None:
+            profile_record = Profile()
+            #profile_record.image = "profile/noprofimg.png"
     except Exception as e:
         print(traceback.format_exc())
         raise Http404("不正なリクエストです")
@@ -35,16 +39,20 @@ def edit(request):
             # profileを取得
             if profile_record is None:
                 profile_record = Profile()
+            if form.cleaned_data['image'] is not None:
+                if form.cleaned_data['image'] is not False:
+                    profile_record.image = form.cleaned_data['image']
+                else:
+                    profile_record.image = None
 
-            profile_record.image = form.cleaned_data['image']
             profile_record.site = form.cleaned_data['site']
             profile_record.belong = form.cleaned_data['belong']
             profile_record.intro = form.cleaned_data['intro']
             profile_record.twitter = form.cleaned_data['twitter']
             profile_record.user = user
             profile_record.save()
-
-            output = {'profile_form': form, 'profile': profile_record}
+            # 編集完了
+            return redirect('profile_edit')
         else:
             raise Http404("不正なリクエストです(4)")
     else:

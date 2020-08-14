@@ -58,7 +58,7 @@ def save_category(request, category_id):
 @login_required
 def delete_category(request, category_id):
     record = Category.objects.filter(id=category_id).delete()
-    return HttpResponseRedirect(reverse('category'))
+    v
 
 @login_required
 def ajax_save_category(request):
