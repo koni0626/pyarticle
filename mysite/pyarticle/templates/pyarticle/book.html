@@ -1,0 +1,329 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% load mdfilter %}
+{% block meta %}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@darkimpact0626" />
+    <meta property="og:url" content="https://www.osumoi-stdio.com{{ request.path }}" />
+    <meta property="og:title" content="{{section.chapter}}" />
+    <meta property="og:description" content="{{section.chapter}}" />
+    <meta property="og:image" content="https://www.osumoi-stdio.com{{book.image.url}}" />
+{% endblock %}
+
+{% block content %}
+<style>
+
+div#title h1 {
+  padding: 0.5em;/*文字周りの余白*/
+  color: #010101;/*文字色*/
+  background: #eaf3ff;/*背景色*/
+  border-bottom: solid 3px #516ab6;/*下線*/
+}
+div#header h1 {
+  border-bottom: solid 3px #ccc;
+  position: relative;
+}
+
+div#header h1:after {
+  position: absolute;
+  content: " ";
+  display: block;
+  border-bottom: solid 3px #000;
+  bottom: -3px;
+  width: 20%;
+}
+
+
+div#mde table, th, td {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  line-height: 1.5;
+}
+
+div#mde th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  background: #3f3f3f;
+  color: #ffffff;
+}
+div#mde td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+}
+
+div#mde  h1 {
+  font-size:30px;
+  padding: .5em .75em;
+  margin-top:40px;
+  background-color: #f6f6f6;
+  border-radius: 6px;
+}
+
+div#mde h2 {
+  font-size:25px;
+  margin-top:40px;
+  padding-bottom: .5em;
+  border-bottom: 1px solid #ccc;
+}
+
+
+div#mde h3 {
+  font-size:20px;
+  margin-top:40px;
+  padding: .25em 0 .25em .75em;
+  border-left: 6px solid #ccc;
+}
+
+div#mde h4 {
+  font-size:20px;
+  margin-top:40px;
+  padding: .5em .75em;
+  border: 1px solid #ccc;
+}
+
+.subchapter {
+    margin: 0.1em 0px;
+}
+.sidebar_fixed {
+  position: sticky;
+  top: 10px;
+}
+
+/* セル幅を自動調整 */
+table, th, td {
+  width: auto !important;
+}
+</style>
+
+
+
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<div class="row"  style="margin-left: 0; margin-right: 10;">
+    <div class="col-md-3 bg-light">
+        <div class=" sidebar_fixed">
+            {% if user.is_authenticated %}
+            <p class="text-left">
+                <span class="badge badge-info">
+                    <a class="p-2 text-white" href="{% url 'add_chapter' book.id %}">章追加</a>
+                </span>
+            </p>
+            {% endif %}
+            <ul class="text-white" data-spy="affix" data-offset-top="300" id="chapterList">
+                {% for c in chapter_list %}
+                    <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
+                    {%if user.is_authenticated%}
+                        <span class="badge badge-danger">
+                        <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
+                        </span>
+                    {%endif%}
+
+                    {% for sub_c in c.1 %}
+                        <p class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
+                    {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+    <div class="col-md-6 bg-white">
+
+        <p class="text-right">
+            {% if user.is_authenticated %}
+                <span class="badge badge-info">
+                    <a class="p-2 text-white" href="{% url 'edit_chapter' book.id chapter.id %}">章編集</a>
+                </span>
+            {% endif %}
+            <span class="text-muted">{{section.access_count}} views</span>
+        </p>
+
+        <div id="header">
+            <h1 class="pb-3 mb-4 font-italic">
+                {{section.chapter}}
+            </h1>
+            <p class="text-right">
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+            </p>
+        </div>
+        <p>
+            {% if user.is_authenticated %}
+                <p class="text-right">
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">ページの追加</a>
+                    </span>
+            {%endif %}
+
+            {% if user.is_authenticated %}
+                {% if section %}
+                    <span class="badge badge-success">
+                        <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">ページ編集</a>
+                    </span>
+                    <span class="badge badge-danger">
+                        <a class="p-2 text-white" href="{% url 'delete_section' book.id chapter.id section.id%}">ページ削除</a>
+                    </span>
+                {% endif %}
+            </p>
+            {% endif %}
+            <div id="mde">
+            {{section.text  | markdown2html | safe }}
+            </div>
+
+        </p>
+        <p>
+             Page {{ now_page }} of {{ total_page }}.
+        </p>
+        <p class="text-center">
+
+            {% if prev_page > 0 %}
+                 <a href="{% url 'disp_book' book.id prev_page %}">前のページ</a>
+            {% endif %}
+            {% if next_page <= total_page %}
+                <a href="{% url 'disp_book' book.id next_page %}">次のページ</a>
+            {% endif %}
+        </p>
+
+
+        <hr>
+        <b>[添付ファイル]</b>
+        <p>
+            {% for attach_file in attach_file_list %}
+                <a href="{{attach_file.0}}">{{forloop.counter}}.{{attach_file.1}} &nbsp;</a>
+                {% if user.is_authenticated %}
+                    <span class="badge badge-danger">
+                        <a class="p-2 text-white" href="{% url 'delete_attach_file' book.id now_page attach_file.1 %}">ファイル削除</a>
+                    </span>
+                {% endif %}
+            {% endfor %}
+        </p>
+        {% if user.is_authenticated %}
+            <form action="{% url 'save_attach_file' book.id now_page %}" method="post" enctype="multipart/form-data">
+                {%csrf_token%}
+                {{attach_file_form.attach_file}}
+                <button type="submit" class="btn btn-secondary">添付する</button>
+            </form>
+        {% endif %}
+
+     <p>
+        <br>
+         <h1 class="pb-3 mb-4 font-italic">お問い合わせ</h1>
+        <form action="{% url 'save_comment' book.id now_page %}" method="post" >
+            {%csrf_token%}
+
+            <div class="form-group row">
+                <label for="mailaddress" class="col-md-2 col-form-label">
+                    メールアドレス(*)
+                </label>
+                <div class="col-md-10" id="mailaddress">
+                    <p>{{comment_form.email}}</p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="name" class="col-md-2 col-form-label">
+                    お名前(*)
+                </label>
+                <div class="col-md-10" id="name">
+                    <p>{{comment_form.name}}</p>
+                </div>
+            </div>
+
+              <div class="form-group row">
+                <label for="text" class="col-md-2 col-form-label">
+                    お問い合わせ(*)
+                </label>
+                <div class="col-md-10" id="text">
+                    <p>{{comment_form.text}}</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="robot" class="col-md-2 col-form-label">
+                    私はロボットではありません(*)
+                </label>
+                <div id="robot" class="col-md-10 g-recaptcha" data-callback="" data-sitekey={{data_sitekey}}></div>
+            </div>
+
+
+            <p class="text-center">
+                <button type="submit" class="btn btn-primary">送信する</button>
+            </p>
+
+
+        </form>
+    </p>
+    </div>
+    <div class="col-md-3 bg-light">
+        <div class=" sidebar_fixed">
+    <!-- admax -->
+    <script src="https://adm.shinobi.jp/s/97c59c2e5c821337d31c04b0d3fd3f7e"></script>
+    <!-- admax -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+{% if user.is_authenticated %}
+$(function(){
+    $("#chapterList").sortable({
+        update:function(){
+            var result = $(this).sortable("toArray");
+
+            var hostUrl = "{% url 'ajax_save_chapter' %}";
+            var token = "{{csrf_token}}";
+            $.ajax({
+                url: hostUrl,
+                headers:{ "X-CSRFToken": token },
+                method: 'POST',
+                dataType: 'text',
+                data : {"book_id":{{book.id}}, "chapter_list": JSON.stringify(result)},
+                timeout: 3000,
+                traditional: true,
+            }).done(function(json){
+                const obj = JSON.parse(json);
+                if(obj.result == 0) {
+                }
+                else {
+                    alert(obj.message);
+                }
+
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("並べ替えに失敗しました");
+            })
+        }
+    });
+});
+{% endif %}
+
+window.addEventListener('load', function(){
+  let codes = document.getElementsByTagName('code');
+  [].forEach.call(codes, function(elem, key, val){
+      // クラスに lang- が含まれていない場合は何もしない
+
+      let line_num = 1;
+      // 行で分割
+      let lines = elem.innerHTML.split("\n");
+      let texts = elem.textContent.split("\n");
+      // 最終行が空の時は削除
+      if (lines[lines.length-1].length === 0) {
+          lines.pop();
+      }
+      let modi = "<ol start='"+line_num+"'>";
+      lines.forEach(function(elem) {
+          modi += "<li class='code-list'>"+elem+"</li>";
+      });
+      modi += "</ol>";
+      elem.innerHTML = modi;
+  });
+}, false);
+</script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+{% endblock %}
