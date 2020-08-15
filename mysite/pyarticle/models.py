@@ -88,11 +88,6 @@ class Profile(models.Model):
                              verbose_name="サイト/ブログ",
                              help_text="サイト/ブログ")
 
-    belong = models.CharField(max_length=256,
-                             null=True,
-                             verbose_name="所属している組織・企業",
-                             help_text="所属している組織・企業")
-
     intro = models.CharField(max_length=1024,
                              null=True,
                              verbose_name="自己紹介",
@@ -103,8 +98,13 @@ class Profile(models.Model):
                              verbose_name="ツイッターID",
                              help_text="ツイッターID")
 
+    wallet = models.CharField(max_length=1024,
+                              null=True,
+                              verbose_name="NEMの振込先",
+                              help_text="NEMの振込先")
+
     def get_form_param(self):
-        return {'image': self.image, 'site': self.site, 'belong': self.belong, 'twitter': self.twitter, 'intro': self.intro}
+        return {'image': self.image, 'site': self.site, 'twitter': self.twitter, 'intro': self.intro, 'wallet': self.wallet}
 
 
 class SiteParams(models.Model):

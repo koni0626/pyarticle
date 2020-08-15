@@ -13,9 +13,27 @@ from .forms import AttachFileForm
 import glob
 import os
 
-
 # @login_required(login_url='login/')
 def index(request):
+    # マイページには自分の投稿記事とプロフィールを表示する
+    book_records = Book.objects.order_by('create_date').reverse().all()
+    # 本全体のアクセス数をカウントする
+    books = []
+    for book in book_records:
+        print(book.id)
+        bc = BookComponent(book.id)
+        acc = bc.get_book_access_count()
+        books.append([book, acc])
+
+    # 検索フォームの作成
+    search_form = SearchForm()
+
+    data = {'books': books, 'search_form': search_form}
+    return custom_render(request, 'pyarticle/index.html', data)
+
+
+# @login_required(login_url='login/')
+def index_old(request):
     """
     登録されている本一覧をカテゴリごとに表示する
     :param request:
@@ -110,7 +128,8 @@ def book(request, book_id, page):
     data = {'book': bc.book, 'chapter': chapter_record, 'chapter_list': chapter_list,
             'attach_file_form': bc.attach_file_form, 'comment_form': bc.comment_form, 'acc': acc,
             'prev_page': page-1,  'section': section_record, 'next_page': page+1,
-            'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list}
+            'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list,
+            'profile': bc.profile}
 
     return book_header(request, 'pyarticle/book.html', bc, data)
 

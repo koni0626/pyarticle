@@ -9,7 +9,7 @@ from . import forms
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max
 from pyarticle.component.book_component import BookComponent
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, Http404
 from django.db import DatabaseError, transaction
 # Create your views here.
 
@@ -25,6 +25,10 @@ def index(request, book_id):
 
 @login_required
 def add_chapter(request, book_id):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     # チャプターのorderの最大値を求める
     order_max = Chapter.objects.filter(book=book_id).aggregate(Max('order'))
     if 'order__max' in order_max:
@@ -39,6 +43,10 @@ def add_chapter(request, book_id):
 
 @login_required
 def edit_chapter(request, book_id, chapter_id):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     record = Chapter.objects.get(id=chapter_id)
     form = forms.ChapterForm(initial={'chapter': record.chapter,
                                       'order': record.order})
@@ -50,6 +58,9 @@ def edit_chapter(request, book_id, chapter_id):
 @login_required
 def delete_chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     bc.delete_chapter(chapter_id)
     page = 1
     if not bc.is_exists_chapters():
@@ -63,6 +74,9 @@ def delete_chapter(request, book_id, chapter_id):
 def save_chapter(request, book_id, chapter_id):
     if request.method == 'POST':
         bc = BookComponent(book_id)
+        if not bc.is_your_book(request.user):
+            raise Http404("不正なリクエストです")
+
         form = forms.ChapterForm(request.POST)
         if form.is_valid():
             if chapter_id == 0:
@@ -90,6 +104,9 @@ def save_chapter(request, book_id, chapter_id):
 def upper_chapter(request, book_id, chapter_id, page):
     # チャプターを上下を入れ替える
     bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     bc.swap_chapter(chapter_id, True)
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
@@ -98,6 +115,9 @@ def upper_chapter(request, book_id, chapter_id, page):
 def under_chapter(request, book_id, chapter_id, page):
     # チャプターを上下を入れ替える
     bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     bc.swap_chapter(chapter_id, False)
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
@@ -108,17 +128,20 @@ def ajax_save_chapter(request):
         chapter_list = request.POST.get('chapter_list', None)
         book_id = request.POST.get('book_id', None)
         bc = BookComponent(book_id)
-        chapter_list = json.loads(chapter_list)
-        try:
-            with transaction.atomic():
-                for i, html_chapter_id in enumerate(chapter_list):
-                    chapter_id = html_chapter_id.split("_")[0]
-                    bc.update_chapter_order(chapter_id, i+1)
+        if not bc.is_your_book(request.user):
+            ret = {"result": -1, "message": "不正な値です"}
+        else:
+            chapter_list = json.loads(chapter_list)
+            try:
+                with transaction.atomic():
+                    for i, html_chapter_id in enumerate(chapter_list):
+                        chapter_id = html_chapter_id.split("_")[0]
+                        bc.update_chapter_order(chapter_id, i+1)
 
-            ret = {"result": 0, "message": "正常"}
-        except DatabaseError:
-            ret = {"result": -1, "message": "DBの更新に失敗しました"}
-    else:
-        ret = {"result": -1, "message": "不正な値です"}
+                ret = {"result": 0, "message": "正常"}
+            except DatabaseError:
+                ret = {"result": -1, "message": "DBの更新に失敗しました"}
+            else:
+                ret = {"result": -1, "message": "不正な値です"}
 
     return JsonResponse(ret)

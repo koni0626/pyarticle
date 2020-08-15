@@ -8,7 +8,7 @@ from . import forms
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
 from pyarticle.component.book_component import BookComponent
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 import uuid
 import base64
@@ -17,6 +17,10 @@ import base64
 
 @login_required
 def add_section(request, book_id, chapter_id):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     items = Section.objects.filter(chapter=chapter_id).aggregate(Max('order'))
     if 'order__max' in items:
         order_max = items['order__max'] + 1
@@ -36,6 +40,10 @@ def add_section(request, book_id, chapter_id):
 
 @login_required
 def edit_section(request, book_id, chapter_id, section_id):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     record = Section.objects.get(id=section_id)
     if record.text == "":
         record.text = "ここに記事を書きます"
@@ -50,6 +58,10 @@ def edit_section(request, book_id, chapter_id, section_id):
 
 @login_required
 def save_section(request, book_id, chapter_id, section_id):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     if request.method == 'POST':
         bc = BookComponent(book_id)
         form = forms.SectionForm(request.POST)
@@ -66,6 +78,9 @@ def save_section(request, book_id, chapter_id, section_id):
 @login_required
 def delete_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     # 現在のページ取得
     page = bc.get_page(section_id)
     # セクションを削除する

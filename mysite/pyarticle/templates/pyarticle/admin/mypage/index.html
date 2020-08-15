@@ -1,0 +1,114 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="row" style="margin-left: 0; margin-right: 10;">
+        <!--プロフィール表示 -->
+        <div class="col-md-3">
+            <div class="card" style="max-width: 25rem">
+                <div class="card-header">
+                    プロフィール
+                </div>
+                <div class="card-body">
+                    {% if profile.image %}
+                        <p class="text-center">
+                            <img src="{{profile.image.url}}"  width="128" height="128"/>
+                        </p>
+                    {% else %}
+                        <p class="text-center">
+                            <img src="{% static 'noprofimg.png' %}"  width="128" height="128"/>
+                        </p>
+                    {% endif %}
+                    <h4 class="card-title">自己紹介</h4>
+                    <p class="card-text">{{profile.intro|linebreaksbr}}</p>
+
+                    <h4 class="card-title">サイト/ブログ</h4>
+                    <p>
+                           {% if profile.site %}
+                                <a href="{{profile.site}}" target="_blank">{{profile.site}}</a>
+                        {% endif %}
+                    </p>
+
+                    <h4 class="card-title">ツイッター</h4>
+                    <p>
+                        {% if profile.twitter %}
+                        <a href="https://twitter.com/{{profile.twitter}}" target="_blank"><img src="{% static 'twitter_logo.png' %}" width="32" height="32"/></a>
+                        @{{profile.twitter}}
+                        {% endif %}
+                    </p>
+
+                    <p class="text-center">
+                        <button onclick="location.href='{% url 'profile_edit'%}'" class="btn btn-secondary">プロフィールを変更する</button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card" style="max-width: 25rem">
+                <div class="card-header">
+                    コメント一覧
+                </div>
+                <div class="card-body">
+                    {% for comment in comments %}
+                    <h5><a href="{% url 'disp_book' comment.book.id 1 %}">{{comment.book}}</a></h5>
+                    <p>{{comment.name}}さん</p>
+                    <p>{{comment.text}}</p>
+                    <p class="text-right">{{comment.create_date}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                 <div class="card-header">
+                    投稿記事一覧
+                </div>
+                <div class="card-body">
+                    <p class="text-right">
+                        {% if user.is_authenticated %}
+                        <span class="badge badge-info">
+                            <a class="p-2 text-white" href="{% url 'add_book' %}">本追加</a>
+                        </span>
+                        {% endif %}
+                    </p>
+                    {% for book in books %}
+                        <div class="media bg-white border-top">
+                            {% if book.0.image %}
+                                <img class="mr-3 align-self-center" src="{{book.0.image.url}}" width="128">
+                            {% else %}
+                                <img class="mr-3 align-self-center" src="{% static 'noimage.jpg' %}" width="128">
+                            {% endif %}
+                            <div class="media-body">
+                                {% if user.is_authenticated %}
+                                  <nav class="nav d-flex justify-content-end">
+                                    <span class="badge badge-info">
+                                      <a class="p-2 text-white" href="{% url 'edit_book' book.0.id %}">編集</a>
+                                    </span>
+                                    <span class="badge badge-danger">
+                                      <a class="p-2 text-white" href="{% url 'delete_book' book.0.id %}">削除</a>
+                                    </span>
+                                  </nav>
+                                {% endif %}
+                                <strong class="d-inline-block mb-2 text-primary">{{book.0.category}}</strong>
+                                <h4>{{book.0.title}}</h4>
+                                <p>{{book.0.description|linebreaksbr}}</p>
+                                <a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a>
+                                <div class="mb-1 text-muted text-right">{{book.1}}views</div>
+                                <div class="mb-1 text-muted text-right">{{book.0.create_date}}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 bg-light">
+            <div class=" sidebar_fixed">
+                <!-- admax -->
+                <script src="https://adm.shinobi.jp/s/97c59c2e5c821337d31c04b0d3fd3f7e"></script>
+                <!-- admax -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 自分の投稿記事表示 -->
+
+    <!--コメント表示 -->
+{% endblock %}

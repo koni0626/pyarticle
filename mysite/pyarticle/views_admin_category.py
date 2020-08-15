@@ -4,7 +4,7 @@ from .models import Category
 from .models import Chapter
 from .utils import custom_render
 from . import forms
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http.response import JsonResponse
 from django.db.utils import IntegrityError
 # Create your views here.
@@ -55,7 +55,7 @@ def save_category(request, category_id):
         return HttpResponseRedirect(reverse('category'))
 
 
-@login_required
+@user_passes_test(lambda u: u.is_superuser)
 def delete_category(request, category_id):
     record = Category.objects.filter(id=category_id).delete()
     return HttpResponseRedirect(reverse('category'))

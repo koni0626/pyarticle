@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, views_admin_my_page
 from . import views_admin
 from . import views_admin_book
 from . import views_admin_chapter
@@ -27,7 +27,8 @@ urlpatterns = [
 
     path('book/<int:book_id>/<int:page>', views.book, name='disp_book'),
     path('chapter/<int:book_id>/<int:chapter_id>', views.chapter, name='disp_chapter'),
-    path('admin/', views_admin.index, name='admin'),
+
+  #  path('admin/', views_admin.index, name='admin'),
     path('admin/book/', views_admin_book.index, name='book'),
     path('admin/book/add/', views_admin_book.add_book, name='add_book'),
     path('admin/book/edit/<int:book_id>', views_admin_book.edit_book, name='edit_book'),
@@ -68,5 +69,6 @@ urlpatterns = [
 
    # path('admin/profile/', views_admin_profile.index, name='profile'),
     path('admin/profile/edit', views_admin_profile.edit, name='profile_edit'),
+    path('admin/mypage', views_admin_my_page.index, name='my_page')
 
 ]

@@ -30,15 +30,6 @@
     </div>
 
     <div class="form-group row">
-        <label for="belong" class="col-md-3 col-form-label">
-            {{profile_form.belong.label}}
-        </label>
-        <div class="col-md-6" id="belong">
-            {{profile_form.belong}}
-        </div>
-    </div>
-
-    <div class="form-group row">
         <label for="intro" class="col-md-3 col-form-label">
             {{profile_form.intro.label}}
         </label>
@@ -55,6 +46,16 @@
             {{profile_form.twitter}}
         </div>
     </div>
+
+    <div class="form-group row">
+        <label for="site" class="col-md-3 col-form-label">
+            {{profile_form.wallet.label}}
+        </label>
+        <div class="col-md-6" id="wallet">
+            {{profile_form.wallet}}
+        </div>
+    </div>
+
     <p class="text-center">
         <button type="submit" class="btn btn-secondary">保存する</button>
     </p>

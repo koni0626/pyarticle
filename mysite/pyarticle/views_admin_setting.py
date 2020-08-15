@@ -3,11 +3,13 @@ from django.urls import reverse
 from .models import SiteParams
 from .utils import custom_render
 from . import forms
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
 # Create your views here.
 
 
-@login_required
+@user_passes_test(lambda u: u.is_superuser)
 def edit_setting(request):
     try:
         site_name = SiteParams.objects.filter(param="site_name").first().value
@@ -16,13 +18,15 @@ def edit_setting(request):
         site_image = SiteParams.objects.filter(param="site_image").first().image
         site_data_sitekey = SiteParams.objects.filter(param="data_sitekey").first().value
         site_secret = SiteParams.objects.filter(param="site_secret").first().value
+        site_news = SiteParams.objects.filter(param="site_news").first().value
 
         form = forms.SiteTitleForm(initial={'site_name': site_name,
                                             'site_description': site_description,
                                             'image': site_image,
                                             'site_upload_url': site_upload_url,
                                             'site_secret': site_secret,
-                                            'site_data_sitekey': site_data_sitekey})
+                                            'site_data_sitekey': site_data_sitekey,
+                                            'site_news': site_news})
 
         data = {'title_form': form, 'site_image': site_image.url}
     except:
@@ -32,7 +36,7 @@ def edit_setting(request):
     return custom_render(request, 'pyarticle/admin/setting/setting.html', data)
 
 
-@login_required
+@user_passes_test(lambda u: u.is_superuser)
 def save_setting(request):
     if request.method == 'POST':
         form = forms.SiteTitleForm(request.POST, request.FILES)
@@ -56,6 +60,10 @@ def save_setting(request):
             site_secret = SiteParams.objects.get(param="site_secret")
             site_secret.value = form.cleaned_data["site_secret"]
             site_secret.save()
+
+            site_news = SiteParams.objects.get(param="site_news")
+            site_news.value = form.cleaned_data["site_news"]
+            site_news.save()
 
             site_image = SiteParams.objects.get(param="site_image")
 

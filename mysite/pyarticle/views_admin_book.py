@@ -1,6 +1,8 @@
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
+
+from .component.book_component import BookComponent
 from .models import Book
 from .models import Chapter
 from .models import Section
@@ -36,6 +38,10 @@ def add_book(request):
 
 @login_required
 def edit_book(request, book_id):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     book_record = Book.objects.get(id=book_id)
     form = forms.BookForm(initial={'title': book_record.title,
                                    'description': book_record.description,
@@ -95,11 +101,15 @@ def save_book(request, book_id):
         else:
             pass
             #return HttpResponseRedirect("/pyarticle/admin/book")
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('my_page'))
 
 
 @login_required
 def delete_book(request, book_id):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     record = Book.objects.filter(id=book_id).delete()
     return HttpResponseRedirect(reverse('index'))
 
@@ -109,6 +119,9 @@ def upload_attach_file(request, book_id, page):
     この関数はセクションにあるべきではない
     """
     save_path = 'attach/{}'.format(book_id)
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
 
     if request.method == 'POST' and request.FILES['attach_file']:
         attach_file = request.FILES['attach_file']
@@ -126,6 +139,10 @@ def upload_attach_file(request, book_id, page):
 
 @login_required
 def delete_attach_file(request, book_id, page, filename):
+    bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        raise Http404("不正なリクエストです")
+
     attach_file_name = settings.MEDIA_ROOT + '/attach/{}/{}'.format(book_id, filename)
     if os.path.exists(attach_file_name):
         os.remove(attach_file_name)

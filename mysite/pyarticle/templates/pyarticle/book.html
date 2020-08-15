@@ -261,10 +261,44 @@ table, th, td {
     </p>
     </div>
     <div class="col-md-3 bg-light">
+        <div class="card" style="max-width: 25rem">
+            <div class="card-header">
+                プロフィール
+            </div>
+            <div class="card-body">
+                {% if profile.image %}
+                    <p class="text-center">
+                        <img src="{{profile.image.url}}"  width="128" height="128"/>
+                    </p>
+                {% else %}
+                    <p class="text-center">
+                        <img src="{% static 'noprofimg.png' %}"  width="128" height="128"/>
+                    </p>
+                {% endif %}
+                <h4 class="card-title">自己紹介</h4>
+                <p class="card-text">{{profile.intro|linebreaksbr}}</p>
+
+                <h4 class="card-title">サイト/ブログ</h4>
+                <p>
+                       {% if profile.site %}
+                            <a href="{{profile.site}}" target="_blank">{{profile.site}}</a>
+                    {% endif %}
+                </p>
+
+                <h4 class="card-title">ツイッター</h4>
+                <p>
+                    {% if profile.twitter %}
+                    <a href="https://twitter.com/{{profile.twitter}}" target="_blank"><img src="{% static 'twitter_logo.png' %}" width="32" height="32"/></a>
+                    @{{profile.twitter}}
+                    {% endif %}
+                </p>
+
+            </div>
+        </div>
         <div class=" sidebar_fixed">
-    <!-- admax -->
-    <script src="https://adm.shinobi.jp/s/97c59c2e5c821337d31c04b0d3fd3f7e"></script>
-    <!-- admax -->
+            <!-- admax -->
+            <script src="https://adm.shinobi.jp/s/97c59c2e5c821337d31c04b0d3fd3f7e"></script>
+            <!-- admax -->
         </div>
     </div>
 

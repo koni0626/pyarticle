@@ -2,7 +2,7 @@
 import time
 import glob
 import os
-from pyarticle.models import Book
+from pyarticle.models import Book, User, Profile
 from pyarticle.models import Chapter
 from pyarticle.models import Section
 from django.db.models import Sum
@@ -24,6 +24,19 @@ class BookComponent:
         self.image = self.book.image
         self.attach_file_form = AttachFileForm()
         self.comment_form = CommentForm()
+        self.profile = Profile.objects.filter(user=self.book.user).first()
+        if self.profile is None:
+            Profile(user=self.book.user).save()
+
+    def is_your_book(self, username):
+        user = User.objects.filter(username=username).first()
+        if user is None:
+            return False
+
+        if self.book.user == user:
+            return True
+
+        return False
 
     def get_title(self):
         return self.title

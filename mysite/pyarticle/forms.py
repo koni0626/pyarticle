@@ -53,18 +53,17 @@ class ProfileForm(forms.Form):
         fields = '__all__'
     image = forms.ImageField(label='アイコン画像', required=False)
 
-    site = forms.CharField(label='サイト/ブログ',
+    site = forms.CharField(label='サイト/ブログ', required=False,
                            widget=forms.TextInput(attrs={'size': '100'}))
 
-    belong = forms.CharField(label='所属している組織・企業',
-                             widget=forms.TextInput(attrs={'size': '100'}))
-
-    twitter = forms.CharField(label='ツイッターID',
+    twitter = forms.CharField(label='ツイッターID', required=False,
                               widget=forms.TextInput(attrs={'size': '100'}))
 
-    intro = forms.CharField(label='自己紹介',
+    intro = forms.CharField(label='自己紹介', required=False,
                             widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))
 
+    wallet = forms.CharField(label='NEMの振込先', required=False,
+                             widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))
 
 class SiteTitleForm(forms.Form):
     image = forms.ImageField(required=False)
@@ -77,6 +76,9 @@ class SiteTitleForm(forms.Form):
 
     site_description = forms.CharField(label='説明',
                                        widget=forms.Textarea(attrs={'cols': 100, 'rows': 5, 'class': 'form-control'}))
+
+    site_news = forms.CharField(label='お知らせ',
+                                widget=forms.Textarea(attrs={'cols': 100, 'rows': 5, 'class': 'form-control'}))
 
     site_data_sitekey = forms.CharField(label='このサイトキーは、ユーザーに表示するサイトの HTML コードで使用します',
                                  widget=forms.TextInput(attrs={'size': '100', 'class': 'form-control'}))
@@ -93,7 +95,7 @@ class SignUpForm(UserCreationForm):
 
 class SearchForm(forms.Form):
     key_word = forms.CharField(label='検索', required=False,
-                              widget=forms.TextInput(attrs={'size': '100'}))
+                              widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 
 class CommentForm(forms.Form):

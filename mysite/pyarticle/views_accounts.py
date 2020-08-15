@@ -7,7 +7,6 @@ from .forms import SignUpForm
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url='login/')
 def signup(request):
     """
     サインアップでユーザ新規追加という意味らしい

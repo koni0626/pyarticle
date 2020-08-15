@@ -46,13 +46,13 @@ def edit(request):
                     profile_record.image = None
 
             profile_record.site = form.cleaned_data['site']
-            profile_record.belong = form.cleaned_data['belong']
+            profile_record.wallet = form.cleaned_data['wallet']
             profile_record.intro = form.cleaned_data['intro']
             profile_record.twitter = form.cleaned_data['twitter']
             profile_record.user = user
             profile_record.save()
             # 編集完了
-            return redirect('profile_edit')
+            return redirect('my_page')
         else:
             raise Http404("不正なリクエストです(4)")
     else:

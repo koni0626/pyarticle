@@ -17,12 +17,14 @@ def custom_render(request, template, data):
     image = SiteParams.objects.get(param='site_image').image
     upload_url = SiteParams.objects.get(param='upload_url').value
     data_sitekey = SiteParams.objects.get(param='data_sitekey').value
+    site_news = SiteParams.objects.get(param='site_news').value
     try:
         url = image.url
     except:
         url = ""
 
-    record = {'site_name': site_name, 'description': description, 'site_image': url, 'upload_url': upload_url, 'data_sitekey': data_sitekey}
+    record = {'site_name': site_name, 'description': description, 'site_image': url,
+              'upload_url': upload_url, 'data_sitekey': data_sitekey, 'site_news': site_news}
     record.update(data)
     return render(request, template, record)
 
