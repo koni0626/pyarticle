@@ -379,4 +379,43 @@ class BookComponent:
 
         return attach_file_list
 
+    def is_already_good(self, request):
+        session_name = "{}_good".format(self.book_id)
+        access_session_name = "{}_good_date".format(self.book_id)
+        now_time = time.time()
+        if access_session_name not in request.session:
+            return False
 
+        old_time = request.session[access_session_name]
+        if now_time - old_time >= 86400.:
+            # 24時間経過していないからカウントしない
+            return False
+
+        return True
+
+    def set_good(self, request):
+        session_name = "{}_good".format(self.book_id)
+        access_session_name = "{}_good_date".format(self.book_id)
+        is_timeout = False
+        now_time = time.time()
+        if access_session_name in request.session:
+
+            old_time = request.session[access_session_name]
+            if now_time - old_time < 86400.:
+                # 24時間経過していないからカウントしない
+                is_timeout = False
+            else:
+                request.session[access_session_name] = now_time
+                is_timeout = True
+        else:
+            request.session[access_session_name] = now_time
+            # 初めてのアクセスはタイムアウト扱い
+            is_timeout = True
+
+        if not request.session.get(session_name, False) or is_timeout:
+            self.book.good_count += 1
+            self.book.save()
+            request.session[session_name] = True
+
+    def get_book_good_count(self):
+        return self.book.good_count

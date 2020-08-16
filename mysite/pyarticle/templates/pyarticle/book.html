@@ -149,10 +149,10 @@ table#good td {
     <div class="col-md-1 bg-light">
         <table id="good" align="right">
             <tr>
-                <td><img src="{% static 'star_on.png' %}" width="64"></td>
+                <td><img id='good_image' src="{% static good_image %}" width="64"></td>
             </tr>
             <tr>
-                <td id="count"><div class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
+                <td id="count"><div id="good_count" class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
             </tr>
         </table>
     </div>
@@ -381,6 +381,34 @@ window.addEventListener('load', function(){
       elem.innerHTML = modi;
   });
 }, false);
+
+$("#good_image").click(
+    function() {
+        var hostUrl = "{% url 'ajax_set_good' book.id %}";
+        alert(hostUrl);
+        var token = "{{csrf_token}}";
+        $.ajax({
+                url: hostUrl,
+                headers:{ "X-CSRFToken": token },
+                method: 'POST',
+                dataType: 'text',
+                data : {},
+                timeout: 3000,
+            }).done(function(json){
+                const obj = JSON.parse(json);
+                alert("{% static 'star_on.png' %}");
+                alert(obj.good_count);
+                $("#good_image").attr("src", "{% static 'star_on.png' %}");
+                $("#good_count").text(obj.good_count);
+
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("カテゴリの登録に失敗しました");
+            }
+        )
+    }
+);
+
+
 </script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 {% endblock %}

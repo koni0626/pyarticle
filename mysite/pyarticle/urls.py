@@ -28,6 +28,8 @@ urlpatterns = [
     path('book/<int:book_id>/<int:page>', views.book, name='disp_book'),
     path('chapter/<int:book_id>/<int:chapter_id>', views.chapter, name='disp_chapter'),
 
+    path('set_good/<int:book_id>', views.set_good, name='ajax_set_good'),
+
   #  path('admin/', views_admin.index, name='admin'),
     path('admin/book/', views_admin_book.index, name='book'),
     path('admin/book/add/', views_admin_book.add_book, name='add_book'),

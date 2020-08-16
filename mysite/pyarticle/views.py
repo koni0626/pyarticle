@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from pyarticle.models import Book
 from pyarticle.models import Category
@@ -130,12 +130,19 @@ def book(request, book_id, page):
     # 添付ファイル一覧
     attach_file_list = bc.get_attach_list()
 
+    # ユーザが★を押しているかどうか
+    is_press_good = bc.is_already_good(request)
+    if is_press_good:
+        good_image = 'star_on.png'
+    else:
+        good_image = 'star_off.png'
+
 
     data = {'book': bc.book, 'chapter': chapter_record, 'chapter_list': chapter_list,
             'attach_file_form': bc.attach_file_form, 'comment_form': bc.comment_form, 'acc': acc,
             'prev_page': page-1,  'section': section_record, 'next_page': page+1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list,
-            'profile': bc.profile, 'is_my_page': is_my_page}
+            'profile': bc.profile, 'is_my_page': is_my_page, 'good_image': good_image}
 
     return book_header(request, 'pyarticle/book.html', bc, data)
 
@@ -147,3 +154,11 @@ def chapter(request, book_id, chapter_id):
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
+
+def set_good(request, book_id):
+    """★をクリックしたとき"""
+    bc = BookComponent(book_id)
+    bc.set_good(request)
+    count = bc.get_book_good_count()
+    print("star count {}".format(count))
+    return JsonResponse({'good_count': count})
