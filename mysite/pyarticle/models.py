@@ -257,7 +257,7 @@ class Section(models.Model):
                                        null=True,
                                        verbose_name="作成日")
 
-    update_date = models.DateTimeField(auto_now=True,
+    update_date = models.DateTimeField(auto_now=False,
                                        null=True,
                                        verbose_name="更新日")
 

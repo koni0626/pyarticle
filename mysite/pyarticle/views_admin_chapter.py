@@ -1,6 +1,8 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
+
 from .models import Chapter
 from .models import Book
 from .models import Section
@@ -86,6 +88,7 @@ def save_chapter(request, book_id, chapter_id):
                 chapter.save()
                 section = Section(text="",
                                   order=1,
+                                  update_date=timezone.now(),
                                   chapter=Chapter.objects.get(id=chapter.id))
                 section.save()
                 page = bc.get_page(section.id)

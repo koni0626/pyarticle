@@ -7,7 +7,9 @@
     <meta property="og:url" content="https://www.osumoi-stdio.com{{ request.path }}" />
     <meta property="og:title" content="{{section.chapter}}" />
     <meta property="og:description" content="{{section.chapter}}" />
+    {% if book.image %}
     <meta property="og:image" content="https://www.osumoi-stdio.com{{book.image.url}}" />
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -96,6 +98,15 @@ div#mde h4 {
 table, th, td {
   width: auto !important;
 }
+
+/* いいね */
+table#good td {
+    text-align: center;
+    vertical-align: bottom;
+    border: none;
+
+}
+
 </style>
 
 
@@ -108,7 +119,7 @@ table, th, td {
 
 
 <div class="row"  style="margin-left: 0; margin-right: 10;">
-    <div class="col-md-3 bg-light">
+    <div class="col-md-2 bg-light">
         <div class=" sidebar_fixed">
             {% if user.is_authenticated %}
             <p class="text-left">
@@ -135,6 +146,16 @@ table, th, td {
         </div>
 
     </div>
+    <div class="col-md-1 bg-light">
+        <table id="good" align="right">
+            <tr>
+                <td><img src="{% static 'star_on.png' %}" width="64"></td>
+            </tr>
+            <tr>
+                <td id="count"><div class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
+            </tr>
+        </table>
+    </div>
     <div class="col-md-6 bg-white">
 
         <p class="text-right">
@@ -153,16 +174,17 @@ table, th, td {
             <p class="text-right">
                 <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
             </p>
+             <div class="mb-1 text-muted text-right">{{section.update_date}} 更新</div>
         </div>
         <p>
-            {% if user.is_authenticated %}
+            {% if is_my_page %}
                 <p class="text-right">
                     <span class="badge badge-info">
                         <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">ページの追加</a>
                     </span>
             {%endif %}
 
-            {% if user.is_authenticated %}
+            {% if is_my_page %}
                 {% if section %}
                     <span class="badge badge-success">
                         <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">ページ編集</a>
@@ -178,6 +200,7 @@ table, th, td {
             </div>
 
         </p>
+
         <p>
              Page {{ now_page }} of {{ total_page }}.
         </p>

@@ -20,7 +20,7 @@ def index(request):
     # 本全体のアクセス数をカウントする
     books = []
     for book in book_records:
-        print(book.id)
+        print("book_id:{}".format(book.id))
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
         books.append([book, acc])
@@ -98,6 +98,12 @@ def book(request, book_id, page):
     :return:
     """
     bc = BookComponent(book_id)
+    if not bc.is_your_book(request.user):
+        is_my_page = False
+    else:
+        is_my_page = True
+
+    bc = BookComponent(book_id)
     total_page = bc.get_page_count()
     if total_page == 0:
         # ページが一個もなかったら空のページを作成する
@@ -129,7 +135,7 @@ def book(request, book_id, page):
             'attach_file_form': bc.attach_file_form, 'comment_form': bc.comment_form, 'acc': acc,
             'prev_page': page-1,  'section': section_record, 'next_page': page+1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list,
-            'profile': bc.profile}
+            'profile': bc.profile, 'is_my_page': is_my_page}
 
     return book_header(request, 'pyarticle/book.html', bc, data)
 

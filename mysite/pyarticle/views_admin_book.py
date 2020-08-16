@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
+from django.utils import timezone
 
 from .component.book_component import BookComponent
 from .models import Book
@@ -84,6 +85,7 @@ def save_book(request, book_id):
 
                 section = Section(text="",
                               order=1,
+                              update_date=timezone.now(),
                               chapter=Chapter.objects.get(id=chapter.id))
                 section.save()
             else:
@@ -111,7 +113,7 @@ def delete_book(request, book_id):
         raise Http404("不正なリクエストです")
 
     record = Book.objects.filter(id=book_id).delete()
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('my_page'))
 
 @login_required
 def upload_attach_file(request, book_id, page):

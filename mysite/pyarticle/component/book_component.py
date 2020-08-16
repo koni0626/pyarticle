@@ -2,6 +2,9 @@
 import time
 import glob
 import os
+
+from django.utils import timezone
+
 from pyarticle.models import Book, User, Profile
 from pyarticle.models import Chapter
 from pyarticle.models import Section
@@ -134,6 +137,7 @@ class BookComponent:
         # 空のセクション生成
         section = Section(text="",
                           order=1,
+                          update_date=timezone.now(),
                           chapter=Chapter.objects.get(id=chapter.id))
         section.save()
 
@@ -237,6 +241,7 @@ class BookComponent:
         """
         section = Section(text=text,
                           order=order,
+                          update_date=timezone.now(),
                           chapter=Chapter.objects.get(id=chapter_id))
         section.save()
 
@@ -255,6 +260,7 @@ class BookComponent:
         section = Section.objects.get(id=section_id)
         section.text = text
         section.order = order
+        section.update_date = timezone.now()
         section.chapter = Chapter.objects.get(id=chapter_id)
         section.save()
 
@@ -350,7 +356,9 @@ class BookComponent:
         acc = 0
         for chapter in chapter_list:
             record = Section.objects.filter(chapter=chapter).aggregate(Sum('access_count'))
-            acc += record['access_count__sum']
+            if 'access_count__sum' in record:
+                if record['access_count__sum'] is not None:
+                    acc += record['access_count__sum']
 
         return acc
 
