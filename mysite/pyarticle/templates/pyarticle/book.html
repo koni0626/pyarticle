@@ -317,7 +317,7 @@ table#good td {
                 <p>
                     {% if profile.twitter %}
                     <a href="https://twitter.com/{{profile.twitter}}" target="_blank"><img src="{% static 'twitter_logo.png' %}" width="32" height="32"/></a>
-                    @{{profile.twitter}}
+                    <a href="https://twitter.com/{{profile.twitter}}" target="_blank">@{{profile.twitter}}</a>
                     {% endif %}
                 </p>
 
