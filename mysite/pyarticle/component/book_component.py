@@ -2,6 +2,7 @@
 import time
 import glob
 import os
+import traceback
 
 from django.utils import timezone
 
@@ -223,8 +224,14 @@ class BookComponent:
         try:
             # もし該当するチャプターのセクションが全部なくなっていたら、
             # 一つだけ空のセクションを作成する
-            Section.objects.get(chapter=chapter_id)
-        except Section.DoesNotExist:
+            records = Section.objects.filter(chapter=chapter_id)
+            if len(records) == 0:
+                print("来てるよ")
+                ret = False
+            else:
+                print("きてないよ")
+        except:
+            print(traceback.format_exc())
             ret = False
 
         return ret
