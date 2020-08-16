@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from pyarticle.models import Book
+from pyarticle.models import Book, AccessLog
 from pyarticle.models import Category
 from pyarticle.models import Chapter
 from pyarticle.models import Section
@@ -20,7 +20,6 @@ def index(request):
     # 本全体のアクセス数をカウントする
     books = []
     for book in book_records:
-        print("book_id:{}".format(book.id))
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
         books.append([book, acc])
@@ -97,7 +96,20 @@ def book(request, book_id, page):
     :param page:
     :return:
     """
+    """
+    if 'HTTP_REFERER' in request.META:
+        print(request.META['HTTP_REFERER'])
+        print(request.META['REMOTE_ADDR'])
+        print(request.META['OS'])
+        print(request.META['HTTP_USER_AGENT'])
+
+        for meta in request.META:
+            print("{}/{}".format(meta,request.META[meta]))
+    else:
+        print("ありません")
+    """
     bc = BookComponent(book_id)
+
     if not bc.is_your_book(request.user):
         is_my_page = False
     else:
@@ -144,6 +156,9 @@ def book(request, book_id, page):
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list,
             'profile': bc.profile, 'is_my_page': is_my_page, 'good_image': good_image}
 
+    access_log = AccessLog()
+    access_log.write_log(request, bc.book.user, bc.book, chapter_record, section_record)
+
     return book_header(request, 'pyarticle/book.html', bc, data)
 
 
@@ -160,5 +175,4 @@ def set_good(request, book_id):
     bc = BookComponent(book_id)
     bc.set_good(request)
     count = bc.get_book_good_count()
-    print("star count {}".format(count))
     return JsonResponse({'good_count': count})

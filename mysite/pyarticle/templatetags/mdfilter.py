@@ -39,6 +39,5 @@ def markdown2html(value):
         else:
             result = result + "\n" + line
         row += 1
-    print(result)
     return result
 

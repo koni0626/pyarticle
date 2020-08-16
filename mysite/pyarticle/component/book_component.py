@@ -68,7 +68,6 @@ class BookComponent:
             id = 0
             skip = False
             for line in lines:
-                print(line)
                 if len(line) >= 3 and line[0:3] == "```":
                     if skip:
                         skip = False

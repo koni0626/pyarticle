@@ -1,5 +1,9 @@
+from datetime import date
+
+from django.db.models import Count
+
 from .component.book_component import BookComponent
-from .models import Book, Profile, Comment
+from .models import Book, Profile, Comment, AccessLog
 from .utils import custom_render, get_user
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -13,7 +17,6 @@ def index(request):
     # 本全体のアクセス数をカウントする
     books = []
     for book in book_records:
-        print(book.id)
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
         books.append([book, acc])
@@ -31,6 +34,13 @@ def index(request):
             for record in records:
                 comments.append(record)
 
-    data = {'books': books, 'profile': profile, 'comments': comments}
+    # ログ回収
+    #logs = AccessLog.objects.filter(user=user).order_by('id').reverse().all()[:100]
+    summaries = AccessLog.objects.values('book').filter(user=user, create_date__icontains=date.today()).annotate(count=Count('book'))
+    for summary in summaries:
+        book_id = summary['book']
+        bc = BookComponent(book_id)
+        summary['book'] = bc.book.title
+    data = {'books': books, 'profile': profile, 'comments': comments, 'summaries': summaries}
     return custom_render(request, 'pyarticle/admin/mypage/index.html', data)
 

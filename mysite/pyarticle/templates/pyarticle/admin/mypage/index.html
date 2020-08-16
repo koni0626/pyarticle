@@ -55,6 +55,32 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <div class="card" style="max-width: 25rem">
+                <div class="card-header">
+                    今日のアクセス数
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>アクセス数</th>
+                        </tr>
+                        {% for summary in summaries %}
+                            <tr>
+                                <td>
+                                    {{summary.book}}
+                                </td>
+                                <td>
+                                    {{summary.count}}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            </div>
+
         </div>
         <div class="col-md-6">
             <div class="card">

@@ -1,0 +1,36 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="row" style="margin-left: 0; margin-right: 10;">
+        <!--プロフィール表示 -->
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <tr>
+                    <th>book</th>
+                    <th>user</th>
+                    <th>chapter</th>
+                    <th>remote_addr</th>
+                    <th>referer</th>
+                    <th>date</th>
+                    <th>agent</th>
+                </tr>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{log.book}}</td>
+                        <td>{{log.user}}</td>
+                        <td>{{log.chapter}}</td>
+                        <td>{{log.remote_addr}}</td>
+                        <td>{{log.referer}}</td>
+                        <td>{{log.create_date}}</td>
+                        <td>{{log.agent}}</td>
+                    </tr>
+                {% endfor %}
+
+
+            </table>
+        </div>
+
+    <!-- 自分の投稿記事表示 -->
+
+    <!--コメント表示 -->
+{% endblock %}

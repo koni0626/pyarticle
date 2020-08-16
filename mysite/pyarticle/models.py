@@ -296,3 +296,68 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class AccessLog(models.Model):
+    book = models.ForeignKey(Book,
+                             on_delete=models.CASCADE,
+                             null=True,
+                             verbose_name="本",
+                             help_text="本")
+
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE,
+                                null=True,
+                                verbose_name="関連するチャプター",
+                                help_text="関連するチャプター")
+
+    section = models.ForeignKey(Section, on_delete=models.CASCADE,
+                                null=True,
+                                verbose_name="関連するページ",
+                                help_text="関連するページ")
+
+    user = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+    )
+
+    referer = models.CharField(max_length=512,
+                               null=True,
+                               verbose_name="referer",
+                               help_text="referer")
+
+    remote_addr = models.CharField(max_length=128,
+                                   null=True,
+                                   verbose_name="ip_adress",
+                                   help_text="ip_adress")
+
+    agent = models.CharField(max_length=512,
+                             null=True,
+                             verbose_name="agent",
+                              help_text="agent")
+
+    create_date = models.DateTimeField(auto_now_add=True,
+                                       null=True,
+                                       verbose_name="作成日")
+
+    def write_log(self, request, user, book, chapter, section):
+        if 'HTTP_REFERER' in request.META:
+            self.referer = request.META['HTTP_REFERER']
+            if len(self.referer) > 512:
+                self.referer = self.referer[0:511]
+
+        if 'REMOTE_ADDR' in request.META:
+            self.remote_addr = request.META['REMOTE_ADDR']
+            if len(self.remote_addr) > 128:
+                self.remote_addr = self.remote_addr[0:127]
+
+        if 'HTTP_USER_AGENT' in request.META:
+            self.agent = request.META['HTTP_USER_AGENT']
+            if len(self.agent) > 512:
+                self.agent = self.agent[0:511]
+
+        self.user = user
+        self.book = book
+        self.chapter = chapter
+        self.section = section
+
+        self.save()

@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, views_admin_my_page
+from . import views, views_admin_my_page, views_admin_access_log
 from . import views_admin
 from . import views_admin_book
 from . import views_admin_chapter
@@ -71,6 +71,7 @@ urlpatterns = [
 
    # path('admin/profile/', views_admin_profile.index, name='profile'),
     path('admin/profile/edit', views_admin_profile.edit, name='profile_edit'),
-    path('admin/mypage', views_admin_my_page.index, name='my_page')
+    path('admin/mypage', views_admin_my_page.index, name='my_page'),
 
+    path('admin/access_log', views_admin_access_log.index, name='access_log')
 ]

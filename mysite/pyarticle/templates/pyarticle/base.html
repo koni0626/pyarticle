@@ -59,6 +59,12 @@
 
           {% if user.is_superuser %}
           <li class="nav-item">
+            <a class="nav-link active" href="{% url 'access_log'%}">アクセスログ</a>
+          </li>
+          {% endif %}
+
+          {% if user.is_superuser %}
+          <li class="nav-item">
             <a class="nav-link active" href="{% url 'edit_setting'%}">設定</a>
           </li>
           {% endif %}
