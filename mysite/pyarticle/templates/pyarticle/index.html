@@ -54,6 +54,7 @@
                                 <a href="{% url 'disp_book' book.0.id 1 %}"><h4>{{book.0.title}}</h4></a>
                                 <p>{{book.0.description|linebreaksbr}}</p>
                                 <a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a>
+                                <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book.0.good_count}}</div>
                                 <div class="mb-1 text-muted text-right">{{book.1}}views</div>
                                 <div class="mb-1 text-muted text-right">{{book.0.create_date}}</div>
                             </div>
