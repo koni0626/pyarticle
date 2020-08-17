@@ -36,7 +36,7 @@ def index(request):
 
     # ログ回収
     #logs = AccessLog.objects.filter(user=user).order_by('id').reverse().all()[:100]
-    summaries = AccessLog.objects.values('book').filter(user=user, create_date__icontains=date.today()).annotate(count=Count('book'))
+    summaries = AccessLog.objects.values('book').filter(user=user, create_date__icontains=date.today()).annotate(count=Count('book')).order_by('count').reverse()
     for summary in summaries:
         book_id = summary['book']
         bc = BookComponent(book_id)
