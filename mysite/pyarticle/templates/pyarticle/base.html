@@ -92,11 +92,11 @@
           <p class="lead my-3">{% block subtitle %}{{description| linebreaksbr}}{% endblock %}</p>
         </div>
         {% if user.is_authenticated %}
-          <p class="text-right">
+          <!--<p class="text-right">
               <span class="badge badge-info">
                 <a class="p-2 text-white" href="{% url 'edit_title'%}">ヘッダ編集</a>
               </span>
-          </p>
+          </p>-->
         {% endif %}
       </div>
     </div>
