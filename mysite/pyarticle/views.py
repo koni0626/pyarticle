@@ -27,7 +27,15 @@ def index(request):
     # 検索フォームの作成
     search_form = SearchForm()
 
-    data = {'books': books, 'search_form': search_form}
+    # 人気記事top10
+    popular_books = []
+    popular_records = Book.objects.order_by('good_count').reverse().all()[:10]
+    for book in popular_records:
+        bc = BookComponent(book.id)
+        acc = bc.get_book_access_count()
+        popular_books.append([book, acc])
+
+    data = {'books': books, 'search_form': search_form, 'popular_books': popular_books}
     return custom_render(request, 'pyarticle/index.html', data)
 
 
