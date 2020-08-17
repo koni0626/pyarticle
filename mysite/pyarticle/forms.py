@@ -111,7 +111,7 @@ class CommentForm(forms.Form):
     text = forms.CharField(label='問い合わせ', required=True,
                            widget=forms.Textarea(attrs={'size': '1024',
                                                         'class': 'form-control',
-                                                         'placeholder': "お問い合わせの内容は管理者にだけ通知されます"}))
+                                                         'placeholder': "お問い合わせの内容は執筆者にだけ通知されます"}))
 
     name = forms.CharField(label='お名前', required=True,
                            widget=forms.TextInput(attrs={'size': '32',
