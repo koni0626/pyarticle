@@ -42,9 +42,9 @@
                     {% for book in popular_books %}
                         <div class="media bg-white border-top">
                             {% if book.0.image %}
-                                <img class="mr-3 align-self-center" src="{{book.0.image.url}}" width="32">
+                                <img class="mr-3 align-self-center" src="{{book.0.image.url}}" width="64">
                             {% else %}
-                                <img class="mr-3 align-self-center" src="{% static 'noimage.jpg' %}" width="32">
+                                <img class="mr-3 align-self-center" src="{% static 'noimage.jpg' %}" width="64">
                             {% endif %}
                             <div class="media-body">
                                 <strong class="d-inline-block mb-2 text-secondary">{{book.0.category}}</strong>

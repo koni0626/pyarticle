@@ -20,7 +20,6 @@
 <hr>
 {% for result in results %}
     <a href="{% url 'disp_book' result.book_id result.page %}">本の名前:{{result.title}} ページ番号{{result.page}}</a>
-    <p>{{result.text  | markdown2html | safe }}</p>
     <hr>
 {% endfor %}
 
