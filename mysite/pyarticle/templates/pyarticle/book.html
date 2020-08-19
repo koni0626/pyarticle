@@ -137,7 +137,7 @@ table#good td {
             {% endif %}
             <ul class="text-white" data-spy="affix" data-offset-top="300" id="chapterList">
                 {% for c in chapter_list %}
-                    <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}">{{c.0.chapter}}</a>
+                <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}"><strong>{{c.0.chapter}}</strong></a>
                     {%if user.is_authenticated%}
                         <span class="badge badge-danger">
                         <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
