@@ -90,6 +90,7 @@ class Profile(models.Model):
 
     name = models.CharField(max_length=256,
                              null=True,
+                             default="",
                              verbose_name="表示名",
                              help_text="表示名")
 
