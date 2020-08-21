@@ -35,7 +35,8 @@ def index(request):
     for book in popular_records:
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
-        popular_books.append([book, acc])
+        profile = bc.profile
+        popular_books.append([book, acc, profile])
 
     data = {'books': books, 'search_form': search_form, 'popular_books': popular_books}
     return custom_render(request, 'pyarticle/index.html', data)
