@@ -41,6 +41,8 @@ def index(request):
         book_id = summary['book']
         bc = BookComponent(book_id)
         summary['book'] = bc.book.title
-    data = {'books': books, 'profile': profile, 'comments': comments, 'summaries': summaries}
+
+    my_book = bc.is_my_book(request.user)
+    data = {'books': books, 'profile': profile, 'comments': comments, 'summaries': summaries, 'my_book': my_book}
     return custom_render(request, 'pyarticle/admin/mypage/index.html', data)
 

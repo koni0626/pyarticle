@@ -33,7 +33,7 @@ class BookComponent:
         if self.profile is None:
             Profile(user=self.book.user).save()
 
-    def is_your_book(self, username):
+    def is_my_book(self, username):
         user = User.objects.filter(username=username).first()
         if user is None:
             return False

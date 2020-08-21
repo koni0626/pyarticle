@@ -40,7 +40,7 @@ def add_book(request):
 @login_required
 def edit_book(request, book_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     book_record = Book.objects.get(id=book_id)
@@ -109,7 +109,7 @@ def save_book(request, book_id):
 @login_required
 def delete_book(request, book_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     record = Book.objects.filter(id=book_id).delete()
@@ -122,7 +122,7 @@ def upload_attach_file(request, book_id, page):
     """
     save_path = 'attach/{}'.format(book_id)
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     if request.method == 'POST' and request.FILES['attach_file']:
@@ -142,7 +142,7 @@ def upload_attach_file(request, book_id, page):
 @login_required
 def delete_attach_file(request, book_id, page, filename):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     attach_file_name = settings.MEDIA_ROOT + '/attach/{}/{}'.format(book_id, filename)

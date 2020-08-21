@@ -91,10 +91,10 @@
           <h1 class="display-8 font-italic" onclick="book_home()">{% block title %}{{site_name}}{% endblock %}</h1>
           <p class="lead my-3">{% block subtitle %}{{description| linebreaksbr}}{% endblock %}</p>
         </div>
-        {% if user.is_authenticated %}
+        {% if user.is_superuser or my_book %}
           <p class="text-right">
               <span class="badge badge-info">
-                  <a class="p-2 text-white" href="{{header}}">ヘッダ編集</a>
+                  <a class="p-2 text-white" href="{{header}}">ヘッダ画像編集</a>
               </span>
           </p>
         {% endif %}

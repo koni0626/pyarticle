@@ -121,7 +121,7 @@ def book(request, book_id, page):
     """
     bc = BookComponent(book_id)
 
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         is_my_page = False
     else:
         is_my_page = True

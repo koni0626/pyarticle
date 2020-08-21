@@ -28,7 +28,7 @@ def index(request, book_id):
 @login_required
 def add_chapter(request, book_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     # チャプターのorderの最大値を求める
@@ -46,7 +46,7 @@ def add_chapter(request, book_id):
 @login_required
 def edit_chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     record = Chapter.objects.get(id=chapter_id)
@@ -60,7 +60,7 @@ def edit_chapter(request, book_id, chapter_id):
 @login_required
 def delete_chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     bc.delete_chapter(chapter_id)
@@ -76,7 +76,7 @@ def delete_chapter(request, book_id, chapter_id):
 def save_chapter(request, book_id, chapter_id):
     if request.method == 'POST':
         bc = BookComponent(book_id)
-        if not bc.is_your_book(request.user):
+        if not bc.is_my_book(request.user):
             raise Http404("不正なリクエストです")
 
         form = forms.ChapterForm(request.POST)
@@ -107,7 +107,7 @@ def save_chapter(request, book_id, chapter_id):
 def upper_chapter(request, book_id, chapter_id, page):
     # チャプターを上下を入れ替える
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     bc.swap_chapter(chapter_id, True)
@@ -118,7 +118,7 @@ def upper_chapter(request, book_id, chapter_id, page):
 def under_chapter(request, book_id, chapter_id, page):
     # チャプターを上下を入れ替える
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     bc.swap_chapter(chapter_id, False)
@@ -131,7 +131,7 @@ def ajax_save_chapter(request):
         chapter_list = request.POST.get('chapter_list', None)
         book_id = request.POST.get('book_id', None)
         bc = BookComponent(book_id)
-        if not bc.is_your_book(request.user):
+        if not bc.is_my_book(request.user):
             ret = {"result": -1, "message": "不正な値です"}
         else:
             chapter_list = json.loads(chapter_list)

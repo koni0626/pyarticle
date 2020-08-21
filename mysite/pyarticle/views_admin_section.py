@@ -18,7 +18,7 @@ import base64
 @login_required
 def add_section(request, book_id, chapter_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     items = Section.objects.filter(chapter=chapter_id).aggregate(Max('order'))
@@ -41,7 +41,7 @@ def add_section(request, book_id, chapter_id):
 @login_required
 def edit_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     record = Section.objects.get(id=section_id)
@@ -59,7 +59,7 @@ def edit_section(request, book_id, chapter_id, section_id):
 @login_required
 def save_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     if request.method == 'POST':
@@ -78,7 +78,7 @@ def save_section(request, book_id, chapter_id, section_id):
 @login_required
 def delete_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
-    if not bc.is_your_book(request.user):
+    if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
     # 現在のページ取得
