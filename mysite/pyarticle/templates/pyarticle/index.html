@@ -77,7 +77,17 @@
                                 <strong class="d-inline-block mb-2 text-secondary">{{book.0.category}}</strong>
                                 <a href="{% url 'disp_book' book.0.id 1 %}"><h4>{{book.0.title}}</h4></a>
                                 <p>{{book.0.description|linebreaksbr}}</p>
-                                <a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a>
+                                <p><a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a></p>
+                                <p>
+                                    {% if book.2.image %}
+                                        <img src="{{book.2.image.url}}"  width="32" height="32"/>
+                                    {% else %}
+                                        <img src="{% static 'noprofimg.png' %}"  width="32" height="32"/>
+                                    {% endif %}
+                                    {% if book.2.name %}
+                                        &nbsp投稿者&nbsp{{book.2.name}}
+                                    {% endif %}
+                                </p>
                                 <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book.0.good_count}}</div>
                                 <div class="mb-1 text-muted text-right">{{book.1}}views</div>
                                 <div class="mb-1 text-muted text-right">{{book.0.create_date}}</div>

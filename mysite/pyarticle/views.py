@@ -22,7 +22,9 @@ def index(request):
     for book in book_records:
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
-        books.append([book, acc])
+        profile = bc.profile
+
+        books.append([book, acc, profile])
 
     # 検索フォームの作成
     search_form = SearchForm()
@@ -156,7 +158,6 @@ def book(request, book_id, page):
         good_image = 'star_on.png'
     else:
         good_image = 'star_off.png'
-
 
     data = {'book': bc.book, 'chapter': chapter_record, 'chapter_list': chapter_list,
             'attach_file_form': bc.attach_file_form, 'comment_form': bc.comment_form, 'acc': acc,

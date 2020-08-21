@@ -50,6 +50,8 @@ def edit(request):
             profile_record.intro = form.cleaned_data['intro']
             profile_record.twitter = form.cleaned_data['twitter']
             profile_record.user = user
+            profile_record.name = form.cleaned_data['name']
+
             profile_record.save()
             # 編集完了
             return redirect('my_page')

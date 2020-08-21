@@ -88,6 +88,11 @@ class Profile(models.Model):
                              verbose_name="サイト/ブログ",
                              help_text="サイト/ブログ")
 
+    name = models.CharField(max_length=256,
+                             null=True,
+                             verbose_name="表示名",
+                             help_text="表示名")
+
     intro = models.CharField(max_length=1024,
                              null=True,
                              verbose_name="自己紹介",

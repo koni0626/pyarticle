@@ -56,6 +56,9 @@ class ProfileForm(forms.Form):
     site = forms.CharField(label='サイト/ブログ', required=False,
                            widget=forms.TextInput(attrs={'size': '100'}))
 
+    name = forms.CharField(label='表示名', required=False,
+                           widget=forms.TextInput(attrs={'size': '100'}))
+
     twitter = forms.CharField(label='ツイッターID', required=False,
                               widget=forms.TextInput(attrs={'size': '100'}))
 
