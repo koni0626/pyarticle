@@ -2,35 +2,18 @@
 {% load static %}
 {% block content %}
 
-<form action="{% url 'save_title' %}" method="post" enctype="multipart/form-data">
+
+<form action="{% url 'save_header_image' book_id %}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
     <div class="form-group row">
         <label for="site_header" class="col-md-3 col-form-label">
             ヘッダ画像
         </label>
         <div class="col-md-9" id="site_header">
-           {% if title_form.image %}
+           {% if header_form.image %}
             <img src="{{site_image}}" width="256" id="header-img"/>
             {% endif %}
-            <p>{{title_form.image}}</p>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label for="site_name" class="col-md-3 col-form-label">
-            タイトル<span class="badge badge-warning">必須</span>
-        </label>
-        <div class="col-md-9" id="site_name">
-            {{title_form.site_name}}
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label for="site_description" class="col-md-3 col-form-label">
-            説明<span class="badge badge-warning">必須</span>
-        </label>
-        <div class="col-md-9" id="site_description">
-            {{title_form.site_description}}
+            <p>{{header_form.image}}</p>
         </div>
     </div>
 
@@ -40,10 +23,9 @@
 
 
 </form>
-
 <script>
 $(function() {
-    $('#id_image').on('change', function(e) {
+    $('#site_header').on('change', function(e) {
         // 1枚だけ表示する
 
         var file = e.target.files[0];

@@ -187,6 +187,10 @@ class Book(models.Model):
                               null=True,
                              verbose_name="表紙画像")
 
+    header_image = models.ImageField(upload_to=get_book_image_path,
+                                     null=True,
+                                     verbose_name="ヘッダー画像")
+
     create_date = models.DateTimeField(auto_now_add=True,
                                        null=True,
                                        verbose_name="作成日")

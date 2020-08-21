@@ -26,6 +26,7 @@ class BookComponent:
         self.title = self.book.title
         self.description = self.book.description
         self.image = self.book.image
+        self.header_image = self.book.header_image
         self.attach_file_form = AttachFileForm()
         self.comment_form = CommentForm()
         self.profile = Profile.objects.filter(user=self.book.user).first()
@@ -50,6 +51,9 @@ class BookComponent:
 
     def get_image(self):
         return self.image
+
+    def get_header_image(self):
+        return self.header_image
 
     def get_chapter_list(self):
         """
@@ -425,3 +429,7 @@ class BookComponent:
 
     def get_book_good_count(self):
         return self.book.good_count
+
+    def save_header(self, image):
+        self.book.header_image = image
+        self.book.save()

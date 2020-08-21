@@ -39,6 +39,8 @@ div#mde table, th, td {
   border-collapse: collapse;
   border: 1px solid #ccc;
   line-height: 1.5;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 div#mde th {
@@ -111,7 +113,6 @@ table#good td {
     text-align: center;
     vertical-align: bottom;
     border: none;
-
 }
 
 </style>
@@ -127,7 +128,7 @@ table#good td {
 
 <div class="row"  style="margin-left: 0; margin-right: 10;">
     <div class="col-md-2 bg-light">
-        <div class=" sidebar_fixed">
+        <div class="sidebar_fixed">
             {% if user.is_authenticated %}
             <p class="text-left">
                 <span class="badge badge-info">
@@ -154,14 +155,16 @@ table#good td {
 
     </div>
     <div class="col-md-1 bg-light">
-        <table id="good" align="right">
-            <tr>
-                <td><img id='good_image' src="{% static good_image %}" width="64"></td>
-            </tr>
-            <tr>
-                <td id="count"><div id="good_count" class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
-            </tr>
-        </table>
+        <div class="sidebar_fixed">
+            <table id="good" align="right">
+                <tr>
+                    <td><img id='good_image' src="{% static good_image %}" width="64"></td>
+                </tr>
+                <tr>
+                    <td id="count"><div id="good_count" class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
+                </tr>
+            </table>
+        </div>
     </div>
     <div class="col-md-6 bg-white">
 

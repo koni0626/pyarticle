@@ -2,6 +2,8 @@ import traceback
 
 from django.http import Http404
 from django.shortcuts import render
+from django.urls import reverse
+
 from .models import SiteParams, User
 from .models import Book, Chapter, Section
 
@@ -25,7 +27,8 @@ def custom_render(request, template, data):
     site_news = SiteParams.objects.get(param='site_news').value
 
     record = {'site_name': site_name, 'description': description, 'site_image': url,
-              'upload_url': upload_url, 'data_sitekey': data_sitekey, 'site_news': site_news}
+              'upload_url': upload_url, 'data_sitekey': data_sitekey, 'site_news': site_news,
+              'header': reverse('edit_title')}
     record.update(data)
     return render(request, template, record)
 
@@ -34,7 +37,7 @@ def book_header(request, template, book, data):
 
     site_name = book.get_title()
     description = book.get_description()
-    image = book.get_image()
+    image = book.get_header_image()
     upload_url = SiteParams.objects.get(param='upload_url').value
     data_sitekey = SiteParams.objects.get(param='data_sitekey').value
 
@@ -43,7 +46,9 @@ def book_header(request, template, book, data):
     except:
         url = ""
 
-    record = {'site_name': site_name, 'description': description, 'site_image': url, 'upload_url': upload_url, 'data_sitekey': data_sitekey}
+    header_url = reverse('my_book_header', args=[book.book_id])#+"/" + book.book_id
+    record = {'site_name': site_name, 'description': description, 'site_image': url, 'upload_url': upload_url, 'data_sitekey': data_sitekey,
+              'header': header_url}
     record.update(data)
     return render(request, template, record)
 

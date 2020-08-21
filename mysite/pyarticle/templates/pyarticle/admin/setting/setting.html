@@ -24,7 +24,6 @@ $(function() {
 
 <form action="{% url 'save_setting' %}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
-    <!--
     <div class="form-group row">
         <label for="site_header" class="col-md-3 col-form-label">
             ヘッダ画像
@@ -36,7 +35,6 @@ $(function() {
             <p>{{title_form.image}}</p>
         </div>
     </div>
-    -->
 
     <div class="form-group row">
         <label for="site_name" class="col-md-3 col-form-label">

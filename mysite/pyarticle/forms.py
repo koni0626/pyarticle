@@ -86,6 +86,18 @@ class SiteTitleForm(forms.Form):
     site_secret = forms.CharField(label='このシークレット キーは、サイトと reCAPTCHA 間の通信で使用します',
                                  widget=forms.TextInput(attrs={'size': '100', 'class': 'form-control'}))
 
+class SiteHeaderForm(forms.Form):
+    image = forms.ImageField(required=False)
+
+    site_name = forms.CharField(label='タイトル',
+                                 widget=forms.TextInput(attrs={'size': '100', 'class': 'form-control'}))
+
+    site_description = forms.CharField(label='説明',
+                                       widget=forms.Textarea(attrs={'cols': 100, 'rows': 5, 'class': 'form-control'}))
+
+class SiteBookHeaderForm(forms.Form):
+    image = forms.ImageField(required=False)
+
 
 class SignUpForm(UserCreationForm):
     class Meta:

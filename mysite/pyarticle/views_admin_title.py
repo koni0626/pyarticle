@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import SiteParams
@@ -12,13 +13,11 @@ def edit_title(request):
     try:
         site_name = SiteParams.objects.filter(param="site_name").first().value
         site_description = SiteParams.objects.filter(param="site_description").first().value
-        site_upload_url = SiteParams.objects.filter(param="upload_url").first().value
         site_image = SiteParams.objects.filter(param="site_image").first().image
 
-        form = forms.SiteTitleForm(initial={'site_name': site_name,
+        form = forms.SiteHeaderForm(initial={'site_name': site_name,
                                             'site_description': site_description,
-                                            'image': site_image,
-                                            'site_upload_url': site_upload_url})
+                                            'image': site_image})
 
         data = {'title_form': form, 'site_image': site_image.url}
     except:
@@ -31,7 +30,7 @@ def edit_title(request):
 @login_required
 def save_title(request):
     if request.method == 'POST':
-        form = forms.SiteTitleForm(request.POST, request.FILES)
+        form = forms.SiteHeaderForm(request.POST, request.FILES)
         if form.is_valid():
             site_name = SiteParams.objects.get(param="site_name")
             site_name.value = form.cleaned_data["site_name"]
@@ -48,5 +47,7 @@ def save_title(request):
                 site_image.save()
 
         else:
-            pass
+            data = {'title_form': form, 'site_image': ""}
+            return custom_render(request, 'pyarticle/admin/title/title.html', data)
+
         return HttpResponseRedirect(reverse('index'))
