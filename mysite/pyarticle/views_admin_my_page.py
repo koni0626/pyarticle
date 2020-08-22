@@ -19,7 +19,7 @@ def index(request):
     for book in book_records:
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
-        books.append([book, acc])
+        books.append([book, acc, bc.get_chapter_list()])
 
     profile = Profile.objects.filter(user=user).first()
     if profile is None:

@@ -24,7 +24,7 @@ def index(request):
         acc = bc.get_book_access_count()
         profile = bc.profile
 
-        books.append([book, acc, profile])
+        books.append([book, acc, profile, bc.get_chapter_list()])
 
     # 検索フォームの作成
     search_form = SearchForm()
@@ -36,7 +36,7 @@ def index(request):
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
         profile = bc.profile
-        popular_books.append([book, acc, profile])
+        popular_books.append([book, acc, profile, bc.get_chapter_list()])
 
     data = {'books': books, 'search_form': search_form, 'popular_books': popular_books}
     return custom_render(request, 'pyarticle/index.html', data)
