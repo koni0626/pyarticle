@@ -32,7 +32,7 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user)
-            return redirect('index')
+            return redirect('my_page')
     else:
         form = AuthenticationForm()
 
