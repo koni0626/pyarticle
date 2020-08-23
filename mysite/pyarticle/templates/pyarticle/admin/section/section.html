@@ -198,7 +198,8 @@
             text = '<div align="center"><video src="/' + file_name +'" controls class="img-fluid" /></div>';
         }
         else {
-            text = '<div align="center"><a href="/' + file_name +'"><img src="/' + file_name +'" class="img-fluid"></a><center><p><strong>図番号</strong></p></center></div>';
+          //  text = '<div align="center"><a href="/' + file_name +'"><img src="/' + file_name +'" class="img-fluid"></a><center><p><strong>図番号</strong></p></center></div>';
+            text = '![](/' + file_name + ')';
         }
         simplemde.codemirror.replaceRange(text,{line:line,ch:ch},{line:line,ch:ch});
     }
