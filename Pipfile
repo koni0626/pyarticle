@@ -13,6 +13,7 @@ markdown = "*"
 ebooklib = "*"
 django-social-share = "*"
 traceback = "*"
+bleach = "*"
 
 [requires]
 python_version = "3.6"

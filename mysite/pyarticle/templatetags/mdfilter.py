@@ -1,6 +1,8 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 import markdown
+import bleach
+from bleach_whitelist import markdown_tags, markdown_attrs
 
 register = template.Library()
 
@@ -8,9 +10,10 @@ register = template.Library()
 @register.filter
 @stringfilter
 def markdown2html(value):
-    md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code', 'pymdownx.tilde'])
+    md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code', 'pymdownx.tilde'], safe_mode='escape')
 
     html = md.convert(value)
+    html = bleach.clean(html, markdown_tags, markdown_attrs)
 
     lines = html.split("\n")
     result = ""
