@@ -123,8 +123,10 @@ def book(request, book_id, page):
 
     if not bc.is_my_book(request.user):
         is_my_page = False
+        print("私のページではありません")
     else:
         is_my_page = True
+        print("私のページです")
 
     bc = BookComponent(book_id)
     total_page = bc.get_page_count()

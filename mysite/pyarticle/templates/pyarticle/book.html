@@ -176,7 +176,7 @@ table#good td {
     <div class="col-md-6 bg-white">
 
         <p class="text-right">
-            {% if is_my_page %}
+            {% if is_my_page is True %}
                 <span class="badge badge-info">
                     <a class="p-2 text-white" href="{% url 'edit_chapter' book.id chapter.id %}">章編集</a>
                 </span>
@@ -194,14 +194,14 @@ table#good td {
              <div class="mb-1 text-muted text-right">{{section.update_date}} 更新</div>
         </div>
         <p>
-            {% if is_my_page %}
+            {% if is_my_page is True %}
                 <p class="text-right">
                     <span class="badge badge-info">
                         <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">ページの追加</a>
                     </span>
             {%endif %}
 
-            {% if is_my_page %}
+            {% if is_my_page is True %}
                 {% if section %}
                     <span class="badge badge-success">
                         <a class="p-2 text-white" href="{% url 'edit_section' book.id chapter.id section.id %}">ページ編集</a>
