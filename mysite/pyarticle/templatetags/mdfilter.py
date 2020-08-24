@@ -22,6 +22,10 @@ def markdown2html(value):
     skip = False
     while row < len(lines):
         line = lines[row]
+        if "<p><img alt=" in line:
+            line = line.replace('<p>', '<p align="center">')
+            result = result + "\n" + line
+
         if len(line) >= 11 and line[0:11] == "<pre><code>":
             skip = True
             result = result + "\n" + line
