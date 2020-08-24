@@ -40,6 +40,8 @@ class BookComponent:
 
         if self.book.user == user:
             return True
+        elif self.book.user.is_superuser is True:
+            return True
 
         return False
 
