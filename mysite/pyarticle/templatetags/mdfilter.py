@@ -25,6 +25,8 @@ def markdown2html(value):
         if "<p><img alt=" in line:
             line = line.replace('<p>', '<p align="center">')
             result = result + "\n" + line
+            row += 1
+            continue
 
         if len(line) >= 11 and line[0:11] == "<pre><code>":
             skip = True
