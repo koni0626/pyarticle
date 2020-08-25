@@ -215,20 +215,6 @@ table#good td {
             <div id="mde">
             {{section.text  | markdown2html | safe }}
             </div>
-            <div>
-                <hr>
-                {% if is_my_page is True %}
-                    <p class="text-right">
-                        <span class="badge badge-success">
-                            <a class="p-2 text-white" href="{% url 'edit_footer' book.id section.id %}">フッターの編集</a>
-                        </span>
-                    </p>
-                {%endif %}
-                {% if book.footer %}
-                {{book.footer|safe|linebreaksbr}}
-                {% endif %}
-            </div>
-
         </p>
 
         <p>
@@ -244,6 +230,19 @@ table#good td {
             {% endif %}
         </p>
 
+        <hr>
+        <p>
+            {% if is_my_page is True %}
+                <p class="text-right">
+                    <span class="badge badge-success">
+                        <a class="p-2 text-white" href="{% url 'edit_footer' book.id section.id %}">フッターの編集</a>
+                    </span>
+                </p>
+            {%endif %}
+            {% if book.footer %}
+                {{book.footer|safe|linebreaksbr}}
+            {% endif %}
+        </p>
 
         <hr>
         <b>[添付ファイル]</b>
