@@ -13,6 +13,8 @@ def markdown2html(value):
     md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code', 'pymdownx.tilde'], safe_mode='escape')
 
     html = md.convert(value)
+   # bleach.ALLOWED_TAGS.append('pre')
+    markdown_tags.append("pre")
     html = bleach.clean(html, markdown_tags, markdown_attrs)
 
     lines = html.split("\n")
