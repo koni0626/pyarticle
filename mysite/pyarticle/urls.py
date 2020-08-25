@@ -36,6 +36,9 @@ urlpatterns = [
     path('admin/book/edit/<int:book_id>', views_admin_book.edit_book, name='edit_book'),
     path('admin/book/save/<int:book_id>', views_admin_book.save_book, name='save_book'),
     path('admin/book/delete/<int:book_id>', views_admin_book.delete_book, name='delete_book'),
+    path('admin/book/edit_footer/<int:book_id>/<int:section_id>', views_admin_book.edit_footer, name='edit_footer'),
+    path('admin/book/save_footer/<int:book_id>/<int:section_id>', views_admin_book.save_footer, name='save_footer'),
+
     path('admin/chapter/<int:book_id>', views_admin_chapter.index, name='chapter'),
     path('admin/chapter/add/<int:book_id>', views_admin_chapter.add_chapter, name='add_chapter'),
     path('admin/chapter/edit/<int:book_id>/<int:chapter_id>', views_admin_chapter.edit_chapter, name='edit_chapter'),
@@ -50,7 +53,7 @@ urlpatterns = [
     path('admin/section/edit/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.edit_section, name='edit_section'),
     path('admin/section/save/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.save_section, name='save_section'),
     path('admin/section/delete/<int:book_id>/<int:chapter_id>/<int:section_id>', views_admin_section.delete_section, name='delete_section'),
- #   path('admin/section_image/save/<int:book_id>/<int:chapter_id>/<int:section_id>/<int:image_id>', views_admin_section.save_section_image, name='save_section_image'),
+
     path('admin/category/', views_admin_category.index, name='category'),
     path('admin/category/add/', views_admin_category.add_category, name='add_category'),
     path('admin/category/edit/<int:category_id>', views_admin_category.edit_category, name='edit_category'),

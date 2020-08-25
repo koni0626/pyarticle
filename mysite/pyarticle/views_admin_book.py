@@ -47,7 +47,8 @@ def edit_book(request, book_id):
     form = forms.BookForm(initial={'title': book_record.title,
                                    'description': book_record.description,
                                    'category': book_record.category,
-                                   'image': book_record.image})
+                                   'image': book_record.image,
+                                   'footer': book_record.footer})
 
     book = Book.objects.get(id=book_id)
     records = Chapter.objects.filter(book=book).order_by('order')
@@ -61,6 +62,29 @@ def edit_book(request, book_id):
 
 
 @login_required
+def edit_footer(request, book_id, section_id):
+    bc = BookComponent(book_id)
+    form = forms.FooterForm(initial={'footer': bc.book.footer})
+    data = {'footer_form': form, 'book_id': book_id, 'section_id': section_id}
+
+    return custom_render(request, 'pyarticle/admin/book/footer.html', data)
+
+
+@login_required
+def save_footer(request, book_id, section_id):
+    if request.method == 'POST':
+        form = forms.FooterForm(request.POST)
+        if form.is_valid():
+            book = Book.objects.get(id=book_id)
+            book.footer = form.cleaned_data['footer']
+            book.save()
+
+    bc = BookComponent(book_id)
+    page = bc.get_page(section_id)
+    return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+
+
+@login_required
 def save_book(request, book_id):
     if request.method == 'POST':
         form = forms.BookForm(request.POST, request.FILES)
@@ -70,7 +94,9 @@ def save_book(request, book_id):
                 book = Book(title=form.cleaned_data['title'],
                             user=request.user,
                             description=form.cleaned_data['description'],
-                            category=form.cleaned_data['category'])
+                            category=form.cleaned_data['category'],
+                            footer=form.cleaned_data['footer'])
+
                 if form.cleaned_data['image']:
                     if form.cleaned_data['image'] is not False:
                         book.image = form.cleaned_data['image']
@@ -94,6 +120,7 @@ def save_book(request, book_id):
                 book.description = form.cleaned_data['description']
                 book.category = form.cleaned_data['category']
                 #book.image = form.cleaned_data['image']
+                book.footer = form.cleaned_data['footer']
                 if form.cleaned_data['image']:
                     book.image = form.cleaned_data['image']
                 else:

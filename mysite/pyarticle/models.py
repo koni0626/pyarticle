@@ -198,6 +198,9 @@ class Book(models.Model):
                                      null=True,
                                      verbose_name="ヘッダー画像")
 
+    footer = models.TextField(null=True,
+                              verbose_name="フッター")
+
     create_date = models.DateTimeField(auto_now_add=True,
                                        null=True,
                                        verbose_name="作成日")

@@ -17,6 +17,14 @@ class BookForm(forms.Form):
 
     image = forms.ImageField(required=False)
 
+    footer = forms.CharField(label='フッター',
+                             widget=forms.Textarea(attrs={'cols': 100, 'rows': 10}))
+
+
+class FooterForm(forms.Form):
+    footer = forms.CharField(label='フッター',
+                             widget=forms.Textarea(attrs={'cols': 100, 'rows': 10}))
+
 
 class ChapterForm(forms.Form):
     chapter = forms.CharField(label='章',

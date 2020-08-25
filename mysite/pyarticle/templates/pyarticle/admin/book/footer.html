@@ -1,0 +1,25 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<form action="{% url 'save_footer' book_id section_id %}" method="post">
+    {%csrf_token%}
+
+    <div class="form-group row">
+        <label for="footer" class="col-md-3 col-form-label">
+            フッター
+        </label>
+        <div class="col-md-9" id="footer">
+            {{footer_form.footer|safe}}
+        </div>
+    </div>
+
+    <p class="text-center">
+        <button type="submit" class="btn btn-secondary">保存する</button>
+    </p>
+
+</form>
+
+{% endblock %}
