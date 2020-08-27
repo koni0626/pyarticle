@@ -46,7 +46,8 @@ def edit(request):
                     profile_record.image = None
 
             profile_record.site = form.cleaned_data['site']
-            profile_record.wallet = form.cleaned_data['wallet']
+            profile_record.nem_address = form.cleaned_data['nem_address']
+            profile_record.nem_message = form.cleaned_data['nem_message']
             profile_record.intro = form.cleaned_data['intro']
             profile_record.twitter = form.cleaned_data['twitter']
             profile_record.user = user

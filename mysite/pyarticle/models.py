@@ -104,14 +104,19 @@ class Profile(models.Model):
                              verbose_name="ツイッターID",
                              help_text="ツイッターID")
 
-    wallet = models.CharField(max_length=1024,
-                              null=True,
-                              verbose_name="NEMの振込先",
-                              help_text="NEMの振込先")
+    nem_address = models.CharField(max_length=1024,
+                                   null=True,
+                                   verbose_name="NEMの振込先アドレス",
+                                   help_text="NEMの振込先アドレス")
+
+    nem_message = models.CharField(max_length=1024,
+                                   null=True,
+                                   verbose_name="NEMメッセージ",
+                                   help_text="NEMメッセージ")
 
     def get_form_param(self):
-        return {'image': self.image, 'site': self.site, 'twitter': self.twitter, 'intro': self.intro, 'wallet': self.wallet,
-                'name': self.name}
+        return {'image': self.image, 'site': self.site, 'twitter': self.twitter, 'intro': self.intro, 'nem_address': self.nem_address,
+                'nem_message': self.nem_message, 'name': self.name}
 
 
 class SiteParams(models.Model):

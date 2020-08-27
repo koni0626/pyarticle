@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
 def index(request):
     user = get_user(request.user)
     # マイページには自分の投稿記事とプロフィールを表示する

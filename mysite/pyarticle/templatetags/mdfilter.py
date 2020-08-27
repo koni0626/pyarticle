@@ -15,6 +15,13 @@ def markdown2html(value):
     html = md.convert(value)
    # bleach.ALLOWED_TAGS.append('pre')
     markdown_tags.append("pre")
+    markdown_tags.append("table")
+    markdown_tags.append("thead")
+    markdown_tags.append("tr")
+    markdown_tags.append("th")
+    markdown_tags.append("tbody")
+    markdown_tags.append("td")
+
     html = bleach.clean(html, markdown_tags, markdown_attrs)
 
     lines = html.split("\n")

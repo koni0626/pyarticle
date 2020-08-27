@@ -73,8 +73,11 @@ class ProfileForm(forms.Form):
     intro = forms.CharField(label='自己紹介', required=False,
                             widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))
 
-    wallet = forms.CharField(label='NEMの振込先', required=False,
-                             widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))
+    nem_address = forms.CharField(label='NEMの振込先アドレス', required=False,
+                                  widget=forms.TextInput(attrs={'size': '100'}))
+
+    nem_message = forms.CharField(label='NEM メッセージ', required=False,
+                                  widget=forms.Textarea(attrs={'cols': 100, 'rows': 5}))
 
 class SiteTitleForm(forms.Form):
     image = forms.ImageField(required=False)
