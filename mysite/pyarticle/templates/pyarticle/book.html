@@ -333,7 +333,11 @@ table#good td {
                     {% endif %}
                 </p>
                 <h4 class="card-title">自己紹介</h4>
-                <p class="card-text">{{profile.intro|linebreaksbr}}</p>
+                <p class="card-text">
+                    {% if profile.intro %}
+                    {{profile.intro|linebreaksbr}}
+                    {% endif %}
+                </p>
 
                 <h4 class="card-title">サイト/ブログ</h4>
                 <p>

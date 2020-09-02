@@ -22,7 +22,7 @@ class BookForm(forms.Form):
 
 
 class FooterForm(forms.Form):
-    footer = forms.CharField(label='フッター',
+    footer = forms.CharField(label='フッター', required=False,
                              widget=forms.Textarea(attrs={'cols': 100, 'rows': 10}))
 
 
