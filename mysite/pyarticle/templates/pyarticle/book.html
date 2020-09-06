@@ -152,9 +152,11 @@ table#good td {
                         </span>
                     {%endif%}
 
-                    {% for sub_c in c.1 %}
-                        <p class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">&emsp;{{sub_c.0}}</a></p>
-                    {% endfor %}
+                    <ul>
+                        {% for sub_c in c.1 %}
+                            <li class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">{{sub_c.0}}</a></li>
+                        {% endfor %}
+                    </ul>
                     </li>
                 {% endfor %}
             </ul>
