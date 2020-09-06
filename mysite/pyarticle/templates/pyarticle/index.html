@@ -119,16 +119,16 @@ ol>li:before {
                                     {% endif %}
                                 </p>
                                 <h4>contents</h4>
-                                <ol>
+                                <ul>
                                     {% for chapter in book.3 %}
                                         <li><a  href="{% url 'disp_chapter' book.0.id chapter.0.id %}">{{chapter.0}}</a></li>
-                                        <ol>
+                                        <ul>
                                             {% for sub_chapter in chapter.1 %}
                                                 <li><a  href="{% url 'disp_book' book.0.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
                                             {% endfor %}
-                                        </ol>
+                                        </ul>
                                     {% endfor %}
-                                </ol>
+                                </ul>
                                 <p><a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a></p>
 
                                 <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book.0.good_count}}</div>
