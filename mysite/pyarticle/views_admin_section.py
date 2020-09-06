@@ -15,7 +15,7 @@ import base64
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='login/')
 def add_section(request, book_id, chapter_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -38,7 +38,7 @@ def add_section(request, book_id, chapter_id):
     return custom_render(request, 'pyarticle/admin/section/section.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def edit_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -56,7 +56,7 @@ def edit_section(request, book_id, chapter_id, section_id):
     return custom_render(request, 'pyarticle/admin/section/section.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def save_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -75,7 +75,7 @@ def save_section(request, book_id, chapter_id, section_id):
         return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
-@login_required
+@login_required(login_url='login/')
 def delete_section(request, book_id, chapter_id, section_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -98,7 +98,7 @@ def delete_section(request, book_id, chapter_id, section_id):
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
-@login_required
+@login_required(login_url='login/')
 def upload_image(request):
     """
     この関数はセクションにあるべきではない

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='login/')
 def edit_header(request, book_id):
     user = get_user(request.user)
     request.session['book_header_url'] = request.META['HTTP_REFERER']
@@ -27,7 +27,7 @@ def edit_header(request, book_id):
     return book_header(request, 'pyarticle/admin/book_header/title.html', bc, data)
 
 
-@login_required
+@login_required(login_url='login/')
 def save_header_image(request, book_id):
     if request.method == 'POST':
         bc = BookComponent(book_id)

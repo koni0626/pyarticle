@@ -32,6 +32,7 @@ def custom_render(request, template, data):
     record.update(data)
     return render(request, template, record)
 
+
 def book_header(request, template, book, data):
     # サイトの名前と説明を毎回呼び出す。もっといい方法はないものか？
 

@@ -27,7 +27,7 @@ def edit_title(request):
     return custom_render(request, 'pyarticle/admin/title/title.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def save_title(request):
     if request.method == 'POST':
         form = forms.SiteHeaderForm(request.POST, request.FILES)

@@ -10,7 +10,7 @@ from django.db.utils import IntegrityError
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='login/')
 def index(request):
     records = Category.objects.order_by('id').reverse().all()
     data = {
@@ -19,13 +19,13 @@ def index(request):
     return custom_render(request, 'pyarticle/admin/category/index.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def add_category(request):
     form = forms.CategoryForm(request.POST)
     return custom_render(request, 'pyarticle/admin/category/category.html', {'category_form': form, 'category_id': 0})
 
 
-@login_required
+@login_required(login_url='login/')
 def edit_category(request, category_id):
     record = Category.objects.get(id=category_id)
     form = forms.CategoryForm(initial={'category': record.category_name})
@@ -37,7 +37,7 @@ def edit_category(request, category_id):
     return custom_render(request, 'pyarticle/admin/category/category.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def save_category(request, category_id):
     if request.method == 'POST':
         form = forms.CategoryForm(request.POST)
@@ -60,7 +60,7 @@ def delete_category(request, category_id):
     record = Category.objects.filter(id=category_id).delete()
     return HttpResponseRedirect(reverse('category'))
 
-@login_required
+@login_required(login_url='login/')
 def ajax_save_category(request):
     if request.method == 'POST':
         category_name = request.POST.get('category', None)

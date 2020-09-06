@@ -10,7 +10,7 @@ import traceback
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='login/')
 def edit(request):
     user = get_user(request.user)
 

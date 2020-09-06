@@ -16,7 +16,7 @@ from django.db import DatabaseError, transaction
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='login/')
 def index(request, book_id):
     # チャプターの一覧を表示する
     book = Book.objects.get(id=book_id)
@@ -25,7 +25,7 @@ def index(request, book_id):
     return custom_render(request, 'pyarticle/admin/chapter/index.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def add_chapter(request, book_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -43,7 +43,7 @@ def add_chapter(request, book_id):
     return custom_render(request, 'pyarticle/admin/chapter/chapter.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def edit_chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -57,7 +57,7 @@ def edit_chapter(request, book_id, chapter_id):
     return custom_render(request, 'pyarticle/admin/chapter/chapter.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def delete_chapter(request, book_id, chapter_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -72,7 +72,7 @@ def delete_chapter(request, book_id, chapter_id):
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
-@login_required
+@login_required(login_url='login/')
 def save_chapter(request, book_id, chapter_id):
     if request.method == 'POST':
         bc = BookComponent(book_id)
@@ -103,7 +103,7 @@ def save_chapter(request, book_id, chapter_id):
                 page = bc.get_chapter_top_page(chapter_id)
             return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
-@login_required
+@login_required(login_url='login/')
 def upper_chapter(request, book_id, chapter_id, page):
     # チャプターを上下を入れ替える
     bc = BookComponent(book_id)
@@ -114,7 +114,7 @@ def upper_chapter(request, book_id, chapter_id, page):
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
-@login_required
+@login_required(login_url='login/')
 def under_chapter(request, book_id, chapter_id, page):
     # チャプターを上下を入れ替える
     bc = BookComponent(book_id)
@@ -125,7 +125,7 @@ def under_chapter(request, book_id, chapter_id, page):
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
-@login_required
+@login_required(login_url='login/')
 def ajax_save_chapter(request):
     if request.method == 'POST':
         chapter_list = request.POST.get('chapter_list', None)

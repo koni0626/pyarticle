@@ -19,7 +19,7 @@ import os
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='login/')
 def index(request):
     records = Book.objects.order_by('id').reverse().all()
     data = {
@@ -28,7 +28,7 @@ def index(request):
     return custom_render(request, 'pyarticle/admin/book/index.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def add_book(request):
     book_form = forms.BookForm(request.POST)
     category_form = forms.CategoryForm(request.POST)
@@ -37,7 +37,7 @@ def add_book(request):
     return custom_render(request, 'pyarticle/admin/book/book.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def edit_book(request, book_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -61,7 +61,7 @@ def edit_book(request, book_id):
     return custom_render(request, 'pyarticle/admin/book/book.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def edit_footer(request, book_id, section_id):
     bc = BookComponent(book_id)
     form = forms.FooterForm(initial={'footer': bc.book.footer})
@@ -70,7 +70,7 @@ def edit_footer(request, book_id, section_id):
     return custom_render(request, 'pyarticle/admin/book/footer.html', data)
 
 
-@login_required
+@login_required(login_url='login/')
 def save_footer(request, book_id, section_id):
     if request.method == 'POST':
         form = forms.FooterForm(request.POST)
@@ -84,7 +84,7 @@ def save_footer(request, book_id, section_id):
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
-@login_required
+@login_required(login_url='login/')
 def save_book(request, book_id):
     if request.method == 'POST':
         form = forms.BookForm(request.POST, request.FILES)
@@ -133,7 +133,7 @@ def save_book(request, book_id):
         return HttpResponseRedirect(reverse('my_page'))
 
 
-@login_required
+@login_required(login_url='login/')
 def delete_book(request, book_id):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
@@ -142,7 +142,7 @@ def delete_book(request, book_id):
     record = Book.objects.filter(id=book_id).delete()
     return HttpResponseRedirect(reverse('my_page'))
 
-@login_required
+@login_required(login_url='login/')
 def upload_attach_file(request, book_id, page):
     """
     この関数はセクションにあるべきではない
@@ -166,7 +166,7 @@ def upload_attach_file(request, book_id, page):
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
-@login_required
+@login_required(login_url='login/')
 def delete_attach_file(request, book_id, page, filename):
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
