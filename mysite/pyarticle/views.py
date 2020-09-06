@@ -23,8 +23,14 @@ def index(request):
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
         profile = bc.profile
+        top_chapter_list = bc.get_chapter_list()
+        chapter_list = []
+        for chapter_record in top_chapter_list:
+            # セクションのうち、見出し1で始まるものを取得する
+            sub_chapter_list = bc.get_chapter_in_section(chapter_record)
+            chapter_list.append([chapter_record, sub_chapter_list])
 
-        books.append([book, acc, profile, bc.get_chapter_list()])
+        books.append([book, acc, profile, chapter_list])
 
     # 検索フォームの作成
     search_form = SearchForm()

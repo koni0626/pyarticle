@@ -3,7 +3,7 @@ from django.urls import reverse
 from .models import Chapter
 from .models import Book
 from .models import Section
-from .utils import custom_render
+from .utils import custom_render, book_header
 from . import forms
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
@@ -35,7 +35,7 @@ def add_section(request, book_id, chapter_id):
             'new_section_image_form': new_section_image_form,
             'book_id': book_id, 'chapter_id': chapter_id, 'section_id': 0}
 
-    return custom_render(request, 'pyarticle/admin/section/section.html', data)
+    return book_header(request, 'pyarticle/admin/section/section.html', bc, data)
 
 
 @login_required(login_url='login/')
@@ -53,7 +53,7 @@ def edit_section(request, book_id, chapter_id, section_id):
     data = {'section_form': section_form,
             'book_id': book_id, 'chapter_id': chapter_id, 'section_id': section_id}
 
-    return custom_render(request, 'pyarticle/admin/section/section.html', data)
+    return book_header(request, 'pyarticle/admin/section/section.html', bc, data)
 
 
 @login_required(login_url='login/')

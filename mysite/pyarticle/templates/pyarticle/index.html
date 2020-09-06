@@ -1,6 +1,19 @@
 {% extends "pyarticle/base.html" %}
 {% load static %}
 {% block content %}
+<style>
+ol {
+    counter-reset: section;
+}
+li {
+    list-style: none;
+}
+ol>li:before {
+    content : counters(section, '-') '. ';
+    counter-increment : section;
+}
+</style>
+
     <div class="row" style="margin-left: 0; margin-right: 10; margin-bottom: 30px;">
         <div class="col-md-3">
             <div class="form-group">
@@ -108,7 +121,12 @@
                                 <h4>contents</h4>
                                 <ol>
                                     {% for chapter in book.3 %}
-                                        <li>{{chapter}}</li>
+                                        <li><a  href="{% url 'disp_chapter' book.0.id chapter.0.id %}">{{chapter.0}}</a></li>
+                                        <ol>
+                                            {% for sub_chapter in chapter.1 %}
+                                                <li><a  href="{% url 'disp_book' book.0.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
+                                            {% endfor %}
+                                        </ol>
                                     {% endfor %}
                                 </ol>
                                 <p><a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a></p>

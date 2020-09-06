@@ -100,6 +100,10 @@ div#mde img {
     border:1px #aaaaaa solid;
 }
 
+div#mde code {
+    margin-bottom: -15px;
+}
+
 .subchapter {
     margin: 0.1em 0px;
 }
@@ -123,8 +127,6 @@ table#good td {
 }
 
 </style>
-
-
 
 <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
@@ -411,7 +413,7 @@ window.addEventListener('load', function(){
       let lines = elem.innerHTML.split("\n");
       let texts = elem.textContent.split("\n");
       // 最終行が空の時は削除
-      if (lines[lines.length-1].length === 0) {
+      if (lines[lines.length-1].length == 0) {
           lines.pop();
       }
       let modi = "<ol start='"+line_num+"'>";

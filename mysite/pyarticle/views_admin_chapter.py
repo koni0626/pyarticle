@@ -6,7 +6,7 @@ from django.utils import timezone
 from .models import Chapter
 from .models import Book
 from .models import Section
-from .utils import custom_render
+from .utils import custom_render, book_header
 from . import forms
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max
@@ -40,7 +40,7 @@ def add_chapter(request, book_id):
 
     form = forms.ChapterForm(initial={'order': order_max})
     data = {'chapter_form': form, 'book_id': book_id, 'chapter_id': 0}
-    return custom_render(request, 'pyarticle/admin/chapter/chapter.html', data)
+    return book_header(request, 'pyarticle/admin/chapter/chapter.html', bc, data)
 
 
 @login_required(login_url='login/')
@@ -54,7 +54,7 @@ def edit_chapter(request, book_id, chapter_id):
                                       'order': record.order})
     section_records = Section.objects.filter(chapter=Chapter.objects.get(id=chapter_id))
     data = {'chapter_form': form, 'section_records': section_records, 'book_id': book_id, 'chapter_id': chapter_id}
-    return custom_render(request, 'pyarticle/admin/chapter/chapter.html', data)
+    return book_header(request, 'pyarticle/admin/chapter/chapter.html', bc, data)
 
 
 @login_required(login_url='login/')
