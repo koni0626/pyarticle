@@ -52,39 +52,44 @@ ol>li:before {
                     人気記事TOP10
                 </div>
                 <div class="card-body">
-                    {% for book in popular_books %}
+                    {% for book_info in popular_books %}
                         <div class="media bg-white border-top">
-                            {% if book.0.image %}
-                                <img class="mr-3 align-self-center" src="{{book.0.image.url}}" width="64">
+                            {% if book_info.book.image %}
+                                <img class="mr-3 align-self-center" src="{{book_info.book.image.url}}" width="64">
                             {% else %}
                                 <img class="mr-3 align-self-center" src="{% static 'noimage.jpg' %}" width="64">
                             {% endif %}
                             <div class="media-body">
-                                <strong class="d-inline-block mb-2 text-secondary">{{book.0.category}}</strong>
-                                <a href="{% url 'disp_book' book.0.id 1 %}"><h4>{{book.0.title}}</h4></a>
-                                <p>{{book.0.description|linebreaksbr}}</p>
+                                <strong class="d-inline-block mb-2 text-secondary">{{book_info.book.category}}</strong>
+                                <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+                                <p>{{book_info.book.description|linebreaksbr}}</p>
                                 <p>
-                                    {% if book.2.image %}
-                                        <img src="{{book.2.image.url}}"  width="32" height="32"/>
+                                    {% if book_info.profile.image %}
+                                        <img src="{{book_info.profile.image.url}}"  width="32" height="32"/>
                                     {% else %}
                                         <img src="{% static 'noprofimg.png' %}"  width="32" height="32"/>
                                     {% endif %}
-                                    {% if book.2.name %}
-                                        &nbsp投稿者&nbsp{{book.2.name}}
+                                    {% if book_info.profile.name %}
+                                        &nbsp投稿者&nbsp{{book_info.profile.name}}
                                     {% endif %}
                                 </p>
 
                                 <h4>contents</h4>
-                                <ol>
-                                    {% for chapter in book.3 %}
-                                        <li>{{chapter}}</li>
+                                <ul>
+                                    {% for chapter in book_info.chapter %}
+                                        <li><a href="{% url 'disp_chapter' book_info.book.id chapter.chapter.id %}"><h5>{{chapter.chapter}}</h5></a></li>
+                                        <ul>
+                                            {% for sub_chapter in chapter.sub_chapter %}
+                                                <li><a  href="{% url 'disp_book' book_info.book.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
+                                            {% endfor %}
+                                        </ul>
                                     {% endfor %}
-                                </ol>
-                                <a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a>
+                                </ul>
+                                <a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a>
 
-                                <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book.0.good_count}}</div>
-                                <div class="mb-1 text-muted text-right">{{book.1}}views</div>
-                                <div class="mb-1 text-muted text-right">{{book.0.create_date}}</div>
+                                <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book_info.book.good_count}}</div>
+                                <div class="mb-1 text-muted text-right">{{book_info.acc}}views</div>
+                                <div class="mb-1 text-muted text-right">{{book_info.book.create_date}}</div>
                             </div>
                         </div>
                     {% endfor %}
@@ -97,43 +102,43 @@ ol>li:before {
                     投稿記事一覧
                 </div>
                 <div class="card-body">
-                    {% for book in books %}
+                    {% for book_info in books %}
                         <div class="media bg-white border-top">
-                            {% if book.0.image %}
-                                <img class="mr-3 align-self-center" src="{{book.0.image.url}}" width="128">
+                            {% if book_info.book.image %}
+                                <img class="mr-3 align-self-center" src="{{book_info.book.image.url}}" width="128">
                             {% else %}
                                 <img class="mr-3 align-self-center" src="{% static 'noimage.jpg' %}" width="128">
                             {% endif %}
                             <div class="media-body">
-                                <strong class="d-inline-block mb-2 text-secondary">{{book.0.category}}</strong>
-                                <a href="{% url 'disp_book' book.0.id 1 %}"><h4>{{book.0.title}}</h4></a>
-                                <p>{{book.0.description|linebreaksbr}}</p>
+                                <strong class="d-inline-block mb-2 text-secondary">{{book_info.book.category}}</strong>
+                                <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+                                <p>{{book_info.book.description|linebreaksbr}}</p>
                                <p>
-                                    {% if book.2.image %}
-                                        <img src="{{book.2.image.url}}"  width="32" height="32"/>
+                                    {% if book_info.profile.image %}
+                                        <img src="{{book_info.profile.image.url}}"  width="32" height="32"/>
                                     {% else %}
                                         <img src="{% static 'noprofimg.png' %}"  width="32" height="32"/>
                                     {% endif %}
-                                    {% if book.2.name %}
-                                        &nbsp投稿者&nbsp{{book.2.name}}
+                                    {% if book_info.profile.name %}
+                                        &nbsp投稿者&nbsp{{book.profile.name}}
                                     {% endif %}
                                 </p>
                                 <h4>contents</h4>
                                 <ul>
-                                    {% for chapter in book.3 %}
-                                        <li><a  href="{% url 'disp_chapter' book.0.id chapter.0.id %}">{{chapter.0}}</a></li>
+                                    {% for chapter in book_info.chapter %}
+                                    <li><a  href="{% url 'disp_chapter' book_info.book.id chapter.chapter.id %}"><h5>{{chapter.chapter}}</h5></a></li>
                                         <ul>
-                                            {% for sub_chapter in chapter.1 %}
-                                                <li><a  href="{% url 'disp_book' book.0.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
+                                            {% for sub_chapter in chapter.sub_chapter %}
+                                                <li><a  href="{% url 'disp_book' book_info.book.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
                                             {% endfor %}
                                         </ul>
                                     {% endfor %}
                                 </ul>
-                                <p><a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a></p>
+                                <p><a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a></p>
 
-                                <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book.0.good_count}}</div>
-                                <div class="mb-1 text-muted text-right">{{book.1}}views</div>
-                                <div class="mb-1 text-muted text-right">{{book.0.create_date}}</div>
+                                <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book_info.book.good_count}}</div>
+                                <div class="mb-1 text-muted text-right">{{book_info.acc}}views</div>
+                                <div class="mb-1 text-muted text-right">{{book_info.book.create_date}}</div>
                             </div>
                         </div>
                     {% endfor %}

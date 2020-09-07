@@ -32,6 +32,11 @@ class BookComponent:
         self.profile = Profile.objects.filter(user=self.book.user).first()
         if self.profile is None:
             Profile(user=self.book.user).save()
+        self.acc = self.get_book_access_count()
+        self.chapter_and_section_list = self.get_chapter_and_section_list()
+
+    def book_info(self):
+        return {"book": self.book, "acc": self.acc, "profile": self.profile, "chapter": self.chapter_and_section_list}
 
     def is_my_book(self, username):
         user = User.objects.filter(username=username).first()
@@ -64,6 +69,15 @@ class BookComponent:
         """
         chapters = Chapter.objects.filter(book=self.book).order_by('order')
         return chapters
+
+    def get_chapter_and_section_list(self):
+        chapter_and_section_list = []
+        chapter_list = self.get_chapter_list()
+        for chapter in chapter_list:
+            sub_chapter_list = self.get_chapter_in_section(chapter)
+            chapter_and_section_list.append({"chapter": chapter, "sub_chapter": sub_chapter_list})
+
+        return chapter_and_section_list
 
     def get_chapter_in_section(self, chapter):
         sub_chapter_list = []

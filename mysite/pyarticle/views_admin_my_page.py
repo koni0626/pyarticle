@@ -19,7 +19,7 @@ def index(request):
     for book in book_records:
         bc = BookComponent(book.id)
         acc = bc.get_book_access_count()
-        books.append([book, acc, bc.get_chapter_list()])
+        books.append(bc.book_info())
 
     profile = Profile.objects.filter(user=user).first()
     if profile is None:
@@ -28,7 +28,7 @@ def index(request):
     # コメント回収
     comments = []
     for book in books:
-        book = book[0]
+        book = book['book']
         records = Comment.objects.filter(book=book.id).order_by('update_date').reverse().all()
         if records is not None:
             for record in records:

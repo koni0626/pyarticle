@@ -21,16 +21,7 @@ def index(request):
     books = []
     for book in book_records:
         bc = BookComponent(book.id)
-        acc = bc.get_book_access_count()
-        profile = bc.profile
-        top_chapter_list = bc.get_chapter_list()
-        chapter_list = []
-        for chapter_record in top_chapter_list:
-            # セクションのうち、見出し1で始まるものを取得する
-            sub_chapter_list = bc.get_chapter_in_section(chapter_record)
-            chapter_list.append([chapter_record, sub_chapter_list])
-
-        books.append([book, acc, profile, chapter_list])
+        books.append(bc.book_info())
 
     # 検索フォームの作成
     search_form = SearchForm()
@@ -40,9 +31,7 @@ def index(request):
     popular_records = Book.objects.order_by('good_count').reverse().all()[:10]
     for book in popular_records:
         bc = BookComponent(book.id)
-        acc = bc.get_book_access_count()
-        profile = bc.profile
-        popular_books.append([book, acc, profile, bc.get_chapter_list()])
+        popular_books.append(bc.book_info())
 
     data = {'books': books, 'search_form': search_form, 'popular_books': popular_books}
     return custom_render(request, 'pyarticle/index.html', data)

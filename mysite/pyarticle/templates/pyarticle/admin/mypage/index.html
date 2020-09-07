@@ -1,6 +1,11 @@
 {% extends "pyarticle/base.html" %}
 {% load static %}
 {% block content %}
+<style>
+li {
+    list-style: none;
+}
+</style>
     <div class="row" style="margin-left: 0; margin-right: 10;">
         <!--プロフィール表示 -->
         <div class="col-md-3">
@@ -104,10 +109,10 @@
                         </span>
                         {% endif %}
                     </p>
-                    {% for book in books %}
+                    {% for book_info in books %}
                         <div class="media bg-white border-top">
-                            {% if book.0.image %}
-                                <img class="mr-3 align-self-center" src="{{book.0.image.url}}" width="128">
+                            {% if book_info.book.image %}
+                                <img class="mr-3 align-self-center" src="{{book_info.book.image.url}}" width="128">
                             {% else %}
                                 <img class="mr-3 align-self-center" src="{% static 'noimage.jpg' %}" width="128">
                             {% endif %}
@@ -115,26 +120,31 @@
                                 {% if user.is_authenticated %}
                                   <nav class="nav d-flex justify-content-end">
                                     <span class="badge badge-info">
-                                      <a class="p-2 text-white" href="{% url 'edit_book' book.0.id %}">編集</a>
+                                      <a class="p-2 text-white" href="{% url 'edit_book' book_info.book.id %}">編集</a>
                                     </span>
                                     <span class="badge badge-danger">
-                                      <a class="p-2 text-white" href="{% url 'delete_book' book.0.id %}">削除</a>
+                                      <a class="p-2 text-white" href="{% url 'delete_book' book_info.book.id %}">削除</a>
                                     </span>
                                   </nav>
                                 {% endif %}
-                                <strong class="d-inline-block mb-2 text-primary">{{book.0.category}}</strong>
-                                <a href="{% url 'disp_book' book.0.id 1 %}"><h4>{{book.0.title}}</h4></a>
-                                <p>{{book.0.description|linebreaksbr}}</p>
+                                <strong class="d-inline-block mb-2 text-primary">{{book_info.book.category}}</strong>
+                                <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+                                <p>{{book_info.book.description|linebreaksbr}}</p>
                                 <h4>contents</h4>
-                                <ol>
-                                    {% for chapter in book.2 %}
-                                        <li>{{chapter}}</li>
+                                <ul>
+                                    {% for chapter in book_info.chapter %}
+                                    <li><a  href="{% url 'disp_chapter' book_info.book.id chapter.chapter.id %}"><h5>{{chapter.chapter}}</h5></a></li>
+                                        <ul>
+                                            {% for sub_chapter in chapter.sub_chapter %}
+                                                <li><a  href="{% url 'disp_book' book_info.book.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
+                                            {% endfor %}
+                                        </ul>
                                     {% endfor %}
-                                </ol>
-                                <a href="{% url 'disp_book' book.0.id 1 %}">続きを読む</a>
-                                <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book.0.good_count}}</div>
-                                <div class="mb-1 text-muted text-right">{{book.1}}views</div>
-                                <div class="mb-1 text-muted text-right">{{book.0.create_date}}</div>
+                                </ul>
+                                <a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a>
+                                <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book_info.book.good_count}}</div>
+                                <div class="mb-1 text-muted text-right">{{book_info.acc}}views</div>
+                                <div class="mb-1 text-muted text-right">{{book_info.book.create_date}}</div>
                             </div>
                         </div>
                     {% endfor %}
