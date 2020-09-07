@@ -11,7 +11,10 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 def index(request):
     user = get_user(request.user)
     # マイページには自分の投稿記事とプロフィールを表示する
-    logs = AccessLog.objects.filter(user=user).order_by('id').reverse().all()
+    if user.is_superuser:
+        logs = AccessLog.objects.all().order_by('id').reverse().all()
+    else:
+        logs = AccessLog.objects.filter(user=user).order_by('id').reverse().all()
     data = {'logs': logs}
     return custom_render(request, 'pyarticle/admin/access_log/index.html', data)
 
