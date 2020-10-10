@@ -3,6 +3,3 @@
 使い方とかインストール方法とかDockerHubとか作らなあかん
 
 
-```
-printf("hello world\n");
-```
