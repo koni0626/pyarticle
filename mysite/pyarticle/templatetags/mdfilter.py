@@ -22,6 +22,7 @@ def markdown2html(value):
     markdown_tags.append("tbody")
     markdown_tags.append("td")
 
+
     html = bleach.clean(html, markdown_tags, markdown_attrs)
 
     lines = html.split("\n")
