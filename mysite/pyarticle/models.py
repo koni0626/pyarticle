@@ -175,8 +175,6 @@ class Book(models.Model):
                              unique=True,
                              verbose_name="タイトル")
 
-  #  author = models.CharField(max_length=256,
-   #                           verbose_name="作者名")
 
     description = models.CharField(max_length=512,
                                    verbose_name="説明")
@@ -213,6 +211,11 @@ class Book(models.Model):
     update_date = models.DateTimeField(auto_now=True,
                                        null=True,
                                        verbose_name="更新日")
+
+    # 下書きかどうか
+    draft = models.IntegerField(default=0,
+                                verbose_name="下書き",
+                                help_text="下書き")
 
     def __str__(self):
         return self.title

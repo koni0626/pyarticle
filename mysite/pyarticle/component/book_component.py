@@ -25,6 +25,7 @@ class BookComponent:
         self.book = Book.objects.get(id=book_id)
         self.title = self.book.title
         self.description = self.book.description
+        self.draft = self.book.draft # 0が下書き、1が公開
         self.image = self.book.image
         self.header_image = self.book.header_image
         self.attach_file_form = AttachFileForm()
@@ -34,6 +35,7 @@ class BookComponent:
             Profile(user=self.book.user).save()
         self.acc = self.get_book_access_count()
         self.chapter_and_section_list = self.get_chapter_and_section_list()
+
 
     def book_info(self):
         return {"book": self.book, "acc": self.acc, "profile": self.profile, "chapter": self.chapter_and_section_list}
@@ -303,12 +305,12 @@ class BookComponent:
 
         description = self.book.description
         # 本のタイトルで検索する
-        title_records = Book.objects.filter(title__contains=key_word)
+        title_records = Book.objects.filter(title__contains=key_word, draft=1)
         if len(title_records) > 0:
             results.append([title, description, book_id, page])
 
         # 本の説明を検索する
-        description_records = Book.objects.filter(description__icontains=key_word)
+        description_records = Book.objects.filter(description__icontains=key_word, draft=1)
         if len(description_records) > 0:
             results.append([title, description, book_id, page])
 
@@ -449,3 +451,4 @@ class BookComponent:
     def save_header(self, image):
         self.book.header_image = image
         self.book.save()
+

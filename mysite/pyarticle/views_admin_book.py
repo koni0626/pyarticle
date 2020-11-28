@@ -48,7 +48,8 @@ def edit_book(request, book_id):
                                    'description': book_record.description,
                                    'category': book_record.category,
                                    'image': book_record.image,
-                                   'footer': book_record.footer})
+                                   'footer': book_record.footer,
+                                   'draft': book_record.draft})
 
     book = Book.objects.get(id=book_id)
     records = Chapter.objects.filter(book=book).order_by('order')
@@ -95,7 +96,8 @@ def save_book(request, book_id):
                             user=request.user,
                             description=form.cleaned_data['description'],
                             category=form.cleaned_data['category'],
-                            footer=form.cleaned_data['footer'])
+                            footer=form.cleaned_data['footer'],
+                            draft=form.cleaned_data['draft'])
 
                 if form.cleaned_data['image']:
                     if form.cleaned_data['image'] is not False:
@@ -121,6 +123,7 @@ def save_book(request, book_id):
                 book.category = form.cleaned_data['category']
                 #book.image = form.cleaned_data['image']
                 book.footer = form.cleaned_data['footer']
+                book.draft = form.cleaned_data['draft']
                 if form.cleaned_data['image']:
                     book.image = form.cleaned_data['image']
                 else:

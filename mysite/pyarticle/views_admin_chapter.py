@@ -144,7 +144,6 @@ def ajax_save_chapter(request):
                 ret = {"result": 0, "message": "正常"}
             except DatabaseError:
                 ret = {"result": -1, "message": "DBの更新に失敗しました"}
-            else:
-                ret = {"result": -1, "message": "不正な値です"}
+
 
     return JsonResponse(ret)

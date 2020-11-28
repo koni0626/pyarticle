@@ -15,6 +15,9 @@ class BookForm(forms.Form):
     category = forms.ModelChoiceField(label='カテゴリー',
                                       queryset=models.Category.objects.all())
 
+    draft = forms.ChoiceField(label='公開/非公開',
+                              choices=[(0, "非公開"), (1, "公開")])
+
     image = forms.ImageField(required=False)
 
     footer = forms.CharField(label='フッター',required=False,

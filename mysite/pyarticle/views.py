@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.urls import reverse
 from pyarticle.models import Book, AccessLog
 from pyarticle.models import Category
@@ -13,6 +13,7 @@ from .forms import AttachFileForm
 import glob
 import os
 
+
 # @login_required(login_url='login/')
 def index(request):
     # マイページには自分の投稿記事とプロフィールを表示する
@@ -21,7 +22,8 @@ def index(request):
     books = []
     for book in book_records:
         bc = BookComponent(book.id)
-        books.append(bc.book_info())
+        if bc.draft == 1:
+            books.append(bc.book_info())
 
     # 検索フォームの作成
     search_form = SearchForm()
@@ -31,7 +33,8 @@ def index(request):
     popular_records = Book.objects.order_by('good_count').reverse().all()[:10]
     for book in popular_records:
         bc = BookComponent(book.id)
-        popular_books.append(bc.book_info())
+        if bc.draft == 1:
+            popular_books.append(bc.book_info())
 
     data = {'books': books, 'search_form': search_form, 'popular_books': popular_books}
     return custom_render(request, 'pyarticle/index.html', data)
@@ -46,7 +49,6 @@ def index_old(request):
     """
     # 検索フォームの作成
     search_form = SearchForm()
-
     # カテゴリの取得
     categories = Category.objects.all().order_by('category_name')
     records = {}
@@ -67,7 +69,7 @@ def index_old(request):
             first_section = Section.objects.filter(chapter=first_chapter).order_by('order').first()
             records[category.category_name].append([book_record, acc, first_chapter, first_section])
 
-    return custom_render(request, 'pyarticle/index.html', {'book_records': records, 'search_form':search_form})
+    return custom_render(request, 'pyarticle/index.html', {'book_records': records, 'search_form': search_form})
 
 
 # @login_required(login_url='login/')
@@ -124,6 +126,9 @@ def book(request, book_id, page):
         print("私のページです")
 
     bc = BookComponent(book_id)
+    if (not is_my_page) and (bc.draft == 0):
+        raise Http404("不正なリクエストです")
+
     total_page = bc.get_page_count()
     if total_page == 0:
         # ページが一個もなかったら空のページを作成する
@@ -159,7 +164,7 @@ def book(request, book_id, page):
 
     data = {'book': bc.book, 'chapter': chapter_record, 'chapter_list': chapter_list,
             'attach_file_form': bc.attach_file_form, 'comment_form': bc.comment_form, 'acc': acc,
-            'prev_page': page-1,  'section': section_record, 'next_page': page+1,
+            'prev_page': page - 1, 'section': section_record, 'next_page': page + 1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list,
             'profile': bc.profile, 'is_my_page': is_my_page, 'good_image': good_image}
 

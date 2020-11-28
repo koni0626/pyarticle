@@ -116,9 +116,11 @@ li {
                             {% else %}
                                 <img class="mr-3 align-self-center" src="{% static 'noimage.jpg' %}" width="128">
                             {% endif %}
+
                             <div class="media-body">
                                 {% if user.is_authenticated %}
                                   <nav class="nav d-flex justify-content-end">
+
                                     <span class="badge badge-info">
                                       <a class="p-2 text-white" href="{% url 'edit_book' book_info.book.id %}">編集</a>
                                     </span>
@@ -127,8 +129,21 @@ li {
                                     </span>
                                   </nav>
                                 {% endif %}
+
+                                {% if book_info.book.draft == 1 %}
+                                    <span class="badge badge-success">
+                                        <a class="p-2 text-white" href="{% url 'edit_book' book_info.book.id %}">公開中</a>
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-warning">
+                                        <a class="p-2 text-white" href="{% url 'edit_book' book_info.book.id %}">非公開</a>
+                                    </span>
+                                {% endif %}
+
                                 <strong class="d-inline-block mb-2 text-primary">{{book_info.book.category}}</strong>
+
                                 <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+
                                 <p>{{book_info.book.description|linebreaksbr}}</p>
                                 <h4>contents</h4>
                                 <ul>
