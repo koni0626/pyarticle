@@ -1,10 +1,10 @@
 from datetime import date
 
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from .component.book_component import BookComponent
 from .forms import SearchForm
-from .models import Book, Profile, Comment, AccessLog
+from .models import Book, Profile, Comment, AccessLog, Chapter
 from .utils import custom_render, get_user, search_books
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -21,7 +21,8 @@ def index(request):
             key_word = search_form.cleaned_data['key_word']
 
 
-    book_records = Book.objects.filter(user=user, title__contains=key_word).order_by('create_date').reverse().all()
+    book_records = Book.objects.filter(Q(user=user), Q(title__contains=key_word)|Q(description__contains=key_word)).order_by('create_date').reverse().all()
+
     # 本全体のアクセス数をカウントする
     books = []
     for book in book_records:
