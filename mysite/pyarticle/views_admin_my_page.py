@@ -3,8 +3,9 @@ from datetime import date
 from django.db.models import Count
 
 from .component.book_component import BookComponent
+from .forms import SearchForm
 from .models import Book, Profile, Comment, AccessLog
-from .utils import custom_render, get_user
+from .utils import custom_render, get_user, search_books
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -13,7 +14,14 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     user = get_user(request.user)
     # マイページには自分の投稿記事とプロフィールを表示する
-    book_records = Book.objects.filter(user=user).order_by('create_date').reverse().all()
+    key_word = ""
+    if request.method == 'POST':
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            key_word = search_form.cleaned_data['key_word']
+
+
+    book_records = Book.objects.filter(user=user, title__contains=key_word).order_by('create_date').reverse().all()
     # 本全体のアクセス数をカウントする
     books = []
     for book in book_records:
@@ -42,7 +50,13 @@ def index(request):
         bc = BookComponent(book_id)
         summary['book'] = bc.book.title
 
-    my_book = True#bc.is_my_book(request.user)
-    data = {'books': books, 'profile': profile, 'comments': comments, 'summaries': summaries, 'my_book': my_book}
+    my_book = True
+
+    # 検索フォームの作成
+    search_form = SearchForm()
+
+    data = {'books': books, 'profile': profile, 'comments': comments, 'summaries': summaries, 'my_book': my_book,
+            'search_form': search_form}
+
     return custom_render(request, 'pyarticle/admin/mypage/index.html', data)
 

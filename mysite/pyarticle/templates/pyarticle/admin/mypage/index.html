@@ -102,6 +102,18 @@ li {
                     投稿記事一覧
                 </div>
                 <div class="card-body">
+                    <!-- ここに検索窓をつけたい -->
+                    <p>タイトル検索</p>
+                    <form action="{% url 'my_page'%}" method="post">
+                        {%csrf_token%}
+                        <p class="text-center">
+                            {{search_form.key_word}}
+                        </p>
+                        <p class="text-center">
+                            <button type="submit" class="btn btn-secondary">検索</button>
+                        </p>
+                    </form>
+
                     <p class="text-right">
                         {% if user.is_authenticated %}
                         <span class="badge badge-info">
