@@ -6,6 +6,7 @@ insert into pyarticle_siteparams (param, value) values ("site_image", "");
 insert into pyarticle_siteparams (param, value) values ("upload_url", "http://localhost:8000/admin/section/image");
 insert into pyarticle_siteparams (param, value) values ("data_sitekey", "");
 insert into pyarticle_siteparams (param, value) values ("site_secret", "");
+insert into pyarticle_siteparams (param, value) values ("site_news", "");
 
 
 
