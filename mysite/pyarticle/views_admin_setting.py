@@ -12,10 +12,15 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 @user_passes_test(lambda u: u.is_superuser)
 def edit_setting(request):
     try:
+        site_image = SiteParams.objects.filter(param="site_image").first().image
+    except:
+        site_image = ""
+
+    try:
         site_name = SiteParams.objects.filter(param="site_name").first().value
         site_description = SiteParams.objects.filter(param="site_description").first().value
         site_upload_url = SiteParams.objects.filter(param="upload_url").first().value
-        site_image = SiteParams.objects.filter(param="site_image").first().image
+
         site_data_sitekey = SiteParams.objects.filter(param="data_sitekey").first().value
         site_secret = SiteParams.objects.filter(param="site_secret").first().value
         site_news = SiteParams.objects.filter(param="site_news").first().value
