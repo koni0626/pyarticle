@@ -11,13 +11,10 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 @user_passes_test(lambda u: u.is_superuser)
 def edit_setting(request):
-    try:
-        site_image = SiteParams.objects.filter(param="site_image").first().image
-    except:
-        site_image = ""
 
     try:
         site_name = SiteParams.objects.filter(param="site_name").first().value
+        site_image = SiteParams.objects.filter(param="site_image").first().image
         site_description = SiteParams.objects.filter(param="site_description").first().value
         site_upload_url = SiteParams.objects.filter(param="upload_url").first().value
 
@@ -34,8 +31,15 @@ def edit_setting(request):
                                             'site_news': site_news})
 
         data = {'title_form': form, 'site_image': site_image.url}
-    except:
-        form = forms.SiteTitleForm()
+    except Exception as e:
+        print("こっちにきてる")
+        print(e)
+        form = forms.SiteTitleForm(initial={'site_name': site_name,
+                                            'site_description': site_description,
+                                            'site_upload_url': site_upload_url,
+                                            'site_secret': site_secret,
+                                            'site_data_sitekey': site_data_sitekey,
+                                            'site_news': site_news})
         data = {'title_form': form, 'site_image': ""}
 
     return custom_render(request, 'pyarticle/admin/setting/setting.html', data)
