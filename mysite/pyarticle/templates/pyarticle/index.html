@@ -112,7 +112,8 @@ ol>li:before {
                                         &nbsp投稿者&nbsp{{book.profile.name}}
                                     {% endif %}
                                 </p>
-                                {% if book_info.article_type == 0 %}
+
+                                {% if book_info.book.article_type == 0 %}
                                 <h4>contents</h4>
                                     <ul>
                                         {% for chapter in book_info.chapter %}
