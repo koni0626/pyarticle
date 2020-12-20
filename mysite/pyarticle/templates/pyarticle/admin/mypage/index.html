@@ -157,6 +157,8 @@ li {
                                 <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
 
                                 <p>{{book_info.book.description|linebreaksbr}}</p>
+
+                                {% if book_info.book.article_type == 0 %}
                                 <h4>contents</h4>
                                 <ul>
                                     {% for chapter in book_info.chapter %}
@@ -168,6 +170,7 @@ li {
                                         </ul>
                                     {% endfor %}
                                 </ul>
+                                {% endif %}
                                 <a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a>
                                 <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book_info.book.good_count}}</div>
                                 <div class="mb-1 text-muted text-right">{{book_info.acc}}views</div>

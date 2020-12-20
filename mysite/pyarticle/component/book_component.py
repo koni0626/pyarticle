@@ -64,13 +64,27 @@ class BookComponent:
     def get_header_image(self):
         return self.header_image
 
-    def get_chapter_list(self):
+    def get_chapter_list(self, order=0):
         """
         チャプターリストを取得する
         :return:チャプターのリスト
         """
-        chapters = Chapter.objects.filter(book=self.book).order_by('order')
+        if order == 0:
+            chapters = Chapter.objects.filter(book=self.book).order_by('order')
+        else:
+            chapters = Chapter.objects.filter(book=self.book).order_by('-create_date')
         return chapters
+
+    # 日付順にセクションを取得する
+    def get_section_list(self):
+        section_list = []
+        chapter_list = self.get_chapter_list()
+        for chapter in chapter_list:
+            records = Section.objects.filter(chapter=chapter).order_by('-create_date')
+            for record in records:
+                section_list.append(record)
+        return section_list
+
 
     def get_chapter_and_section_list(self):
         chapter_and_section_list = []

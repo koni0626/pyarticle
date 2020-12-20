@@ -216,6 +216,10 @@ class Book(models.Model):
     draft = models.IntegerField(default=0,
                                 verbose_name="下書き",
                                 help_text="下書き")
+    # 日記形式か本形式か
+    article_type = models.IntegerField(default=0,
+                                       verbose_name="本の形式",
+                                       help_text="本の形式か日記の形式が選択できます")
 
     def __str__(self):
         return self.title

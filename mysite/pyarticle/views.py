@@ -162,11 +162,16 @@ def book(request, book_id, page):
     else:
         good_image = 'star_off.png'
 
+    daily_list = []
+    if bc.book.article_type == 1:
+        daily_list = bc.get_chapter_list(order=1)
+
+
     data = {'book': bc.book, 'chapter': chapter_record, 'chapter_list': chapter_list,
             'attach_file_form': bc.attach_file_form, 'comment_form': bc.comment_form, 'acc': acc,
             'prev_page': page - 1, 'section': section_record, 'next_page': page + 1,
             'total_page': total_page, 'now_page': page, 'attach_file_list': attach_file_list,
-            'profile': bc.profile, 'is_my_page': is_my_page, 'good_image': good_image}
+            'profile': bc.profile, 'is_my_page': is_my_page, 'good_image': good_image, 'daily_list': daily_list}
 
     access_log = AccessLog()
     access_log.write_log(request, bc.book.user, bc.book, chapter_record, section_record)

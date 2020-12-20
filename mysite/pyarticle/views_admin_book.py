@@ -97,7 +97,8 @@ def save_book(request, book_id):
                             description=form.cleaned_data['description'],
                             category=form.cleaned_data['category'],
                             footer=form.cleaned_data['footer'],
-                            draft=form.cleaned_data['draft'])
+                            draft=form.cleaned_data['draft'],
+                            article_type=form.cleaned_data['article_type'])
 
                 if form.cleaned_data['image']:
                     if form.cleaned_data['image'] is not False:
@@ -124,6 +125,7 @@ def save_book(request, book_id):
                 #book.image = form.cleaned_data['image']
                 book.footer = form.cleaned_data['footer']
                 book.draft = form.cleaned_data['draft']
+                book.article_type = form.cleaned_data['article_type']
                 if form.cleaned_data['image']:
                     book.image = form.cleaned_data['image']
                 else:

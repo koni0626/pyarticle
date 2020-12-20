@@ -112,17 +112,19 @@ ol>li:before {
                                         &nbsp投稿者&nbsp{{book.profile.name}}
                                     {% endif %}
                                 </p>
+                                {% if book_info.article_type == 0 %}
                                 <h4>contents</h4>
-                                <ul>
-                                    {% for chapter in book_info.chapter %}
-                                    <li><a  href="{% url 'disp_chapter' book_info.book.id chapter.chapter.id %}"><h5>{{chapter.chapter}}</h5></a></li>
-                                        <ul>
-                                            {% for sub_chapter in chapter.sub_chapter %}
-                                                <li><a  href="{% url 'disp_book' book_info.book.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endfor %}
-                                </ul>
+                                    <ul>
+                                        {% for chapter in book_info.chapter %}
+                                        <li><a  href="{% url 'disp_chapter' book_info.book.id chapter.chapter.id %}"><h5>{{chapter.chapter}}</h5></a></li>
+                                            <ul>
+                                                {% for sub_chapter in chapter.sub_chapter %}
+                                                    <li><a  href="{% url 'disp_book' book_info.book.id sub_chapter.2 %}#tag_{{sub_chapter.1}}">{{sub_chapter.0}}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                                 <p><a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a></p>
 
                                 <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book_info.book.good_count}}</div>

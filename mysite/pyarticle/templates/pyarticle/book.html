@@ -138,30 +138,49 @@ table#good td {
 <div class="row"  style="margin-left: 0; margin-right: 10;">
     <div class="col-md-2 bg-light">
         <div class="sidebar_fixed">
-            {% if user.is_authenticated %}
-            <p class="text-left">
-                <span class="badge badge-info">
-                    <a class="p-2 text-white" href="{% url 'add_chapter' book.id %}">章追加</a>
-                </span>
-            </p>
-            {% endif %}
-            <ul class="text-white" data-spy="affix" data-offset-top="300" id="chapterList">
-                {% for c in chapter_list %}
-                <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}"><strong>{{c.0.chapter}}</strong></a>
-                    {%if user.is_authenticated%}
+            {% if book.article_type == 0 %}
+                {% if user.is_authenticated %}
+                <p class="text-left">
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'add_chapter' book.id %}">章追加</a>
+                    </span>
+                </p>
+                {% endif %}
+                <ul class="text-white" data-spy="affix" data-offset-top="300" id="chapterList">
+                    {% for c in chapter_list %}
+                    <li id="{{c.0.id}}_chapter"><a  href="{% url 'disp_chapter' book.id c.0.id %}"><strong>{{c.0.chapter}}</strong></a>
+                        {%if user.is_authenticated %}
+                            <span class="badge badge-danger">
+                            <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
+                            </span>
+                        {%endif%}
+
+                        <ul>
+                            {% for sub_c in c.1 %}
+                                <li class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">{{sub_c.0}}</a></li>
+                            {% endfor %}
+                        </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                カレンダー表示　ここには記事の作成日時でセクションを日付ごとに表示する
+                {% if user.is_authenticated %}
+                <p class="text-left">
+                    <span class="badge badge-info">
+                        <a class="p-2 text-white" href="{% url 'add_chapter' book.id %}">記事追加</a>
+                    </span>
+                </p>
+                {% endif %}
+                {% for daily in daily_list %}
+                    <li id="{{daily.create_date}}_chapter"><a  href="{% url 'disp_chapter' book.id daily.id %}"><strong>{{daily.create_date}}</strong></a>
+                    {%if user.is_authenticated %}
                         <span class="badge badge-danger">
-                        <a class="p-2 text-white" href="{%url 'delete_chapter' book.id c.0.id%}">削除</a>
+                            <a class="p-2 text-white" href="{%url 'delete_chapter' book.id daily.id %}">削除</a>
                         </span>
                     {%endif%}
-
-                    <ul>
-                        {% for sub_c in c.1 %}
-                            <li class="subchapter"><a  href="{% url 'disp_book' book.id sub_c.2 %}#tag_{{sub_c.1}}">{{sub_c.0}}</a></li>
-                        {% endfor %}
-                    </ul>
-                    </li>
                 {% endfor %}
-            </ul>
+            {% endif %}
         </div>
 
     </div>
@@ -200,9 +219,11 @@ table#good td {
         <p>
             {% if is_my_page is True %}
                 <p class="text-right">
-                    <span class="badge badge-info">
-                        <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">ページの追加</a>
-                    </span>
+                    {% if book.article_type == 0 %}
+                        <span class="badge badge-info">
+                            <a class="p-2 text-white" href="{% url 'add_section' book.id chapter.id %}">ページの追加</a>
+                        </span>
+                    {% endif %}
             {%endif %}
 
             {% if is_my_page is True %}
