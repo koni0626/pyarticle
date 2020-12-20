@@ -61,7 +61,12 @@ ol>li:before {
                             {% endif %}
                             <div class="media-body">
                                 <strong class="d-inline-block mb-2 text-secondary">{{book_info.book.category}}</strong>
-                                <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+                                {% if book_info.book.article_type == 0 %}
+                                    <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+                                {% else %}
+                                    <a href="{% url 'disp_book' book_info.book.id book_info.total_page %}"><h4>{{book_info.book.title}}</h4></a>
+                                {% endif %}
+
                                 <p>{{book_info.book.description|linebreaksbr}}</p>
                                 <p>
                                     {% if book_info.profile.image %}
@@ -74,8 +79,11 @@ ol>li:before {
                                     {% endif %}
                                 </p>
 
-                                <a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a>
-
+                                {% if book_info.book.article_type == 0 %}
+                                    <p><a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a></p>
+                                {% else %}
+                                    <p><a href="{% url 'disp_book' book_info.book.id book_info.total_page %}">続きを読む</a></p>
+                                {% endif %}
                                 <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book_info.book.good_count}}</div>
                                 <div class="mb-1 text-muted text-right">{{book_info.acc}}views</div>
                                 <div class="mb-1 text-muted text-right">{{book_info.book.create_date}}</div>
@@ -100,7 +108,15 @@ ol>li:before {
                             {% endif %}
                             <div class="media-body">
                                 <strong class="d-inline-block mb-2 text-secondary">{{book_info.book.category}}</strong>
-                                <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+
+                                {% if book_info.book.article_type == 0 %}
+                                    <a href="{% url 'disp_book' book_info.book.id 1 %}"><h4>{{book_info.book.title}}</h4></a>
+                                {% else %}
+                                    <a href="{% url 'disp_book' book_info.book.id book_info.total_page %}"><h4>{{book_info.book.title}}</h4></a>
+                                {% endif %}
+
+
+
                                 <p>{{book_info.book.description|linebreaksbr}}</p>
                                <p>
                                     {% if book_info.profile.image %}
@@ -126,8 +142,12 @@ ol>li:before {
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
-                                <p><a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a></p>
 
+                                {% if book_info.book.article_type == 0 %}
+                                    <p><a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a></p>
+                                {% else %}
+                                    <p><a href="{% url 'disp_book' book_info.book.id book_info.total_page %}">続きを読む</a></p>
+                                {% endif %}
                                 <div class="mb-1 text-muted text-right"><img src="{%static 'star_on.png' %}" width="16">{{book_info.book.good_count}}</div>
                                 <div class="mb-1 text-muted text-right">{{book_info.acc}}views</div>
                                 <div class="mb-1 text-muted text-right">{{book_info.book.create_date}}</div>

@@ -38,7 +38,8 @@ class BookComponent:
 
 
     def book_info(self):
-        return {"book": self.book, "acc": self.acc, "profile": self.profile, "chapter": self.chapter_and_section_list}
+        total_page = self.get_page_count()
+        return {"book": self.book, "total_page": total_page, "acc": self.acc, "profile": self.profile, "chapter": self.chapter_and_section_list}
 
     def is_my_book(self, username):
         user = User.objects.filter(username=username).first()
