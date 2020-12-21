@@ -136,8 +136,15 @@ table#good td {
 
 
 <div class="row"  style="margin-left: 0; margin-right: 10;">
-    <div class="col-md-2 bg-light">
+    <div class="col-md-3 bg-light">
         <div class="sidebar_fixed">
+            <table id="good" align="right">
+                <tr>
+                    <td><img id='good_image' src="{% static good_image %}" width="32"></td>
+                    <td id="count"><div id="good_count" class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
+                </tr>
+            </table>
+
             {% if book.article_type == 0 %}
                 {% if user.is_authenticated %}
                 <p class="text-left">
@@ -183,19 +190,8 @@ table#good td {
         </div>
 
     </div>
-    <div class="col-md-1 bg-light">
-        <div class="sidebar_fixed">
-            <table id="good" align="right">
-                <tr>
-                    <td><img id='good_image' src="{% static good_image %}" width="64"></td>
-                </tr>
-                <tr>
-                    <td id="count"><div id="good_count" class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="col-md-6 bg-white">
+
+    <div class="col-md-5 bg-white">
 
         <p class="text-right">
             {% if is_my_page is True %}
@@ -244,6 +240,8 @@ table#good td {
         <p>
              Page {{ now_page }} of {{ total_page }}.
         </p>
+
+
         <p class="text-center">
 
             {% if prev_page > 0 %}
@@ -336,7 +334,21 @@ table#good td {
         </form>
     </p>
     </div>
-    <div class="col-md-3 bg-light">
+    <!--
+    <div class="col-md-1 bg-light">
+        <div class="sidebar_fixed">
+            <table id="good" align="left">
+                <tr>
+                    <td><img id='good_image' src="{% static good_image %}" width="64"></td>
+                </tr>
+                <tr>
+                    <td id="count"><div id="good_count" class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    -->
+    <div class="col-md-4 bg-light">
         <div class="card" style="max-width: 25rem">
             <div class="card-header">
                 プロフィール
