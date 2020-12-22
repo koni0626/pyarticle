@@ -27,7 +27,7 @@ def save_comment(request, book_id, page):
                               name=form.cleaned_data['name'],
                               text=form.cleaned_data['text'],
                               book=Book.objects.get(id=book_id))
-            chapter.save()
+            #chapter.save()
 
         return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
