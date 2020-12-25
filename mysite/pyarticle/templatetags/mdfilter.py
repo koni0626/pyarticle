@@ -21,6 +21,7 @@ def markdown2html(value):
     markdown_tags.append("th")
     markdown_tags.append("tbody")
     markdown_tags.append("td")
+    markdown_tags.append("del")
 
 
     html = bleach.clean(html, markdown_tags, markdown_attrs)
