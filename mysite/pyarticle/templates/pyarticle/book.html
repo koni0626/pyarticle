@@ -13,97 +13,8 @@
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/mdae.css' %}">
 <style>
-
-div#title h1 {
-  padding: 0.5em;/*文字周りの余白*/
-  color: #010101;/*文字色*/
-  background: #eaf3ff;/*背景色*/
-  border-bottom: solid 3px #516ab6;/*下線*/
-}
-div#header h1 {
-  border-bottom: solid 3px #ccc;
-  position: relative;
-}
-
-div#header h1:after {
-  position: absolute;
-  content: " ";
-  display: block;
-  border-bottom: solid 3px #000;
-  bottom: -3px;
-  width: 20%;
-}
-
-div#mde table, th, td {
-  border-collapse: collapse;
-  border: 1px solid #ccc;
-  line-height: 1.5;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-div#mde th {
-  width: 150px;
-  padding: 10px;
-  font-weight: bold;
-  vertical-align: top;
-  background: #3f3f3f;
-  color: #ffffff;
-}
-div#mde td {
-  width: 350px;
-  padding: 10px;
-  vertical-align: top;
-}
-
-div#mde  h1 {
-  font-size:30px;
-  padding: .5em .75em;
-  margin-top:40px;
-  margin-bottom:10px;
-  background-color: #f6f6f6;
-  border-radius: 6px;
-}
-
-div#mde h2 {
-  font-size:25px;
-  margin-top:40px;
-  margin-bottom: 10px;
-  padding-bottom: .5em;
-  border-bottom: 1px solid #ccc;
-}
-
-
-div#mde h3 {
-  font-size:20px;
-  margin-top:40px;
-  margin-bottom:10px;
-  padding: .25em 0 .25em .75em;
-  border-left: 6px solid #ccc;
-}
-
-div#mde h4 {
-  font-size:20px;
-  margin-top:40px;
-  margin-bottom:10px;
-  padding: .5em .75em;
-  border: 1px solid #ccc;
-}
-
-div#mde img {
-    max-width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    border:1px #aaaaaa solid;
-}
-
-div#mde code {
-    margin-bottom: -15px;
-}
-
 .subchapter {
     margin: 0.1em 0px;
 }
@@ -334,20 +245,7 @@ table#good td {
         </form>
     </p>
     </div>
-    <!--
-    <div class="col-md-1 bg-light">
-        <div class="sidebar_fixed">
-            <table id="good" align="left">
-                <tr>
-                    <td><img id='good_image' src="{% static good_image %}" width="64"></td>
-                </tr>
-                <tr>
-                    <td id="count"><div id="good_count" class="mb-1 text-muted text-center">{{book.good_count}}</div></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    -->
+
     <div class="col-md-4 bg-light">
         <div class="card" style="max-width: 25rem">
             <div class="card-header">

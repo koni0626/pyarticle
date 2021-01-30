@@ -22,7 +22,7 @@ def markdown2html(value):
     markdown_tags.append("tbody")
     markdown_tags.append("td")
     markdown_tags.append("del")
-
+    markdown_tags.append("video")
 
     html = bleach.clean(html, markdown_tags, markdown_attrs)
 
