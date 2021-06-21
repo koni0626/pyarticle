@@ -1,15 +1,18 @@
 div#title h1 {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   padding: 0.5em;/*文字周りの余白*/
   color: #010101;/*文字色*/
   background: #eaf3ff;/*背景色*/
   border-bottom: solid 3px #516ab6;/*下線*/
 }
 div#header h1 {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   border-bottom: solid 3px #ccc;
   position: relative;
 }
 
 div#header h1:after {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   position: absolute;
   content: " ";
   display: block;
@@ -19,6 +22,7 @@ div#header h1:after {
 }
 
 div#mde table, th, td {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   border-collapse: collapse;
   border: 1px solid #ccc;
   line-height: 1.5;
@@ -27,6 +31,7 @@ div#mde table, th, td {
 }
 
 div#mde th {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   width: 150px;
   padding: 10px;
   font-weight: bold;
@@ -35,12 +40,14 @@ div#mde th {
   color: #ffffff;
 }
 div#mde td {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   width: 350px;
   padding: 10px;
   vertical-align: top;
 }
 
 div#mde  h1 {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   font-size:30px;
   padding: .5em .75em;
   margin-top:40px;
@@ -50,6 +57,7 @@ div#mde  h1 {
 }
 
 div#mde h2 {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   font-size:25px;
   margin-top:40px;
   margin-bottom: 10px;
@@ -59,6 +67,7 @@ div#mde h2 {
 
 
 div#mde h3 {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   font-size:20px;
   margin-top:40px;
   margin-bottom:10px;
@@ -67,6 +76,7 @@ div#mde h3 {
 }
 
 div#mde h4 {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   font-size:20px;
   margin-top:40px;
   margin-bottom:10px;
@@ -84,7 +94,6 @@ div#mde img {
 }
 
 div#mde p {
-    line-height: 2em;
-    font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic'
-
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
+  line-height: 2em;
 }
