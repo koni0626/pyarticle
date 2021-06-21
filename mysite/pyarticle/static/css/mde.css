@@ -84,5 +84,7 @@ div#mde img {
 }
 
 div#mde p {
-line-height: 2em;
+    line-height: 2em;
+    font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic'
+
 }
