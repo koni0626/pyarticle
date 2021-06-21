@@ -83,3 +83,6 @@ div#mde img {
     border:1px #aaaaaa solid;
 }
 
+div#mde p {
+line-height: 2em;
+}
