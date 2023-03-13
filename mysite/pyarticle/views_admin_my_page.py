@@ -21,7 +21,7 @@ def index(request):
             key_word = search_form.cleaned_data['key_word']
 
     book_records = Book.objects.filter(Q(user=user), Q(title__contains=key_word)|Q(description__contains=key_word)).order_by('create_date').reverse().all()
-    paginator = Paginator(book_records, 10)
+    paginator = Paginator(book_records, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     # 本全体のアクセス数をカウントする
