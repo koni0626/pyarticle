@@ -1,5 +1,5 @@
 from datetime import date
-
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 
 from .component.book_component import BookComponent
@@ -20,14 +20,14 @@ def index(request):
         if search_form.is_valid():
             key_word = search_form.cleaned_data['key_word']
 
-
     book_records = Book.objects.filter(Q(user=user), Q(title__contains=key_word)|Q(description__contains=key_word)).order_by('create_date').reverse().all()
-
+    paginator = Paginator(book_records, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     # 本全体のアクセス数をカウントする
     books = []
-    for book in book_records:
+    for book in page_obj:
         bc = BookComponent(book.id)
-        acc = bc.get_book_access_count()
         books.append(bc.book_info())
 
     profile = Profile.objects.filter(user=user).first()
@@ -57,7 +57,7 @@ def index(request):
     search_form = SearchForm()
 
     data = {'books': books, 'profile': profile, 'comments': comments, 'summaries': summaries, 'my_book': my_book,
-            'search_form': search_form}
+            'search_form': search_form, 'page_obj': page_obj}
 
     return custom_render(request, 'pyarticle/admin/mypage/index.html', data)
 
