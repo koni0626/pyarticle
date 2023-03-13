@@ -94,9 +94,36 @@ ol>li:before {
             </div>
         </div>
         <div class="col-md-6">
+            <div class="row">
+                <div class="col text-right">
+                    <p>
+                        {% if page_obj.has_other_pages %}
+                            <span class="step-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1">＜＜</a>
+                                    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+                                {% endif %}
+
+                                {% if page_obj.has_next %}
+                                    <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+                                    <a href="?page={{ page_obj.paginator.num_pages }}">＞＞</a>
+                                {% endif %}
+
+                                <span class="current-page">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </span>
+                            </span>
+                         {% endif %}
+                    </p>
+                </div>
+            </div>
             <div class="card">
                  <div class="card-header">
-                    投稿記事一覧
+                     <div class="row">
+                         <div class="col text-left">
+                             <p class="card-title mb-0">投稿記事一覧</p>
+                         </div>
+                     </div>
                 </div>
                 <div class="card-body">
                     {% for book_info in books %}
@@ -157,7 +184,7 @@ ol>li:before {
                 </div>
             </div>
         </div>
-        <div class="col-md-3 bg-light">ろ
+        <div class="col-md-3 bg-light">
             <div class=" sidebar_fixed">
                 <!-- admax -->
                 <script src="https://adm.shinobi.jp/s/97c59c2e5c821337d31c04b0d3fd3f7e"></script>

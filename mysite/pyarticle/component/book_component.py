@@ -36,7 +36,6 @@ class BookComponent:
         self.acc = self.get_book_access_count()
         self.chapter_and_section_list = self.get_chapter_and_section_list()
 
-
     def book_info(self):
         total_page = self.get_page_count()
         return {"book": self.book, "total_page": total_page, "acc": self.acc, "profile": self.profile, "chapter": self.chapter_and_section_list}

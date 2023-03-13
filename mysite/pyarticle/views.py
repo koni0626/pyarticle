@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect, JsonResponse, Http404
+from django.core.paginator import Paginator
 from django.urls import reverse
 from pyarticle.models import Book, AccessLog
 from pyarticle.models import Category
@@ -7,23 +8,20 @@ from pyarticle.models import Section
 from pyarticle.utils import custom_render, book_header
 from pyarticle.component.book_component import BookComponent
 from pyarticle.utils import search_books
-from django.contrib.auth.decorators import login_required
 from .forms import SearchForm
-from .forms import AttachFileForm
-import glob
-import os
 
 
-# @login_required(login_url='login/')
 def index(request):
     # マイページには自分の投稿記事とプロフィールを表示する
-    book_records = Book.objects.order_by('create_date').reverse().all()
+    book_records = Book.objects.filter(draft=1).order_by('create_date').reverse().all()
+    paginator = Paginator(book_records, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     # 本全体のアクセス数をカウントする
     books = []
-    for book in book_records:
+    for book in page_obj:
         bc = BookComponent(book.id)
-        if bc.draft == 1:
-            books.append(bc.book_info())
+        books.append(bc.book_info())
 
     # 検索フォームの作成
     search_form = SearchForm()
@@ -36,7 +34,13 @@ def index(request):
         if bc.draft == 1:
             popular_books.append(bc.book_info())
 
-    data = {'books': books, 'search_form': search_form, 'popular_books': popular_books}
+    data = {
+        'books': books,
+        'search_form': search_form,
+        'popular_books': popular_books,
+        'page_obj': page_obj
+    }
+
     return custom_render(request, 'pyarticle/index.html', data)
 
 
