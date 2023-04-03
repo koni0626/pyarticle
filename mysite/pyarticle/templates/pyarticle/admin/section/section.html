@@ -12,34 +12,36 @@
         </div>
     </div>
 
+<div class="offset-md-2 col-md-8 offset-md-2">
+    <form action="{% url 'save_section' book_id chapter_id section_id %}" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
 
-<form action="{% url 'save_section' book_id chapter_id section_id %}" method="post" enctype="multipart/form-data">
-    {%csrf_token%}
 
-
-    <div class="form-group row">
-        <label for="order" class="col-md-1 col-form-label">
-            順番
-        </label>
-        <div class="col-md-11" id="order">
-            <p>{{section_form.order}}</p>
+        <div class="form-group row">
+            <label for="order" class="col-md-1 col-form-label">
+                順番
+            </label>
+            <div class="col-md-11" id="order">
+                <p>{{section_form.order}}</p>
+            </div>
         </div>
-    </div>
+        <p class="text-right">
+            <button type="submit" class="btn btn-secondary">保存する</button>
+        </p>
+        <div class="form-group row">
+            <label for="section" class="col-md-1 col-form-label">
+                章
+            </label>
 
-    <div class="form-group row">
-        <label for="section" class="col-md-1 col-form-label">
-            章
-        </label>
-
-        <div class="col-md-11" id="section_text">
-            {{section_form.text}}
+            <div class="col-md-11" id="section_text">
+                {{section_form.text}}
+            </div>
         </div>
-    </div>
-    <p class="text-right">
-        <button type="submit" class="btn btn-secondary">保存する</button>
-    </p>
-</form>
-
+        <p class="text-right">
+            <button type="submit" class="btn btn-secondary">保存する</button>
+        </p>
+    </form>
+</div>
 <script>
 
     var simplemde = new SimpleMDE({
