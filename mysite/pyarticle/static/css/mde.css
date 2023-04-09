@@ -52,7 +52,7 @@ div#mde  h1 {
   padding: .5em .75em;
   margin-top:40px;
   margin-bottom:10px;
-  background-color: #f6f6f6;
+  background-color: #e6e6e6;
   border-radius: 6px;
 }
 
@@ -62,7 +62,7 @@ div#mde h2 {
   margin-top:40px;
   margin-bottom: 10px;
   padding-bottom: .5em;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 2px solid #aaa;
 }
 
 
