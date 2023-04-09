@@ -261,18 +261,16 @@ class BookComponent:
             # 一つだけ空のセクションを作成する
             records = Section.objects.filter(chapter=chapter_id)
             if len(records) == 0:
-                print("来てるよ")
                 ret = False
             else:
-                print("きてないよ")
+                pass
         except:
             print(traceback.format_exc())
             ret = False
 
         return ret
 
-    @staticmethod
-    def create_section(chapter_id, text, order):
+    def create_section(self, chapter_id, text, order):
         """
         セクションを作成し、作成したセクションIDを返す
         :param chapter_id:作成するセクションが所属するチャプターID
@@ -285,11 +283,13 @@ class BookComponent:
                           update_date=timezone.now(),
                           chapter=Chapter.objects.get(id=chapter_id))
         section.save()
+        # 最新の本の日付に変更する
+        self.book.update_date = timezone.now()
+        self.book.save()
 
         return section.id
 
-    @staticmethod
-    def update_section(section_id, chapter_id, text, order):
+    def update_section(self, section_id, chapter_id, text, order):
         """
         セクションを更新する
         :param section_id:更新するセクションのID
@@ -304,6 +304,10 @@ class BookComponent:
         section.update_date = timezone.now()
         section.chapter = Chapter.objects.get(id=chapter_id)
         section.save()
+        # 最新の本の日付に変更する
+        self.book.update_date = timezone.now()
+        self.book.save()
+
 
     def search(self, key_word):
         """

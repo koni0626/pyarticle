@@ -13,7 +13,7 @@ from .forms import SearchForm
 
 def index(request):
     # マイページには自分の投稿記事とプロフィールを表示する
-    book_records = Book.objects.filter(draft=1).order_by('create_date').reverse().all()
+    book_records = Book.objects.filter(draft=1).order_by('update_date').reverse().all()
     paginator = Paginator(book_records, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
