@@ -230,11 +230,14 @@ class Book(models.Model):
 @receiver(post_save, sender=Book)
 def resize_uploaded_image(sender, instance, **kwargs):
     new_width = 200
-    img = Image.open(instance.image)
-    width, height = img.size
-    new_height = int(height * (new_width / width))
-    img_resized = img.resize((new_width, new_height), Image.ANTIALIAS)
-    img_resized.save(instance.image.path)
+    print("================")
+    print(instance.image)
+    if hasattr(instance, 'image') and instance.image != "":
+        img = Image.open(instance.image)
+        width, height = img.size
+        new_height = int(height * (new_width / width))
+        img_resized = img.resize((new_width, new_height), Image.ANTIALIAS)
+        img_resized.save(instance.image.path)
 
 
 class Chapter(models.Model):
