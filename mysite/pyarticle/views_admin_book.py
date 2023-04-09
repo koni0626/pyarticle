@@ -18,7 +18,7 @@ from . import forms
 # Create your views here.
 
 
-@require_http_methods(['POST'])
+@require_http_methods(['GET'])
 @login_required(login_url='login/')
 def add_book(request):
     book_form = forms.BookForm(request.POST)

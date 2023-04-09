@@ -233,11 +233,14 @@ def resize_uploaded_image(sender, instance, **kwargs):
     print("================")
     print(instance.image)
     if hasattr(instance, 'image') and instance.image != "":
-        img = Image.open(instance.image)
-        width, height = img.size
-        new_height = int(height * (new_width / width))
-        img_resized = img.resize((new_width, new_height), Image.ANTIALIAS)
-        img_resized.save(instance.image.path)
+        try:
+            img = Image.open(instance.image)
+            width, height = img.size
+            new_height = int(height * (new_width / width))
+            img_resized = img.resize((new_width, new_height), Image.ANTIALIAS)
+            img_resized.save(instance.image.path)
+        except:
+            pass
 
 
 class Chapter(models.Model):
