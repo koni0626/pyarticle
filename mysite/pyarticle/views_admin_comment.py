@@ -26,7 +26,7 @@ def save_comment(request, book_id, page):
         form = forms.CommentForm(request.POST)
         if form.is_valid():
             text = form.cleaned_data['text']
-            if text.isascii():
+            if all(ord(char) < 128 for char in text):
                 return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
             else:
                 chapter = Comment(mail=form.cleaned_data['email'],
