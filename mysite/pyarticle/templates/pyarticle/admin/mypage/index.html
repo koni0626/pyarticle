@@ -152,15 +152,20 @@ li {
 
                             <div class="media-body">
                                 {% if user.is_authenticated %}
-                                  <nav class="nav d-flex justify-content-end">
-
-                                    <span class="badge badge-info">
-                                      <a class="p-2 text-white" href="{% url 'edit_book' book_info.book.id %}">編集</a>
-                                    </span>
-                                    <span class="badge badge-danger">
-                                      <a class="p-2 text-white" href="{% url 'delete_book' book_info.book.id %}">削除</a>
-                                    </span>
-                                  </nav>
+                                <nav class="nav d-flex justify-content-end">
+                                    <form action="{% url 'edit_book' book_info.book.id %}" method="GET">
+                                         {%csrf_token%}
+                                         <p class="text-right">
+                                             <input type="submit" class="btn btn-sm btn-info" value="編集">
+                                         </p>
+                                    </form>
+                                    <form action="{% url 'delete_book' book_info.book.id %}" method="POST">
+                                         {%csrf_token%}
+                                         <p class="text-right">
+                                             <input type="submit" class="btn btn-sm btn-danger" value="削除">
+                                         </p>
+                                    </form>
+                                </nav>
                                 {% endif %}
 
                                 {% if book_info.book.draft == 1 %}

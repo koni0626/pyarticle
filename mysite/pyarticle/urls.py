@@ -34,7 +34,6 @@ urlpatterns = [
     path('set_good/<int:book_id>', views.set_good, name='ajax_set_good'),
 
   #  path('admin/', views_admin.index, name='admin'),
-    path('admin/book/', views_admin_book.index, name='book'),
     path('admin/book/add/', views_admin_book.add_book, name='add_book'),
     path('admin/book/edit/<int:book_id>', views_admin_book.edit_book, name='edit_book'),
     path('admin/book/save/<int:book_id>', views_admin_book.save_book, name='save_book'),

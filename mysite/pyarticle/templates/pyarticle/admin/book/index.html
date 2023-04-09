@@ -51,7 +51,7 @@
                 <input type="submit" class="btn btn-outline-secondary" value="編集">
               </p>
             </form>
-            <form action="{% url 'delete_book' record.id %}" method="GET">
+            <form action="{% url 'delete_book' record.id %}" method="POST">
               {%csrf_token%}
               <p class="text-right">
                 <input type="submit" class="btn btn-outline-secondary" value="削除">

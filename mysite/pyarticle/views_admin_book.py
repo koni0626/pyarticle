@@ -1,44 +1,42 @@
+import os
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.utils import timezone
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
 
 from .component.book_component import BookComponent
+from .component.media_component import change_attach_file_permission
 from .models import Book
 from .models import Chapter
 from .models import Section
 from .utils import custom_render
 from . import forms
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.core.files.storage import FileSystemStorage
-import base64
-import uuid
-import os
 
 # Create your views here.
 
 
-@login_required(login_url='login/')
-def index(request):
-    records = Book.objects.order_by('id').reverse().all()
-    data = {
-            'description': '書籍一覧',
-            'book_records': records}
-    return custom_render(request, 'pyarticle/admin/book/index.html', data)
-
-
+@require_http_methods(['POST'])
 @login_required(login_url='login/')
 def add_book(request):
     book_form = forms.BookForm(request.POST)
     category_form = forms.CategoryForm(request.POST)
 
-    data = {'book_form': book_form, 'book_id': 0,'category_form': category_form}
+    data = {'book_form': book_form, 'book_id': 0, 'category_form': category_form}
     return custom_render(request, 'pyarticle/admin/book/book.html', data)
 
 
+@require_http_methods(['GET'])
 @login_required(login_url='login/')
 def edit_book(request, book_id):
+    """
+    本を編集する
+    :param request: リクエスト
+    :param book_id: 編集する本のID
+    :return:
+    """
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
@@ -62,8 +60,16 @@ def edit_book(request, book_id):
     return custom_render(request, 'pyarticle/admin/book/book.html', data)
 
 
+@require_http_methods(['GET'])
 @login_required(login_url='login/')
 def edit_footer(request, book_id, section_id):
+    """
+    本のフッターを編集する
+    :param request: リクエスト
+    :param book_id: 本のID
+    :param section_id: セクションID
+    :return:
+    """
     bc = BookComponent(book_id)
     form = forms.FooterForm(initial={'footer': bc.book.footer})
     data = {'footer_form': form, 'book_id': book_id, 'section_id': section_id}
@@ -71,8 +77,16 @@ def edit_footer(request, book_id, section_id):
     return custom_render(request, 'pyarticle/admin/book/footer.html', data)
 
 
+@require_http_methods(['POST'])
 @login_required(login_url='login/')
 def save_footer(request, book_id, section_id):
+    """
+    フッターを保存する
+    :param request: リクエスト
+    :param book_id: 本のID
+    :param section_id: セクションのID 編集後、前のページに戻るために使用する
+    :return:
+    """
     if request.method == 'POST':
         form = forms.FooterForm(request.POST)
         if form.is_valid():
@@ -85,8 +99,15 @@ def save_footer(request, book_id, section_id):
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
+@require_http_methods(['POST', 'PUT'])
 @login_required(login_url='login/')
 def save_book(request, book_id):
+    """
+    本を保存する
+    :param request: リクエスト
+    :param book_id: 本のID
+    :return:
+    """
     if request.method == 'POST':
         form = forms.BookForm(request.POST, request.FILES)
         if form.is_valid():
@@ -122,7 +143,6 @@ def save_book(request, book_id):
                 book.title = form.cleaned_data['title']
                 book.description = form.cleaned_data['description']
                 book.category = form.cleaned_data['category']
-                #book.image = form.cleaned_data['image']
                 book.footer = form.cleaned_data['footer']
                 book.draft = form.cleaned_data['draft']
                 book.article_type = form.cleaned_data['article_type']
@@ -138,8 +158,15 @@ def save_book(request, book_id):
         return HttpResponseRedirect(reverse('my_page'))
 
 
+@require_http_methods(['POST', 'PUT', 'DELETE'])
 @login_required(login_url='login/')
 def delete_book(request, book_id):
+    """
+    本を削除する
+    :param request:
+    :param book_id:
+    :return:
+    """
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
@@ -147,30 +174,38 @@ def delete_book(request, book_id):
     record = Book.objects.filter(id=book_id).delete()
     return HttpResponseRedirect(reverse('my_page'))
 
+
 @login_required(login_url='login/')
 def upload_attach_file(request, book_id, page):
     """
-    この関数はセクションにあるべきではない
+    添付ファイルを付ける
+    :param request: リクエスト
+    :param book_id: 添付する本のID
+    :param page: ページ番号
+    :return:
     """
-    save_path = 'attach/{}'.format(book_id)
+
     bc = BookComponent(book_id)
     if not bc.is_my_book(request.user):
         raise Http404("不正なリクエストです")
 
+    # 添付ファイルの保存先を取得する
+    save_path = bc.get_attach_path()
+
     if request.method == 'POST' and request.FILES['attach_file']:
+        # ファイルを保存する
         attach_file = request.FILES['attach_file']
+        # TODO 許可するファイルの拡張子を決めたほうがいいかも
         fileobject = FileSystemStorage()
         file_path = os.path.join(save_path, attach_file.name)
-        file_data = fileobject.save(file_path, attach_file)
-        attach_file_name = settings.MEDIA_ROOT + '/attach/{}/{}'.format(book_id, attach_file.name)
-        os.chmod(attach_file_name, 0o666)
-        upload_url = fileobject.url(file_data)
-    else:
-        pass
+        fileobject.save(file_path, attach_file)
+        # ファイルの権限を変更する
+        change_attach_file_permission(book_id, attach_file.name)
 
     return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
 
+@require_http_methods(['POST', 'PUT'])
 @login_required(login_url='login/')
 def delete_attach_file(request, book_id, page, filename):
     bc = BookComponent(book_id)

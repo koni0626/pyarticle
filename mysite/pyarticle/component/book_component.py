@@ -85,7 +85,6 @@ class BookComponent:
                 section_list.append(record)
         return section_list
 
-
     def get_chapter_and_section_list(self):
         chapter_and_section_list = []
         chapter_list = self.get_chapter_list()
@@ -466,3 +465,9 @@ class BookComponent:
         self.book.header_image = image
         self.book.save()
 
+    def get_attach_path(self):
+        """
+        添付ファイルのパスを返却する
+        :return: attach/{book_id}
+        """
+        return f'attach/{self.book_id}'

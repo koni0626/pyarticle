@@ -1,4 +1,7 @@
+from PIL import Image
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 import uuid
@@ -175,7 +178,6 @@ class Book(models.Model):
                              unique=True,
                              verbose_name="タイトル")
 
-
     description = models.CharField(max_length=512,
                                    verbose_name="説明")
 
@@ -195,7 +197,7 @@ class Book(models.Model):
 
     image = models.ImageField(upload_to=get_book_image_path,
                               null=True,
-                             verbose_name="表紙画像")
+                              verbose_name="表紙画像")
 
     header_image = models.ImageField(upload_to=get_book_image_path,
                                      null=True,
@@ -223,6 +225,17 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(post_save, sender=Book)
+def resize_uploaded_image(sender, instance, **kwargs):
+    new_width = 200
+    img = Image.open(instance.image)
+    width, height = img.size
+    new_height = int(height * (new_width / width))
+    img_resized = img.resize((new_width, new_height), Image.ANTIALIAS)
+    img_resized.save(instance.image.path)
+
 
 class Chapter(models.Model):
     """
