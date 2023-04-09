@@ -8,12 +8,14 @@ from .utils import custom_render
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
 # @login_required(login_url='login/')
 def disp_comment(request):
     records = Comment.objects.order_by('id').reverse().all()
 
     data = {'records': records}
     return custom_render(request, 'pyarticle/admin/comment/index.html', data)
+
 
 def save_comment(request, book_id, page):
     if request.method == 'POST':
@@ -23,11 +25,15 @@ def save_comment(request, book_id, page):
 
         form = forms.CommentForm(request.POST)
         if form.is_valid():
-            chapter = Comment(mail=form.cleaned_data['email'],
-                              name=form.cleaned_data['name'],
-                              text=form.cleaned_data['text'],
-                              book=Book.objects.get(id=book_id))
-            #chapter.save()
+            text = form.cleaned_data['text']
+            if text.isascii():
+                return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
+            else:
+                chapter = Comment(mail=form.cleaned_data['email'],
+                                  name=form.cleaned_data['name'],
+                                  text=form.cleaned_data['text'],
+                                  book=Book.objects.get(id=book_id))
+                chapter.save()
 
         return HttpResponseRedirect(reverse('disp_book', args=[book_id, page]))
 
