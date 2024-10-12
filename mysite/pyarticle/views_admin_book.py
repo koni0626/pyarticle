@@ -21,10 +21,22 @@ from . import forms
 @require_http_methods(['GET'])
 @login_required(login_url='login/')
 def add_book(request):
+    """
+    マイページで本を追加を選択した場合
+    :param request: リクエスト
+    :return:
+    """
+    # 本を追加するフォームを作成する
     book_form = forms.BookForm(request.POST)
+
+    # カテゴリ一覧を入力するフォームを作成する
     category_form = forms.CategoryForm(request.POST)
 
-    data = {'book_form': book_form, 'book_id': 0, 'category_form': category_form}
+    # カテゴリを新規追加する場合、book_idは0にする。
+    data = {'book_form': book_form,
+            'book_id': 0,
+            'category_form': category_form}
+
     return custom_render(request, 'pyarticle/admin/book/book.html', data)
 
 
@@ -71,6 +83,7 @@ def edit_footer(request, book_id, section_id):
     :return:
     """
     bc = BookComponent(book_id)
+    # フッター編集用のフォームを作成する
     form = forms.FooterForm(initial={'footer': bc.book.footer})
     data = {'footer_form': form, 'book_id': book_id, 'section_id': section_id}
 
@@ -81,7 +94,7 @@ def edit_footer(request, book_id, section_id):
 @login_required(login_url='login/')
 def save_footer(request, book_id, section_id):
     """
-    フッターを保存する
+    フッターを保存する。
     :param request: リクエスト
     :param book_id: 本のID
     :param section_id: セクションのID 編集後、前のページに戻るために使用する

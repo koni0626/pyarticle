@@ -20,7 +20,6 @@ def edit(request):
             profile_record = Profile()
             #profile_record.image = "profile/noprofimg.png"
     except Exception as e:
-        print(traceback.format_exc())
         raise Http404("不正なリクエストです")
 
     if request.method == 'GET':

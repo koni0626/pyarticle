@@ -108,18 +108,7 @@ def book(request, book_id, page):
     :param page:
     :return:
     """
-    """
-    if 'HTTP_REFERER' in request.META:
-        print(request.META['HTTP_REFERER'])
-        print(request.META['REMOTE_ADDR'])
-        print(request.META['OS'])
-        print(request.META['HTTP_USER_AGENT'])
 
-        for meta in request.META:
-            print("{}/{}".format(meta,request.META[meta]))
-    else:
-        print("ありません")
-    """
     bc = BookComponent(book_id)
 
     if not bc.is_my_book(request.user):

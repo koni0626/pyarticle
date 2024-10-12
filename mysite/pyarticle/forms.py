@@ -20,11 +20,11 @@ class BookForm(forms.Form):
 
     image = forms.ImageField(required=False)
 
-    footer = forms.CharField(label='フッター',required=False,
+    footer = forms.CharField(label='フッター', required=False,
                              widget=forms.Textarea(attrs={'cols': 100, 'rows': 10}))
 
     article_type = forms.ChoiceField(label='本形式/日記形式',
-                              choices=[(0, "本形式"), (1, "日記形式")])
+                                     choices=[(0, "本形式"), (1, "日記形式")])
 
 
 class FooterForm(forms.Form):
