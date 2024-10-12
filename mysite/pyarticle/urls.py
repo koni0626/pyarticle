@@ -10,7 +10,7 @@ from . import views_admin_comment
 from . import views_accounts
 from . import views_admin_setting
 from . import views_admin_profile
-
+from . import views_admin_game
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -74,12 +74,15 @@ urlpatterns = [
     path('admin/comment/add/<int:book_id>/<int:page>', views_admin_comment.save_comment, name='save_comment'),
     path('admin/comment/', views_admin_comment.disp_comment, name='disp_comment'),
 
-   # path('admin/profile/', views_admin_profile.index, name='profile'),
     path('admin/profile/edit', views_admin_profile.edit, name='profile_edit'),
     path('admin/mypage', views_admin_my_page.index, name='my_page'),
 
     path('admin/my_book_header/<int:book_id>', views_admin_book_header.edit_header, name='my_book_header'),
     path('admin/save_header_image/<int:book_id>', views_admin_book_header.save_header_image, name='save_header_image'),
+
+    # ゲームのアップロードに関するURL
+    path('admin/game/view', views_admin_game.view, name='game_view'),
+    path('admin/game/upload', views_admin_game.upload, name='game_upload'),
 
     path('admin/access_log', views_admin_access_log.index, name='access_log')
 ]

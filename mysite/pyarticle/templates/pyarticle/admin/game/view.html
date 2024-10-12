@@ -1,0 +1,30 @@
+{% extends "pyarticle/base.html" %}
+{% load static %}
+{% block content %}
+
+ここにアップロードされたファイル一覧をテーブルで表示する
+<form action="{% url 'game_upload' %}" method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    {{attach_file_form.attach_file}}
+    <button type="submit" class="btn btn-secondary">添付する</button>
+</form>
+<table class="table table-hover col-md-12">
+<tr>
+  <th>名前</th>
+  <th>src</th>
+</tr>
+{% for game_dir in game_dir_list %}
+<tr>
+    <td>{{game_dir}}</td>
+    <td>
+      {% filter force_escape %}
+        <iframe src="/media/game/{{user_id}}/{{game_dir}}/index.html" width="600" height="400" title="埋め込みページ"></iframe>
+      {% endfilter %}
+    </td>
+  </td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

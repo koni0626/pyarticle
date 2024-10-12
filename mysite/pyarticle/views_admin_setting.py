@@ -32,8 +32,6 @@ def edit_setting(request):
 
         data = {'title_form': form, 'site_image': site_image.url}
     except Exception as e:
-        print("こっちにきてる")
-        print(e)
         form = forms.SiteTitleForm(initial={'site_name': site_name,
                                             'site_description': site_description,
                                             'site_upload_url': site_upload_url,

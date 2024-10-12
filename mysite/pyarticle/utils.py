@@ -11,7 +11,7 @@ from pyarticle.component.book_component import BookComponent
 # Create your views here.
 
 
-def custom_render(request, template, data):
+def custom_render(request, template, data=None):
     # サイトの名前と説明を毎回呼び出す。もっといい方法はないものか？
 
     site_name = SiteParams.objects.get(param='site_name').value
@@ -29,7 +29,9 @@ def custom_render(request, template, data):
     record = {'site_name': site_name, 'description': description, 'site_image': url,
               'upload_url': upload_url, 'data_sitekey': data_sitekey, 'site_news': site_news,
               'header': reverse('edit_title')}
-    record.update(data)
+    if data is not None:
+        record.update(data)
+
     return render(request, template, record)
 
 
