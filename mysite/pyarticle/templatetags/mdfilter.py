@@ -1,38 +1,42 @@
 from django import template
 from django.template.defaultfilters import stringfilter
-import markdown
+import markdown2
 import bleach
-from bleach_whitelist import markdown_tags, markdown_attrs
 
 register = template.Library()
-
 
 @register.filter
 @stringfilter
 def markdown2html(value):
-    md = markdown.Markdown(extensions=['tables', 'nl2br', 'fenced_code', 'pymdownx.tilde'], safe_mode='escape')
+    # markdown2 を使って Markdown を HTML に変換
+    html = markdown2.markdown(value, extras=['tables', 'fenced-code-blocks', 'strike'])
 
-    html = md.convert(value)
-   # bleach.ALLOWED_TAGS.append('pre')
-    markdown_tags.append("pre")
-    markdown_tags.append("table")
-    markdown_tags.append("thead")
-    markdown_tags.append("tr")
-    markdown_tags.append("th")
-    markdown_tags.append("tbody")
-    markdown_tags.append("td")
-    markdown_tags.append("del")
-    markdown_tags.append("video")
+    # bleachで許可するタグと属性のリスト
+    allowed_tags = [
+        'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'pre',
+        'strong', 'ul', 'h1', 'h2', 'h3', 'p', 'table', 'thead', 'tbody', 'tr', 'th',
+        'td', 'del', 'iframe'
+    ]
+    allowed_attributes = {
+        '*': ['class', 'style'],
+        'a': ['href', 'title'],
+        'img': ['src', 'alt', 'width', 'height'],
+        'iframe': ['src', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder']
+    }
 
-    html = bleach.clean(html, markdown_tags, markdown_attrs)
+    # bleachを使ってサニタイズ（iframeタグも許可）
+    html = bleach.clean(html, tags=allowed_tags, attributes=allowed_attributes)
 
+    # カスタマイズ処理
     lines = html.split("\n")
     result = ""
     id = 0
     row = 0
     skip = False
+
     while row < len(lines):
         line = lines[row]
+
         if "<p><img alt=" in line:
             line = line.replace('<p>', '<p align="center">')
             result = result + "\n" + line
@@ -59,5 +63,5 @@ def markdown2html(value):
         else:
             result = result + "\n" + line
         row += 1
-    return result
 
+    return result
