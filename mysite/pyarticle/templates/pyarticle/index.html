@@ -155,7 +155,7 @@ ol>li:before {
                                         &nbsp投稿者&nbsp{{book.profile.name}}
                                     {% endif %}
                                 </p>
-
+                                <!--
                                 {% if book_info.book.article_type == 0 %}
                                 <h4>contents</h4>
                                     <ul>
@@ -169,6 +169,7 @@ ol>li:before {
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
+                                -->
 
                                 {% if book_info.book.article_type == 0 %}
                                     <p><a href="{% url 'disp_book' book_info.book.id 1 %}">続きを読む</a></p>
