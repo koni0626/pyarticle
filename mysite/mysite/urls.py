@@ -20,7 +20,7 @@ from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     #path('', include('pyarticle.urls')),
-    path(f"{settings.APP_NAME}/", include(f"{settings.APP_NAME}.urls")),
+    path(f"{settings.APP_NAME}/", include(f"pyarticle.urls")),
     #path('debugadmin/', admin.site.urls),
 ]
 urlpatterns += staticfiles_urlpatterns()
