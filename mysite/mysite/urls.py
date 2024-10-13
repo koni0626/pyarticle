@@ -19,9 +19,9 @@ from . import settings
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
-    path('', include('pyarticle.urls')),
-    path('pyarticle/', include('pyarticle.urls')),
-    path('debugadmin/', admin.site.urls),
+    #path('', include('pyarticle.urls')),
+    path(f"{settings.APP_NAME}/", include(f"{settings.APP_NAME}.urls")),
+    #path('debugadmin/', admin.site.urls),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

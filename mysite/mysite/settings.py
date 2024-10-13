@@ -122,7 +122,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = '/pyarticle/media/'
 
 LOGOUT_REDIRECT_URL="index"
 LOGIN_REDIRECT_URL="index"
@@ -131,3 +131,5 @@ AUTH_USER_MODEL = 'pyarticle.User'
 SESSION_COOKIE_AGE = 24*60*60
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024
+
+APP_NAME="pyarticle"

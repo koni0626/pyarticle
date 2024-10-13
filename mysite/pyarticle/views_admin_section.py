@@ -1,15 +1,15 @@
+import os.path
+from django.apps import apps
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Chapter
-from .models import Book
 from .models import Section
-from .utils import custom_render, book_header
+from .utils import  book_header
 from . import forms
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
 from pyarticle.component.book_component import BookComponent
 from django.http.response import JsonResponse, Http404
-from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 import uuid
 import base64
 # Create your views here.
@@ -111,11 +111,16 @@ def upload_image(request):
 
         img_data = base64.b64decode(tokens[1])
         # 画像ファイルに変換する
-        prefix = 'media/section/'
+        app_name = settings.APP_NAME
+        media = settings.MEDIA_URL
+        dir_name = f"media/section/"
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
+
         name = str(uuid.uuid4()).replace('-', '')
-        filename = prefix + name + "." + ext
+        filename = dir_name + name + "." + ext
 
         with open(filename, "wb") as f:
             f.write(img_data)
-
+    filename = f"{app_name}/{filename}"
     return JsonResponse({"filename": filename})
