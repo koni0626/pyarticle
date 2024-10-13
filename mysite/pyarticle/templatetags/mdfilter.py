@@ -9,13 +9,13 @@ register = template.Library()
 @stringfilter
 def markdown2html(value):
     # markdown2 を使って Markdown を HTML に変換
-    html = markdown2.markdown(value, extras=['tables', 'fenced-code-blocks', 'strike'])
+    html = markdown2.markdown(value, extras=['tables', 'fenced-code-blocks', 'strike', 'break-on-newline'])
 
     # bleachで許可するタグと属性のリスト
     allowed_tags = [
         'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'pre',
         'strong', 'ul', 'h1', 'h2', 'h3', 'p', 'table', 'thead', 'tbody', 'tr', 'th',
-        'td', 'del', 'iframe', 'img'
+        'td', 'del', 'iframe', 'img', 'br'
     ]
     allowed_attributes = {
         '*': ['class', 'style'],
