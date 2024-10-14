@@ -68,11 +68,12 @@ div#mde h2 {
 
 div#mde h3 {
   font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
-  font-size:20px;
-  margin-top:40px;
-  margin-bottom:10px;
+  font-size: 20px;
+  margin-top: 40px;
+  margin-bottom: 10px;
   padding: .25em 0 .25em .75em;
-  border-left: 6px solid #ccc;
+  border-left: none; /* 左側の線を削除 */
+  border-bottom: 3px dotted #aaa; /* 下線を太くして、色を濃くする */
 }
 
 div#mde h4 {
