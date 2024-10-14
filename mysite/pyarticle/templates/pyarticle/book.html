@@ -40,10 +40,9 @@ table#good td {
 </style>
 
 <link rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css">
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai-sublime.min.css">
 <script src='https://www.google.com/recaptcha/api.js'></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 <script type="text/x-mathjax-config">
@@ -387,7 +386,7 @@ $("#good_image").click(
     }
 );
 
-  document.querySelectorAll('pre code').forEach((el) => {
+  document.querySelectorAll('pre code.my-highlight').forEach((el) => {
     hljs.highlightElement(el);
   });
 

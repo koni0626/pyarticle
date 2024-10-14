@@ -43,17 +43,19 @@ def markdown2html(value):
             row += 1
             continue
 
+
         if len(line) >= 11 and line[0:11] == "<pre><code>":
             skip = True
             result = result + "\n" + line
             row += 1
             continue
 
-        if len(line) >= 13 and line[0:13] == '</code></pre>':
+        if len(line) >= 13 and line[0:13] == '</pre></code>':
             skip = False
             result = result + "\n" + line
             row += 1
             continue
+
 
         if len(line) >= 4 and skip == False and line[0:4] == "<h1>":
             new_tag = '<h1 id="tag_{}">'.format(id)
