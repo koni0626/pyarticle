@@ -43,6 +43,7 @@ table#good td {
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai-sublime.min.css">
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 <script type="text/x-mathjax-config">
@@ -342,23 +343,28 @@ $(function(){
 {% endif %}
 
 window.addEventListener('load', function(){
-  let codes = document.getElementsByTagName('code');
-  [].forEach.call(codes, function(elem, key, val){
-      // クラスに lang- が含まれていない場合は何もしない
+  // <pre>の中に<code>があるものを選択
+  let preCodes = document.querySelectorAll('pre code');
 
+  // 各<pre><code>要素に対して処理を行う
+  preCodes.forEach(function(elem){
       let line_num = 1;
       // 行で分割
       let lines = elem.innerHTML.split("\n");
-      let texts = elem.textContent.split("\n");
+
       // 最終行が空の時は削除
       if (lines[lines.length-1].length == 0) {
           lines.pop();
       }
+
+      // 行番号を振るためのリストの作成
       let modi = "<ol start='"+line_num+"'>";
-      lines.forEach(function(elem) {
-          modi += "<li class='code-list'>"+elem+"</li>";
+      lines.forEach(function(line) {
+          modi += "<li class='code-list'>"+line+"</li>";
       });
       modi += "</ol>";
+
+      // <code>タグの内容を置き換え
       elem.innerHTML = modi;
   });
 }, false);
@@ -385,10 +391,6 @@ $("#good_image").click(
         )
     }
 );
-
-  document.querySelectorAll('pre code.my-highlight').forEach((el) => {
-    hljs.highlightElement(el);
-  });
 
 </script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
