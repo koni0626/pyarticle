@@ -22,9 +22,17 @@
 
       .jumbotron {
         position: relative;
-
         background: url(背景画像) center center;
         background-size: cover;
+      }
+
+      .jumbotron h1, .jumbotron p {
+        color: white; /* 文字色を指定（例として白を使用） */
+        text-shadow:
+          -1px -1px 0 #000,
+           1px -1px 0 #000,
+          -1px  1px 0 #000,
+           1px  1px 0 #000; /* 文字を黒で縁取る */
       }
 
 
