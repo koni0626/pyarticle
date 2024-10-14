@@ -123,6 +123,8 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # まず画像を保存
+        if self.image.name is None or self.image.name == "":
+            return
 
         img = Image.open(self.image.path)  # Pillowを使って画像を開く
 
@@ -239,6 +241,8 @@ class Book(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # まず画像を保存
+        if self.image.name is None or self.image.name == '':
+            return
 
         img = Image.open(self.image.path)  # Pillowを使って画像を開く
 
