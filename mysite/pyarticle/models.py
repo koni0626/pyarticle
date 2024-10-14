@@ -121,6 +121,17 @@ class Profile(models.Model):
         return {'image': self.image, 'site': self.site, 'twitter': self.twitter, 'intro': self.intro, 'nem_address': self.nem_address,
                 'nem_message': self.nem_message, 'name': self.name}
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # まず画像を保存
+
+        img = Image.open(self.image.path)  # Pillowを使って画像を開く
+
+        # 画像のリサイズ処理を行う（例えば、幅400pxに合わせて縮小）
+        if img.height > 400 or img.width > 400:
+            output_size = (200, 200)
+            img.thumbnail(output_size)
+            img.save(self.image.path)  # リサイズした画像を同じ場所に保存
+
 
 class SiteParams(models.Model):
     """
@@ -226,12 +237,21 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # まず画像を保存
+
+        img = Image.open(self.image.path)  # Pillowを使って画像を開く
+
+        # 画像のリサイズ処理を行う（例えば、幅400pxに合わせて縮小）
+        if img.height > 400 or img.width > 400:
+            output_size = (200, 200)
+            img.thumbnail(output_size)
+            img.save(self.image.path)  # リサイズした画像を同じ場所に保存
 
 @receiver(post_save, sender=Book)
 def resize_uploaded_image(sender, instance, **kwargs):
     new_width = 200
-    print("================")
-    print(instance.image)
+
     if hasattr(instance, 'image') and instance.image != "":
         try:
             img = Image.open(instance.image)
