@@ -15,7 +15,7 @@ def markdown2html(value):
     allowed_tags = [
         'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'pre',
         'strong', 'ul', 'h1', 'h2', 'h3', 'p', 'table', 'thead', 'tbody', 'tr', 'th',
-        'td', 'del', 'iframe', 'img', 'br', 'div'
+        'td', 'del', 'iframe', 'img', 'br', 'div', 'span'
     ]
     allowed_attributes = {
         '*': ['class', 'style'],
@@ -43,7 +43,7 @@ def markdown2html(value):
             row += 1
             continue
 
-
+        """
         if len(line) >= 11 and line[0:11] == "<pre><code>":
             skip = True
             result = result + "\n" + line
@@ -55,9 +55,9 @@ def markdown2html(value):
             result = result + "\n" + line
             row += 1
             continue
+        """
 
-
-        if len(line) >= 4 and skip == False and line[0:4] == "<h1>":
+        if len(line) >= 4 and skip is False and line[0:4] == "<h1>":
             new_tag = '<h1 id="tag_{}">'.format(id)
             id += 1
             line = new_tag + line[4:]
