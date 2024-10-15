@@ -113,3 +113,10 @@ div#mde code {
     color: #333333;            /* 文字色: ダークグレー */
     word-wrap: break-word;     /* 長い単語を折り返す */
 }
+
+div#mde pre code {
+    background-color: #000000; /* <pre><code>の背景色を黒に */
+    padding: 0.5em;            /* 内側に余白をつける */
+    border-radius: 4px;        /* 角を少し丸くする */
+    color: #f5f5f5;            /* 文字色を淡いグレーに */
+}
