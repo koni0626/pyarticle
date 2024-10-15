@@ -14,7 +14,7 @@ def markdown2html(value):
     # bleachで許可するタグと属性のリスト
     allowed_tags = [
         'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'pre',
-        'strong', 'ul', 'h1', 'h2', 'h3', 'p', 'table', 'thead', 'tbody', 'tr', 'th',
+        'strong', 'ul', 'h1', 'h2', 'h3', 'h4', 'p', 'table', 'thead', 'tbody', 'tr', 'th',
         'td', 'del', 'iframe', 'img', 'br', 'div', 'span', 'center'
     ]
     allowed_attributes = {
