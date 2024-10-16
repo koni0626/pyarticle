@@ -1,6 +1,8 @@
+import os
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.core.paginator import Paginator
 from django.urls import reverse
+from django.shortcuts import render
 from pyarticle.models import Book, AccessLog
 from pyarticle.models import Category
 from pyarticle.models import Chapter
@@ -9,7 +11,6 @@ from pyarticle.utils import custom_render, book_header
 from pyarticle.component.book_component import BookComponent
 from pyarticle.utils import search_books
 from .forms import SearchForm
-
 
 def index(request):
     # マイページには自分の投稿記事とプロフィールを表示する
@@ -186,3 +187,14 @@ def set_good(request, book_id):
     bc.set_good(request)
     count = bc.get_book_good_count()
     return JsonResponse({'good_count': count})
+
+
+def serve_google_html(request):
+    # templates/pyarticle/google2e5390c579ead2bb.html が存在することを前提とします
+    file_path = 'pyarticle/google2e5390c579ead2bb.html'
+
+    # ファイルが存在するか確認して表示
+    if os.path.exists(os.path.join('templates', file_path)):
+        return render(request, file_path)
+    else:
+        raise Http404("Page not found")
