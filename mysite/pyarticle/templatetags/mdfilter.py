@@ -15,13 +15,14 @@ def markdown2html(value):
     allowed_tags = [
         'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'pre',
         'strong', 'ul', 'h1', 'h2', 'h3', 'h4', 'p', 'table', 'thead', 'tbody', 'tr', 'th',
-        'td', 'del', 'iframe', 'img', 'br', 'div', 'span', 'center', 'video'
+        'td', 'del', 'iframe', 'img', 'br', 'div', 'span', 'center', 'video', 'source'
     ]
     allowed_attributes = {
         '*': ['class', 'style'],
         'a': ['href', 'title'],
         'img': ['src', 'alt', 'width', 'height'],
-        'video': ['src', 'controls' 'class'],
+        'source': ['src', 'type'],
+        'video': ['src', 'controls', 'controls class', 'width'],
         'iframe': ['src', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder']
     }
 
