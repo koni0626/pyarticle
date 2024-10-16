@@ -16,7 +16,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('index/', views.index, name='index'),
     path('', views.index, name='index'),
-    path('pyarticle/google2e5390c579ead2bb.html', views.serve_google_html, name='serve_google_html'),
+    path('google2e5390c579ead2bb.html', views.serve_google_html, name='serve_google_html'),
     #path('', views_admin_my_page.index, name='my_page'),
 
     path('signup/', views_accounts.signup, name='signup'),
