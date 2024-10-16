@@ -57,20 +57,27 @@ div#mde  h1 {
   border-radius: 6px;
 }
 
-
 div#mde h2 {
-  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   font-size:25px;
   margin-top:40px;
   margin-bottom: 10px;
-  padding-bottom: .5em;
+  padding: .5em .75em;
+  border-bottom: 6px double #aaa;
+}
+
+div#mde h3 {
+  font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
+  font-size:20px;
+  margin-top:40px;
+  margin-bottom: 10px;
+  padding: .5em .75em;
   border-bottom: 2px solid #aaa;
 }
 
 
-div#mde h3 {
+div#mde h4 {
   font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
-  font-size: 20px;
+  font-size: 18px;
   margin-top: 40px;
   margin-bottom: 10px;
   padding: .25em 0 .25em .75em;
@@ -78,7 +85,7 @@ div#mde h3 {
   border-bottom: 3px dotted #aaa; /* 下線を太くして、色を濃くする */
 }
 
-div#mde h4 {
+div#mde h5 {
   font-family: 'メイリオ', Meiryo,'ＭＳ Ｐゴシック','MS PGothic';
   font-size:20px;
   margin-top:40px;
