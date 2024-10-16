@@ -194,7 +194,4 @@ def serve_google_html(request):
     file_path = 'pyarticle/google2e5390c579ead2bb.html'
 
     # ファイルが存在するか確認して表示
-    if os.path.exists(os.path.join('templates', file_path)):
-        return render(request, file_path)
-    else:
-        raise Http404("Page not found")
+    return render(request, file_path)
